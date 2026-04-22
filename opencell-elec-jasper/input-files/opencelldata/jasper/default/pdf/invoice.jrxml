@@ -1,0 +1,1174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.18.1.final using JasperReports Library version 6.18.1-9d75d1969e774d4f179fb3be8401e98a0e6d1611  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isSummaryNewPage="true" uuid="801855a9-548e-443b-81d5-d27d42b5df88">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="montant"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#FFBFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#FFBFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#FFBFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Style_1" backcolor="#CCCCCC"/>
+	<style name="Text Body" mode="Opaque"/>
+	<style name="table 3">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Empty Dataset1" uuid="f516feb4-ed3c-44d7-ad71-b2a50071cc31"/>
+	<parameter name="logoPath" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="messagePath" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="xmlDateFormat" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["dd/MM/yyyy"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="xPath">
+		<![CDATA[/invoice]]>
+	</queryString>
+	<field name="user_name" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/detail/userAccounts/userAccount/name/name]]></fieldDescription>
+	</field>
+	<field name="customerID" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/@customerAccountCode]]></fieldDescription>
+	</field>
+	<field name="invoiceDate" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/invoiceDate]]></fieldDescription>
+	</field>
+	<field name="baName" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/billingAccount/name/name]]></fieldDescription>
+	</field>
+	<field name="baFirstName" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/billingAccount/name/firstName]]></fieldDescription>
+	</field>
+	<field name="baAddrLine1" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/billingAccount/address/address1]]></fieldDescription>
+	</field>
+	<field name="baAddrLine2" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/billingAccount/address/address2]]></fieldDescription>
+	</field>
+	<field name="baAddrLine3" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/billingAccount/address/address3]]></fieldDescription>
+	</field>
+	<field name="baAddrCity" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/billingAccount/address/city]]></fieldDescription>
+	</field>
+	<field name="baAddrZip" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/billingAccount/address/postalCode]]></fieldDescription>
+	</field>
+	<field name="invoiceNumber" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/@number]]></fieldDescription>
+	</field>
+	<field name="externalRef1" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/billingAccount/@externalRef1]]></fieldDescription>
+	</field>
+	<field name="subCode" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/detail/userAccounts/userAccount/subscriptions/subscription/@code]]></fieldDescription>
+	</field>
+	<field name="caName" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/customerAccount/name/name]]></fieldDescription>
+	</field>
+	<field name="caAddress1" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/customerAccount/address/address1]]></fieldDescription>
+	</field>
+	<field name="caAddress2" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/customerAccount/address/address2]]></fieldDescription>
+	</field>
+	<field name="caPostalCode" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/customerAccount/address/postalCode]]></fieldDescription>
+	</field>
+	<field name="caCity" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/customerAccount/address/city]]></fieldDescription>
+	</field>
+	<field name="email" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="/invoice/header/customer/contact/@email"/>
+		<fieldDescription><![CDATA[/invoice/header/customer/contact/@email]]></fieldDescription>
+	</field>
+	<field name="vatNo" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="/invoice/header/customer/@vatNo"/>
+		<fieldDescription><![CDATA[/invoice/header/customer/@vatNo]]></fieldDescription>
+	</field>
+	<field name="mobile" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="header/customer/contact/@mobile"/>
+		<fieldDescription><![CDATA[header/customer/contact/@mobile]]></fieldDescription>
+	</field>
+	<field name="subscriptionDate" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="detail/userAccounts/userAccount/subscriptions/subscription/subscriptionDate"/>
+		<fieldDescription><![CDATA[detail/userAccounts/userAccount/subscriptions/subscription/subscriptionDate]]></fieldDescription>
+	</field>
+	<field name="discountAmountWithoutTax" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="header/discounts/discount/@discountAmountWithoutTax"/>
+		<fieldDescription><![CDATA[header/discounts/discount/@discountAmountWithoutTax]]></fieldDescription>
+	</field>
+	<field name="CaorganizationName" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/customerAccount/name/name]]></fieldDescription>
+	</field>
+	<field name="caAddress3" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/customerAccount/address/address3]]></fieldDescription>
+	</field>
+	<field name="subCfIntensite" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/detail/userAccounts/userAccount/subscriptions/subscription/customFields/customField[@code="cf_intensite_limiteur"]]]></fieldDescription>
+	</field>
+	<field name="subCfPuissance" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/detail/userAccounts/userAccount/subscriptions/subscription/customFields/customField[@code="cf_puissance_souscrite"]]]></fieldDescription>
+	</field>
+	<field name="paymentMethod" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/customerAccount/paymentMethod/@type]]></fieldDescription>
+	</field>
+	<field name="sellerCode" class="java.lang.String">
+		<fieldDescription><![CDATA[header/seller/@code]]></fieldDescription>
+	</field>
+	<field name="netToPay" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/amount/netToPay]]></fieldDescription>
+	</field>
+	<field name="country" class="java.lang.String">
+		<fieldDescription><![CDATA[ancestor::invoice/@country]]></fieldDescription>
+	</field>
+	<field name="offerCode" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/offers/offer/@code]]></fieldDescription>
+	</field>
+	<field name="dueDate" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/dueDate]]></fieldDescription>
+	</field>
+	<field name="iban" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/customerAccount/paymentMethod/bankCoordinates/iban]]></fieldDescription>
+	</field>
+	<field name="amountWithTax" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/amount/amountWithTax]]></fieldDescription>
+	</field>
+	<field name="endDate" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/detail/userAccounts/userAccount/subscriptions/subscription/@endDate]]></fieldDescription>
+	</field>
+	<field name="startDate" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/detail/userAccounts/userAccount/subscriptions/subscription/@startDate]]></fieldDescription>
+	</field>
+	<field name="exploitation_adresse" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/detail/userAccounts/userAccount/subscriptions/subscription/ct_exploitation/exp_adresse]]></fieldDescription>
+	</field>
+	<field name="exploitation_tel" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/detail/userAccounts/userAccount/subscriptions/subscription/ct_exploitation/exp_agence]]></fieldDescription>
+	</field>
+	<field name="exploitation_fax" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/detail/userAccounts/userAccount/subscriptions/subscription/ct_exploitation/exp_fax]]></fieldDescription>
+	</field>
+	<field name="exploitation_email" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/detail/userAccounts/userAccount/subscriptions/subscription/ct_exploitation/exp_email]]></fieldDescription>
+	</field>
+	<field name="exploitation_siteInternet" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/detail/userAccounts/userAccount/subscriptions/subscription/ct_exploitation/exp_siteInternet]]></fieldDescription>
+	</field>
+	<field name="exploitation_telDepannage" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/detail/userAccounts/userAccount/subscriptions/subscription/ct_exploitation/exp_tel_depannage]]></fieldDescription>
+	</field>
+	<field name="pds_adresse" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/detail/userAccounts/userAccount/subscriptions/subscription/ct_pds/pds_adresse]]></fieldDescription>
+	</field>
+	<field name="pds_nb_fils" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/detail/userAccounts/userAccount/subscriptions/subscription/ct_pds/pds_nb_fils]]></fieldDescription>
+	</field>
+	<field name="pds_numCompteur" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/detail/userAccounts/userAccount/subscriptions/subscription/ct_pds/pds_numCompteur]]></fieldDescription>
+	</field>
+	<field name="Name" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/customerAccount/name/name]]></fieldDescription>
+	</field>
+	<field name="quality" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/customerAccount/name/quality]]></fieldDescription>
+	</field>
+	<field name="isCompayCA" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/customerAccount/@company]]></fieldDescription>
+	</field>
+	<field name="isCompayUA" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/detail/userAccounts/userAccount/@company]]></fieldDescription>
+	</field>
+	<field name="firstNameUA" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/detail/userAccounts/userAccount/name/firstName]]></fieldDescription>
+	</field>
+	<field name="lastNameUA" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/detail/userAccounts/userAccount/name/name]]></fieldDescription>
+	</field>
+	<field name="firstNameCA" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/customerAccount/name/firstName]]></fieldDescription>
+	</field>
+	<field name="lastNameCA" class="java.lang.String">
+		<fieldDescription><![CDATA[/invoice/header/customerAccount/name/name]]></fieldDescription>
+	</field>
+	<variable name="variable1" class="java.lang.String"/>
+	<group name="5"/>
+	<group name="Groupe1">
+		<groupHeader>
+			<band height="583">
+				<frame>
+					<reportElement positionType="Float" stretchType="ElementGroupHeight" x="0" y="5" width="274" height="265" uuid="9745fb5b-b372-4932-b339-11584ca49843">
+						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+					</reportElement>
+					<frame>
+						<reportElement x="0" y="23" width="272" height="296" uuid="71922e85-c48e-43bd-b679-7812521ff505">
+							<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+						</reportElement>
+						<rectangle radius="0">
+							<reportElement style="table_TH" x="16" y="4" width="252" height="226" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="e1bca888-4241-4ce1-bc43-385869346ae6"/>
+							<graphicElement>
+								<pen lineWidth="0.75" lineStyle="Solid" lineColor="#3383FF"/>
+							</graphicElement>
+						</rectangle>
+						<staticText>
+							<reportElement mode="Opaque" x="16" y="4" width="252" height="24" forecolor="#010608" backcolor="#3383FF" uuid="1543566e-7540-4f6d-978d-aecf1fab16e0">
+								<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<box topPadding="0" leftPadding="20" bottomPadding="0" rightPadding="0">
+								<pen lineWidth="5.0" lineColor="#FF8C00"/>
+								<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#3383FF"/>
+								<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#3383FF"/>
+								<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#3383FF"/>
+							</box>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font fontName="SansSerif" size="12" isBold="true"/>
+							</textElement>
+							<text><![CDATA[Vos contacts utiles]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="23" y="34" width="126" height="13" uuid="1a9a5948-0923-450a-b375-f592fdba29e5">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							</reportElement>
+							<textElement>
+								<font fontName="SansSerif" size="10" isBold="true"/>
+							</textElement>
+							<text><![CDATA[Votre espace clientèle]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="21" y="70" width="115" height="20" uuid="fd728f0e-4811-4bc3-b96f-d6072e1a4a95">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							</reportElement>
+							<textElement>
+								<font fontName="SansSerif" size="10" isBold="true"/>
+							</textElement>
+							<text><![CDATA[Vos numéros utiles]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="21" y="83" width="200" height="14" uuid="01947e8d-2ae4-43b2-aaf5-4703af1b5c13">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							</reportElement>
+							<textElement>
+								<font fontName="SansSerif" size="10" isBold="true"/>
+							</textElement>
+							<text><![CDATA[Information clientèle/Réclamations]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="21" y="182" width="122" height="14" uuid="b1d688b6-f627-4e60-b036-ff3d8232059f">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							</reportElement>
+							<textElement>
+								<font fontName="SansSerif" size="10" isBold="true"/>
+							</textElement>
+							<text><![CDATA[Dépannage 24/24]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="21" y="200" width="26" height="14" uuid="a928ac7a-cf30-4cf1-8a33-710fdc2de225">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							</reportElement>
+							<textElement>
+								<font fontName="opencell-fonts" isBold="false"/>
+							</textElement>
+							<text><![CDATA[Tél:]]></text>
+						</staticText>
+						<image scaleImage="RealSize">
+							<reportElement x="29" y="168" width="78" height="15" uuid="30f95fde-c1db-437b-943d-90a81d1bdfd7"/>
+							<imageExpression><![CDATA[$P{logoPath}+"/Pictos/Image_Numéro_Vert.png"]]></imageExpression>
+						</image>
+						<rectangle>
+							<reportElement x="16" y="238" width="253" height="149" uuid="24c81412-b262-46cf-ac0b-39fb77a5d58e"/>
+							<graphicElement>
+								<pen lineWidth="0.75" lineColor="#3383FF"/>
+							</graphicElement>
+						</rectangle>
+						<staticText>
+							<reportElement mode="Opaque" x="16" y="238" width="253" height="23" forecolor="#010608" backcolor="#3383FF" uuid="cab14b21-0ad8-4661-8fb1-9d4e6f5dd885">
+								<property name="com.jaspersoft.studio.unit.x" value="px"/>
+								<property name="com.jaspersoft.studio.unit.y" value="px"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							</reportElement>
+							<box topPadding="0" leftPadding="20" bottomPadding="0" rightPadding="0">
+								<pen lineWidth="0.75" lineColor="#FF8C00"/>
+								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#3383FF"/>
+								<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#3383FF"/>
+							</box>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font fontName="SansSerif" size="12" isBold="true"/>
+							</textElement>
+							<text><![CDATA[Vos informations clients]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="20" y="266" width="146" height="19" uuid="26f803be-56f9-448e-96df-237e8a4e92c8"/>
+							<textElement>
+								<font fontName="SansSerif" size="9" isBold="true"/>
+							</textElement>
+							<text><![CDATA[Votre contrat numéro :]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="20" y="322" width="176" height="19" uuid="fbbf039c-feb0-4e9d-b990-c04747d2ec70"/>
+							<textElement>
+								<font fontName="SansSerif" size="9" isBold="true"/>
+							</textElement>
+							<text><![CDATA[Caractéristiques du contrat]]></text>
+						</staticText>
+						<textField>
+							<reportElement x="20" y="282" width="128" height="20" uuid="8c9547f7-e153-4681-aaa7-e385c1b595ea"/>
+							<textElement>
+								<font fontName="opencell-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{subCode}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="20" y="352" width="100" height="13" uuid="e87da6e7-a7c9-4242-9fd5-09eb0af3a2f1"/>
+							<textElement>
+								<font fontName="opencell-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{subCfIntensite}+ " Ampère -"]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="21" y="367" width="189" height="19" uuid="6b951991-77af-4699-bba0-6312c3865777"/>
+							<textElement>
+								<font fontName="opencell-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{subCfPuissance}+" kVA"]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="21" y="337" width="156" height="13" uuid="a63cb01d-64ca-423e-9ad8-a2478ef7e02e"/>
+							<textElement>
+								<font fontName="opencell-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{offerCode}.equals("OFFER_IRRIGATION") ? "Irrigation" :
+  ($F{offerCode}.equals("OFFER_BORNE_VE_HTA") || $F{offerCode}.equals("OFFER_BORNE_VE_BT") ? "Borne VE" : "")]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="19" y="99" width="41" height="13" uuid="8ff4a755-ef28-45da-9120-38c3c7929ecc"/>
+							<textElement>
+								<font fontName="opencell-fonts"/>
+							</textElement>
+							<text><![CDATA[Tél:]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="20" y="113" width="41" height="13" uuid="ad07a12d-48ce-4366-a7ff-0cfd0822d7e3"/>
+							<textElement>
+								<font fontName="opencell-fonts"/>
+							</textElement>
+							<text><![CDATA[Fax:]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="19" y="129" width="41" height="13" uuid="fe6f5622-7f1f-48e3-8450-6843c1e9d711"/>
+							<textElement>
+								<font fontName="opencell-fonts"/>
+							</textElement>
+							<text><![CDATA[Mail:]]></text>
+						</staticText>
+						<textField>
+							<reportElement x="21" y="50" width="244" height="17" uuid="405377bd-903b-4c56-b1c8-c70f9db9012a"/>
+							<textElement>
+								<font fontName="opencell-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{exploitation_adresse}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="41" y="99" width="226" height="15" uuid="03e14d40-0866-4cb1-8fba-f069e9763d49"/>
+							<textElement>
+								<font fontName="opencell-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{exploitation_tel}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="43" y="113" width="222" height="14" uuid="e289ad6e-0370-4a85-b8e7-924671a64fb4"/>
+							<textElement>
+								<font fontName="opencell-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{exploitation_fax}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="44" y="129" width="223" height="14" uuid="0acd2213-cdc9-4dd3-8c43-8f249aaf1eab"/>
+							<textElement>
+								<font fontName="opencell-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{exploitation_email}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="19" y="146" width="176" height="14" uuid="717ca553-3241-4c23-b472-0d41d1106d32"/>
+							<textElement>
+								<font fontName="opencell-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA["Site internet: "+$F{exploitation_siteInternet}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="41" y="200" width="224" height="16" uuid="bea1410e-0961-488d-a94d-76d81a50159a"/>
+							<textElement>
+								<font fontName="opencell-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{exploitation_telDepannage}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="83" y="352" width="184" height="20" uuid="38cfdcd3-259d-4aea-8460-4cebeaffa776"/>
+							<textElement>
+								<font fontName="opencell-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{pds_nb_fils}.equals("2") ? "Monophasé" :
+ ($F{pds_nb_fils}.equals("3") ? "Biphasé" :
+  ($F{pds_nb_fils}.equals("4") ? "Triphasé" : ""))]]></textFieldExpression>
+						</textField>
+					</frame>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" stretchType="ElementGroupHeight" x="274" y="28" width="320" height="310" uuid="4d71616e-6ed5-4130-8e41-74b3910370af">
+						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					</reportElement>
+					<frame>
+						<reportElement x="0" y="0" width="320" height="310" uuid="f7cb3144-1be7-41d5-8b82-1ae564c9f151">
+							<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+							<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+							<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						</reportElement>
+						<box>
+							<leftPen lineWidth="0.0" lineColor="#3383FF"/>
+						</box>
+						<rectangle radius="0">
+							<reportElement x="0" y="4" width="315" height="226" uuid="ed5bf5f3-6d02-40b8-9f30-4f60b25162d6">
+								<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+							</reportElement>
+							<graphicElement>
+								<pen lineWidth="0.75" lineColor="#3383FF"/>
+							</graphicElement>
+						</rectangle>
+						<staticText>
+							<reportElement x="4" y="33" width="100" height="19" uuid="2f9ee899-77f5-4b7c-9c60-4d665e902524"/>
+							<textElement>
+								<font fontName="SansSerif" size="10" isBold="true"/>
+							</textElement>
+							<text><![CDATA[Tiers-payeur]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="4" y="170" width="231" height="18" uuid="1f3a53d6-643a-4837-bacf-d4ea704f9f78"/>
+							<textElement>
+								<font fontName="SansSerif" size="10" isBold="true"/>
+							</textElement>
+							<text><![CDATA[Souscripteur et lieu de consommation]]></text>
+						</staticText>
+						<textField>
+							<reportElement x="5" y="49" width="120" height="16" uuid="846a4153-c868-47fb-8cbb-1b67e7fa01bf">
+								<printWhenExpression><![CDATA[($F{quality}.contains("Cie.") || $F{quality}.contains("company") || $F{quality}.contains("Simplified") || $F{quality}.contains("Sté") || $F{quality}.contains("Société") || $F{quality}.contains("société"))]]></printWhenExpression>
+							</reportElement>
+							<textElement>
+								<font fontName="opencellsoft-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{CaorganizationName}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="5" y="78" width="310" height="16" uuid="bb50ea5f-b219-4a4a-96eb-80e82e7da88a">
+								<printWhenExpression><![CDATA[$F{caAddress2}!=null]]></printWhenExpression>
+							</reportElement>
+							<textElement>
+								<font fontName="opencellsoft-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{caAddress2}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="5" y="120" width="160" height="16" uuid="1d222cb0-b827-4cb1-84f0-32e75686f686">
+								<printWhenExpression><![CDATA[$F{caCity}!=null]]></printWhenExpression>
+							</reportElement>
+							<textElement>
+								<font fontName="opencellsoft-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{caCity}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="5" y="93" width="310" height="16" uuid="95b4ad09-5a50-4964-99fb-70ef1123b668">
+								<printWhenExpression><![CDATA[$F{caAddress3}!=null]]></printWhenExpression>
+							</reportElement>
+							<textElement>
+								<font fontName="opencellsoft-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{caAddress3}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="5" y="106" width="160" height="16" uuid="0ad963ce-c975-475a-883d-21207a80466b">
+								<printWhenExpression><![CDATA[$F{caPostalCode}!=null]]></printWhenExpression>
+							</reportElement>
+							<textElement>
+								<font fontName="opencellsoft-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{caPostalCode}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="5" y="64" width="308" height="16" uuid="f0fa5d04-4187-48b2-9b03-abf87d5ed0e3">
+								<printWhenExpression><![CDATA[$F{caAddress1}!=null]]></printWhenExpression>
+							</reportElement>
+							<textElement>
+								<font fontName="opencellsoft-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{caAddress1}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="5" y="190" width="120" height="16" uuid="8fbdcd78-f26c-4b49-8c85-73ae38786d5a">
+								<printWhenExpression><![CDATA[($F{quality}.contains("Cie.") || $F{quality}.contains("company") || $F{quality}.contains("Simplified") || $F{quality}.contains("Sté") || $F{quality}.contains("Société") || $F{quality}.contains("société"))]]></printWhenExpression>
+							</reportElement>
+							<textElement>
+								<font fontName="opencellsoft-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{CaorganizationName}]]></textFieldExpression>
+						</textField>
+						<subreport>
+							<reportElement x="-2" y="232" width="319" height="45" uuid="9cba03aa-cfb2-424a-b959-93fc78840c56"/>
+							<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JRXmlDataSource)$P{REPORT_DATA_SOURCE}).dataSource("/invoice/amount/taxes/tax")]]></dataSourceExpression>
+							<subreportExpression><![CDATA[$P{messagePath}+"/invoice_tva.jasper"]]></subreportExpression>
+						</subreport>
+						<subreport>
+							<reportElement x="-3" y="319" width="321" height="45" uuid="ef9fdb8e-25db-4d19-baf2-8f9ea86267aa"/>
+							<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JRXmlDataSource)$P{REPORT_DATA_SOURCE}).dataSource("/invoice/amount/taxes/tax")]]></dataSourceExpression>
+							<subreportExpression><![CDATA[$P{messagePath}+"/invoice_Total.jasper"]]></subreportExpression>
+						</subreport>
+						<staticText>
+							<reportElement mode="Opaque" x="0" y="4" width="315" height="24" forecolor="#010608" backcolor="#3383FF" uuid="1b6760d2-29be-42e4-b008-2908e753172c">
+								<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<box topPadding="0" leftPadding="20" bottomPadding="0" rightPadding="0">
+								<pen lineWidth="5.0" lineColor="#FF8C00"/>
+								<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#3383FF"/>
+								<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#3383FF"/>
+								<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#3383FF"/>
+							</box>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font fontName="opencellsoft-fonts" size="14" isBold="true"/>
+							</textElement>
+							<text><![CDATA[]]></text>
+						</staticText>
+						<textField>
+							<reportElement x="5" y="207" width="307" height="13" uuid="e91de1c3-a7d7-46c4-9801-e0ce23a456ad">
+								<printWhenExpression><![CDATA[$F{pds_adresse}!=null]]></printWhenExpression>
+							</reportElement>
+							<textElement>
+								<font fontName="opencell-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{pds_adresse}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="5" y="49" width="304" height="16" uuid="77fafaa6-330f-48ee-be64-e690ad1b7864">
+								<printWhenExpression><![CDATA["true".equals($F{isCompayCA})]]></printWhenExpression>
+							</reportElement>
+							<textElement>
+								<font fontName="opencellsoft-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{lastNameCA}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="5" y="189" width="304" height="16" uuid="95280eaf-d04c-4ce2-bf84-d4b8ef4bf2ff">
+								<printWhenExpression><![CDATA["false".equals($F{isCompayUA})]]></printWhenExpression>
+							</reportElement>
+							<textElement>
+								<font fontName="opencellsoft-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{firstNameUA}+" "+$F{lastNameUA}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="4" y="189" width="305" height="16" uuid="696f30a2-a20e-4c97-afd7-9b7120ae1263">
+								<printWhenExpression><![CDATA["true".equals($F{isCompayUA})]]></printWhenExpression>
+							</reportElement>
+							<textElement>
+								<font fontName="opencellsoft-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{lastNameUA}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="6" y="49" width="303" height="16" uuid="b0ff8cdc-a3e5-494d-9cd0-879ebbad3301">
+								<printWhenExpression><![CDATA["false".equals($F{isCompayCA})]]></printWhenExpression>
+							</reportElement>
+							<textElement>
+								<font fontName="opencellsoft-fonts"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{firstNameCA}+" "+$F{lastNameCA}]]></textFieldExpression>
+						</textField>
+					</frame>
+				</frame>
+				<frame>
+					<reportElement x="12" y="450" width="582" height="117" uuid="3b7194b6-9342-4d55-9ecf-5493987991b5"/>
+					<rectangle>
+						<reportElement x="4" y="0" width="575" height="114" uuid="b63b5e8f-8f63-4516-af45-82e4c97721e3"/>
+						<graphicElement>
+							<pen lineWidth="0.75" lineColor="#3383FF"/>
+						</graphicElement>
+					</rectangle>
+					<textField>
+						<reportElement x="16" y="28" width="214" height="15" uuid="e171d13e-25e9-47b8-a4ac-d5869d45cb20">
+							<printWhenExpression><![CDATA[$F{paymentMethod}.equals("DIRECTDEBIT") &&
+        $F{amountWithTax} != null && $F{amountWithTax}.matches("-?\\d+(\\.\\d+)?") &&
+        new Double($F{amountWithTax}) < 0]]></printWhenExpression>
+						</reportElement>
+						<textFieldExpression><![CDATA["Montant viré à partir du"+" "+($F{country}=="US" ? java.time.LocalDate.parse($F{dueDate}, java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd")).format(java.time.format.DateTimeFormatter.ofPattern("MM/dd/yyyy")) : java.time.LocalDate.parse($F{dueDate}, java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd")).format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")))]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="490" y="25" width="88" height="20" uuid="8c313041-012a-4fd4-b986-16ee66869ef0"/>
+						<textElement textAlignment="Right">
+							<font fontName="opencell-fonts" size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{amountWithTax} != null ?
+    new java.text.DecimalFormat("#,###", new java.text.DecimalFormatSymbols(java.util.Locale.FRENCH)).format(Math.round(Double.parseDouble($F{amountWithTax}.toString()))) + " XPF" :
+    ""]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="130" y="61" width="200" height="17" uuid="c9ea696e-fef9-4388-91db-d089daad5e11"/>
+						<textFieldExpression><![CDATA[$F{subCode}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="67" y="77" width="111" height="16" uuid="d524315d-a471-4a9c-b14d-c964b5345ddf"/>
+						<textFieldExpression><![CDATA[$F{invoiceNumber}]]></textFieldExpression>
+					</textField>
+					<staticText>
+						<reportElement mode="Opaque" x="4" y="0" width="575" height="23" forecolor="#010405" backcolor="#3383FF" uuid="124d4aa6-82a2-4610-8970-00895d1c733a">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<printWhenExpression><![CDATA[$F{paymentMethod}.equals("DIRECTDEBIT")]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="0" leftPadding="20" bottomPadding="0" rightPadding="0">
+							<pen lineWidth="0.75" lineColor="#FF8C00"/>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#3383FF"/>
+							<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#3383FF"/>
+						</box>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="SansSerif" size="12" isBold="true"/>
+						</textElement>
+						<text><![CDATA[Avis de prélèvement automatique]]></text>
+					</staticText>
+					<staticText>
+						<reportElement mode="Opaque" x="4" y="0" width="575" height="23" forecolor="#010405" backcolor="#3383FF" uuid="3e2d5525-89ae-40d6-8b0e-84df4e670cc6">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<printWhenExpression><![CDATA[$F{paymentMethod}.equals("CHECK")||$F{paymentMethod}.equals("WIRETRANSFER")||
+$F{paymentMethod}.equals("CARD")|| $F{paymentMethod}.equals("PAYPAL")||
+$F{paymentMethod}.equals("STRIPE")|| $F{paymentMethod}.equals("CASH")]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="0" leftPadding="20" bottomPadding="0" rightPadding="0">
+							<pen lineWidth="0.75" lineColor="#FF8C00"/>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#3383FF"/>
+							<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#3383FF"/>
+						</box>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="SansSerif" size="12" isBold="true"/>
+						</textElement>
+						<text><![CDATA[Coupon à joindre à votre réglement]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="17" y="77" width="59" height="15" uuid="440e7d90-de5d-4c79-8d07-b8152d76be50"/>
+						<text><![CDATA[Facture n°]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="16" y="61" width="149" height="16" uuid="23dc939e-b5fc-43a9-946d-b03af599b19b"/>
+						<text><![CDATA[Contrat d'abonnement n°]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="17" y="44" width="40" height="18" uuid="939cf7c8-fc9a-424d-b467-4f18941a5462">
+							<printWhenExpression><![CDATA["true".equals($F{isCompayCA})]]></printWhenExpression>
+						</reportElement>
+						<text><![CDATA[STE]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="17" y="95" width="48" height="15" uuid="66c0894d-2669-4c9c-9a51-ab0d48fe5017">
+							<printWhenExpression><![CDATA[$F{paymentMethod}.equals("DIRECTDEBIT")]]></printWhenExpression>
+						</reportElement>
+						<textElement>
+							<font fontName="SansSerif" isBold="true"/>
+						</textElement>
+						<text><![CDATA[IBAN]]></text>
+					</staticText>
+					<textField>
+						<reportElement x="48" y="95" width="242" height="16" uuid="f0209a1c-20c7-4541-bdb3-d46a4cfc4e7f">
+							<printWhenExpression><![CDATA[$F{paymentMethod}.equals("DIRECTDEBIT")]]></printWhenExpression>
+						</reportElement>
+						<textFieldExpression><![CDATA[$F{iban}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="16" y="28" width="214" height="15" uuid="979161e9-2a1e-4135-a0c2-8729b32df3b6">
+							<printWhenExpression><![CDATA[($F{paymentMethod}.equals("CHECK")||$F{paymentMethod}.equals("WIRETRANSFER")||
+$F{paymentMethod}.equals("CARD")|| $F{paymentMethod}.equals("PAYPAL")||
+$F{paymentMethod}.equals("STRIPE")|| $F{paymentMethod}.equals("CASH"))
+&&
+        ($F{amountWithTax} != null && $F{amountWithTax}.matches("-?\\d+(\\.\\d+)?") &&
+        new Double($F{amountWithTax}) > 0)]]></printWhenExpression>
+						</reportElement>
+						<textFieldExpression><![CDATA["Montant à régler avant le"+" "+($F{country}=="US" ? java.time.LocalDate.parse($F{dueDate}, java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd")).format(java.time.format.DateTimeFormatter.ofPattern("MM/dd/yyyy")) : java.time.LocalDate.parse($F{dueDate}, java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd")).format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")))]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="16" y="28" width="214" height="15" uuid="a1329779-9a99-48f1-8f77-becaa24628df">
+							<printWhenExpression><![CDATA[$F{paymentMethod}.equals("DIRECTDEBIT") &&
+        $F{amountWithTax} != null && $F{amountWithTax}.matches("-?\\d+(\\.\\d+)?") &&
+        new Double($F{amountWithTax}) > 0]]></printWhenExpression>
+						</reportElement>
+						<textFieldExpression><![CDATA["Montant prélevé le"+" "+($F{country}=="US" ? java.time.LocalDate.parse($F{dueDate}, java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd")).format(java.time.format.DateTimeFormatter.ofPattern("MM/dd/yyyy")) : java.time.LocalDate.parse($F{dueDate}, java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd")).format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")))]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="40" y="44" width="304" height="16" uuid="fe96f5bf-eff5-4243-a917-69f13254cbc7">
+							<printWhenExpression><![CDATA["true".equals($F{isCompayCA})]]></printWhenExpression>
+						</reportElement>
+						<textElement>
+							<font fontName="opencellsoft-fonts"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{lastNameCA}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="15" y="45" width="378" height="16" uuid="3528347a-be7e-4762-948d-e33e13ff6e1a">
+							<printWhenExpression><![CDATA["false".equals($F{isCompayCA})]]></printWhenExpression>
+						</reportElement>
+						<textElement>
+							<font fontName="opencellsoft-fonts"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{firstNameCA}+" "+$F{lastNameCA}]]></textFieldExpression>
+					</textField>
+					<staticText>
+						<reportElement x="-7" y="-452" width="10" height="402" uuid="ac56467b-05e7-4749-ab0a-cf15b3c2047d"/>
+						<textElement rotation="Left">
+							<font fontName="opencell-fonts" size="5"/>
+							<paragraph lineSpacing="Single"/>
+						</textElement>
+						<text><![CDATA[SA au capital de 1 167 515 000 XPF  RCS Nouméa 84 B 100966 Ridet 100966 001 BNC : 14889 00001 30081401000 54  CCP : 14158 01022 0000044F051 23]]></text>
+					</staticText>
+				</frame>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="Groupe2">
+		<groupHeader>
+			<band height="65">
+				<staticText>
+					<reportElement x="18" y="38" width="180" height="15" uuid="d1be0d7c-7607-427f-97a3-a934708ffae6">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font fontName="SansSerif" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Votre consommation]]></text>
+				</staticText>
+				<subreport>
+					<reportElement x="131" y="27" width="461" height="22" uuid="757b841d-f7d5-477a-875d-ba2480bf4f29"/>
+					<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JRXmlDataSource)$P{REPORT_DATA_SOURCE}).dataSource("/invoice/detail/userAccounts/userAccount/subscriptions/subscription/ct_consommations/conso")]]></dataSourceExpression>
+					<subreportExpression><![CDATA[$P{messagePath}+"/invoice_detail3.jasper"]]></subreportExpression>
+				</subreport>
+				<textField>
+					<reportElement x="6" y="52" width="224" height="13" uuid="28e72aac-1a0f-432d-971c-90539e645702"/>
+					<textElement>
+						<font fontName="opencell-fonts" size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA["DU"+" " +$F{startDate}+" AU"+" "+$F{endDate}]]></textFieldExpression>
+				</textField>
+			</band>
+			<band height="46">
+				<subreport>
+					<reportElement x="17" y="4" width="575" height="36" uuid="cff216b1-7444-48da-bd4b-009c50faedf2"/>
+					<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JRXmlDataSource)$P{REPORT_DATA_SOURCE}).dataSource("/invoice/detail/userAccounts/userAccount/categories/category/subCategories/subCategory/line")]]></dataSourceExpression>
+					<subreportExpression><![CDATA[$P{messagePath}+"/invoice_detailfix.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="34">
+				<subreport>
+					<reportElement x="164" y="3" width="399" height="30" uuid="36aad32e-4310-4b03-a7ee-bbcbf4f20066"/>
+					<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JRXmlDataSource)$P{REPORT_DATA_SOURCE}).dataSource("/invoice/amount/taxes/tax")]]></dataSourceExpression>
+					<subreportExpression><![CDATA[$P{messagePath}+"/invoice_line_tva.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupFooter>
+	</group>
+	<pageHeader>
+		<band height="124">
+			<image scaleImage="RealSize" hAlign="Left" vAlign="Middle">
+				<reportElement x="32" y="16" width="154" height="41" uuid="72b4774b-842f-4af5-b9f9-44fb6f812040">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logoPath}+"/Pictos/Logo_PDF_page1.png"]]></imageExpression>
+			</image>
+			<rectangle radius="10">
+				<reportElement style="table 2_TH" x="359" y="7" width="225" height="95" forecolor="#FFFFFF" backcolor="#F2F4F5" uuid="45b9d551-17d6-4ced-a27d-988519cb55ee">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1 || $V{PAGE_NUMBER}==2]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.0" lineColor="rgba(0, 0, 0, 0.0)"/>
+				</graphicElement>
+			</rectangle>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement x="566" y="82" width="17" height="20" uuid="70ddbde0-a609-410d-8301-143597ebd6fe"/>
+				<textElement markup="html">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="table 1_TH" mode="Opaque" x="375" y="16" width="135" height="20" forecolor="#030505" backcolor="#3383FF" uuid="f2667a6b-00d4-469b-8863-823878c41a7a">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.element.name" value="N° facture"/>
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1 || $V{PAGE_NUMBER}==2]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="20" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="5.0" lineColor="#FF8C00"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#FF0000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[N° facture]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="375" y="37" width="135" height="20" forecolor="#050708" backcolor="#3383FF" uuid="795119bd-1eaa-4d97-974f-c1e3245ede22">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.element.name" value="Date facture"/>
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1 || $V{PAGE_NUMBER}==2]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="20" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="5.0" lineColor="#FF8C00"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#FF0000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date facture]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="470" y="37" width="102" height="20" uuid="5f77c15e-7fe1-41c2-a072-289303113bbd">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1 || $V{PAGE_NUMBER}==2]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{country}=="US" ? java.time.LocalDate.parse($F{invoiceDate}, java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd")).format(java.time.format.DateTimeFormatter.ofPattern("MM/dd/yyyy")) : java.time.LocalDate.parse($F{invoiceDate}, java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd")).format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="470" y="82" width="95" height="20" uuid="ca22b2fe-1c86-449e-ba1c-cf54bb587dde"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+"/"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="477" y="16" width="95" height="20" uuid="8412626b-2bdd-4e32-8c6a-7245ba295605">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1 || $V{PAGE_NUMBER}==2]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{invoiceNumber}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="375" y="58" width="135" height="20" forecolor="#030608" backcolor="#3383FF" uuid="a994de94-1eed-435e-a13a-555a9aaf997e">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="20" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="5.0" lineColor="#FF8C00"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#FF0000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date d'échéance]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="470" y="57" width="102" height="20" uuid="1e7e9f93-1829-4cc1-bf42-c85966dcd5bb">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{country}=="US" ? java.time.LocalDate.parse($F{dueDate}, java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd")).format(java.time.format.DateTimeFormatter.ofPattern("MM/dd/yyyy")) : java.time.LocalDate.parse($F{dueDate}, java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd")).format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")))]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="61" y="65" width="70" height="22" forecolor="#050708" backcolor="#FFFFFF" uuid="8ddb132c-331a-4a63-8b94-25d22dd06616">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.element.name" value="Date facture"/>
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="20" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="5.0" lineColor="#FF8C00"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Facture ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="46" y="82" width="236" height="20" uuid="757d80ec-715e-42f7-b8b3-8fbd8cb9245c">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{country}=="US" ? java.time.LocalDate.parse($F{invoiceDate}, java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd")).format(java.time.format.DateTimeFormatter.ofPattern("MM/dd/yyyy")) : java.time.LocalDate.parse($F{invoiceDate}, java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd")).format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " - relevée")]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RealSize">
+				<reportElement x="32" y="10" width="114" height="59" uuid="ebce07b8-a5a9-41d1-b272-669831c29848">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==2]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logoPath}+"/Pictos/Logo_PDF_page2.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="513" y="61" width="59" height="16" uuid="db77da4c-d9a9-4c67-9d5f-6c4076e00742">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==2]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subCode}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="375" y="58" width="135" height="20" forecolor="#030608" backcolor="#3383FF" uuid="2b557bc7-c157-4635-97d7-a39dd6044571">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==2]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="20" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="5.0" lineColor="#FF8C00"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#FF0000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[N° contrat]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="32" y="74" width="228" height="18" uuid="ec465e6e-bdd9-4215-bce8-c47d0a8a2894">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==2]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Votre Facture en détail relevée]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<lastPageFooter>
+		<band height="207">
+			<rectangle>
+				<reportElement x="17" y="4" width="561" height="23" backcolor="#3383FF" uuid="38c20dec-bb6a-4722-90ec-53c0539a3241"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineColor="#3383FF"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="22" y="6" width="301" height="21" uuid="925e0a10-06bb-44a2-a389-d631336aff30"/>
+				<textElement>
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[En cas de réclamation et de litige]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="17" y="27" width="561" height="51" uuid="f1c776d3-cd21-4ff3-a076-3f3a4a1238c8"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineColor="#3383FF"/>
+				</graphicElement>
+			</rectangle>
+			<image scaleImage="RetainShape">
+				<reportElement x="18" y="30" width="560" height="47" uuid="ad1fb049-2dea-455a-9fab-c0d253e54e0e"/>
+				<imageExpression><![CDATA[$P{logoPath}+"/Pictos/Image_Message_Commercial.png"]]></imageExpression>
+			</image>
+			<rectangle>
+				<reportElement x="17" y="81" width="561" height="23" backcolor="#3383FF" uuid="9283a79b-a37e-4cd1-95a3-afc732137ad0"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineColor="#3383FF"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="21" y="83" width="576" height="21" uuid="3a21562a-9440-425f-9d80-452a3ad027b6"/>
+				<textElement>
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pour régler votre facture,6 modes de paiements sont à votre disposition]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="17" y="105" width="561" height="76" uuid="0adae28f-e61d-4489-861c-280e5ef6ab2b"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineColor="#3383FF"/>
+				</graphicElement>
+			</rectangle>
+			<image scaleImage="RetainShape">
+				<reportElement x="18" y="106" width="560" height="74" uuid="ccb63504-1972-4a50-bec4-144bae641e1c"/>
+				<imageExpression><![CDATA[$P{logoPath}+"/Pictos/Image_Message_Réglement.png"]]></imageExpression>
+			</image>
+			<frame>
+				<reportElement x="438" y="156" width="62" height="16" uuid="1ee5ee77-a886-4774-95be-a7f87030433f"/>
+				<textField>
+					<reportElement x="1" y="2" width="54" height="12" uuid="11817bbd-06d4-484d-922f-abc71630182d"/>
+					<textElement>
+						<font fontName="opencell-fonts" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{invoiceNumber}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="318" y="155" width="58" height="13" uuid="4be5104c-4a98-4ed0-a41a-0978b8d0ff37"/>
+				<textField>
+					<reportElement x="-2" y="4" width="58" height="10" uuid="9b4c0437-605e-4318-8e38-ee0d0d23236d"/>
+					<textElement>
+						<font fontName="opencell-fonts" size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{subCode}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</lastPageFooter>
+</jasperReport>

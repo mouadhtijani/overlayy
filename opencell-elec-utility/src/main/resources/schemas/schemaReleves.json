@@ -1,0 +1,56 @@
+{
+  "type": "object",
+  "properties": {
+    "Releve": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "idreleve": { "type": "integer" },
+          "numCompteur": { "type": "string" },
+          "dateReleve": { "type": "string" },
+          "natureReleve": { "type": "string" },
+          "origineReleve": { "type": "string" },
+          "idPds": { "type": "string" },
+          "codeReleve": { "type": ["string","null"] },
+          "codeObservation": { "type": ["string","null"] },
+          "codeRfe": { "type": ["string", "null"] },
+          "lot": { "type": ["string", "null"] },
+          "tournee": {"type": ["string", "null"]},
+          "exploitation": { "type": "string" },
+          "donneesMesures": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "posteHorosaisonnier": { "type": "string" },
+                "natureMesure": { "type": "string" },
+                "mesure": { "type": "string" },
+                "unite": { "type": ["string", "null"]}
+              },
+              "required": ["posteHorosaisonnier", "natureMesure", "mesure","unite"],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "idreleve",
+          "numCompteur",
+          "dateReleve",
+          "natureReleve",
+          "origineReleve",
+          "idPds",
+          "codeReleve",
+          "codeObservation",
+          "codeRfe",
+          "lot",
+          "tournee",
+          "exploitation",
+          "donneesMesures"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["Releve"]
+}

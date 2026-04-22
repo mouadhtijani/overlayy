@@ -1,0 +1,66 @@
+version: '2.1'
+services:
+
+  postgres:
+    image: postgres:alpine
+    container_name: postgres-wildfly
+    environment:
+      POSTGRES_USER: opencell_db_user
+      POSTGRES_PASSWORD: opencell_db_password
+      POSTGRES_DB : opencell_db
+      POSTGRES_PORT : 5432
+    volumes:
+       - ./input-files/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
+       - ./input-files/import-postgres.sql:/docker-entrypoint-initdb.d/import-postgres.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U opencell_db_user -d opencell_db -q"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  opencell:
+    image: opencell/wildfly-opencell-standalone:14.2.0
+    container_name: opencell
+    depends_on:
+      - postgres
+      - keycloak
+    environment:
+      KEYCLOAK_URL: http://192.168.56.50:9090/auth
+      OPENCELL_DL_PORTAL: true
+      OPENCELL_VERSION: 14.3.6
+      JAVA_OPTS: -XX:MaxMetaspaceSize=2G -Xmx8G -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=*:8787
+    ports:
+      - "8080:8080"
+      - "8787:8787"
+    volumes:
+      - ../opencell-elec-overlay/target/opencell.war:/opt/jboss/wildfly/standalone/deployments/opencell.war
+
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.1.0
+    container_name: keycloak
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: 0pence!!
+      OPENCELL_HOST: 192.168.56.50
+      KC_HOSTNAME_URL: http://192.168.56.50:9090/auth
+      KC_HOSTNAME_PORT: 9090
+      KC_HTTP_PORT: 9090
+      KC_PROXY: none
+      KC_HTTP_RELATIVE_PATH: /auth
+    command: 
+      - start-dev 
+      - --import-realm
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./input-files/opencell-realm-and-users.json:/opt/keycloak/data/import/realm.json

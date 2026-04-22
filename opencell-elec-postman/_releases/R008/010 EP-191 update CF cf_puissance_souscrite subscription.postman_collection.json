@@ -1,0 +1,91 @@
+{
+	"info": {
+		"_postman_id": "593e1214-bbd7-4b72-87d6-84e7b5248cc5",
+		"name": "010 EP-191 update CF cf_puissance_souscrite subscription",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847135"
+	},
+	"item": [
+		{
+			"name": "cf_puissance_souscrite",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{opencell.url}}/customFieldTemplate/cf_puissance_souscrite/Subscription",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"customFieldTemplate",
+						"cf_puissance_souscrite",
+						"Subscription"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cf_puissance_souscrite",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"appliesTo\": \"Subscription\",\r\n    \"code\": \"cf_puissance_souscrite\",\r\n    \"description\": \"Puissance souscrite\",\r\n    \"fieldType\": \"DOUBLE\",\r\n    \"storageType\": \"SINGLE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/customFieldTemplate/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"customFieldTemplate",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

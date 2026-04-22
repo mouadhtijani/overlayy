@@ -1,0 +1,79 @@
+{
+	"info": {
+		"_postman_id": "5994f3a4-8145-4e84-85a9-527befa3cf6a",
+		"name": "010 EP-181 Invoice Type",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847135"
+	},
+	"item": [
+		{
+			"name": "invoiceType COM",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"name": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"code\": \"COM\",\r\n  \"customInvoiceXmlScriptInstanceCode\":\"eec.epi.scripts.factu.CustomXmlInvoiceCreatorScript\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/invoiceType/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"invoiceType",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

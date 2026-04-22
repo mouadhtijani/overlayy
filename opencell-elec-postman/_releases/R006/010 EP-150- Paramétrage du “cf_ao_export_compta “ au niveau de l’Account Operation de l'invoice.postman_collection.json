@@ -1,0 +1,72 @@
+{
+	"info": {
+		"_postman_id": "4983e902-890d-4cfa-9464-6782fb1e20b0",
+		"name": "010 EP-150: Paramétrage du “cf_ao_export_compta “ au niveau de l’Account Operation de l'invoice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30217061"
+	},
+	"item": [
+		{
+			"name": "cf_ao_export_compta",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"appliesTo\" : \"AccountOperation\",\r\n    \"code\" : \"cf_ao_export_compta\",\r\n    \"description\" : \"Account Operation Export Compta\",\r\n    \"fieldType\": \"DATE\",\r\n    \"storageType\":\"SINGLE\",\r\n    \"guiPosition\":\"tab:Export comptable;field:1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/customFieldTemplate/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"customFieldTemplate",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

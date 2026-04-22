@@ -1,0 +1,197 @@
+{
+	"info": {
+		"_postman_id": "a75b5905-7a87-4cf3-9233-266f9ac6a344",
+		"name": "000 EP-49 accounting codes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847069"
+	},
+	"item": [
+		{
+			"name": "accounting codes csv",
+			"item": [
+				{
+					"name": "account code",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"myIteration.postRequest(postman, pm);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"myIteration.preRequest(pm);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"chartOfAccountTypeEnum\" : \"{{atype}}\",\r\n  \"chartOfAccountViewTypeEnum\" : \"{{avtype}}\",\r\n  \"code\" : \"{{code}}\",\r\n  \"description\" : \"{{desc}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{opencell.url}}/billing/accountingCode/createOrUpdate",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"billing",
+								"accountingCode",
+								"createOrUpdate"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"pm.variables.set(\"sepLines\", \"\\n\");",
+							"pm.variables.set(\"sepWords\", \"\\t\");",
+							"//columns params.",
+							"pm.variables.set(\"params\", [",
+							"    \"code\", \"desc\", \"atype\", \"avtype\"]);",
+							"",
+							"let csv = `",
+							"701011\tVente d'énergie\tREVENUE\tREGULAR",
+							"443121\tTaxe communale \tREVENUE\tREGULAR",
+							"701012\tPrime Fixe\tREVENUE\tREGULAR",
+							"701112\tRedevance de comptage (HT)\tREVENUE\tREGULAR",
+							"701111\tRedevance de comptage (BT)\tREVENUE\tREGULAR",
+							"701500\tVente énergie solaire\tREVENUE\tREGULAR",
+							"708500\tFrais\tREVENUE\tREGULAR",
+							"706180\tAssistance dépannage\tREVENUE\tREGULAR",
+							"623800\tWorld Mosquito program\tREVENUE\tREGULAR",
+							"671100\tPénalité charte engagement\tREVENUE\tREGULAR",
+							"445701\tTGC 3%\tASSETS\tREGULAR",
+							"445702\tTGC 6%\tASSETS\tREGULAR",
+							"0\tTGC 0%\tASSETS\tREGULAR",
+							"`;",
+							"",
+							"pm.variables.set(\"csv\", csv);",
+							"",
+							"myIteration = {",
+							"    preRequest: function (pm) {",
+							"        if (!pm) {",
+							"            throw new Error('missing data pm');",
+							"        }",
+							"        let csv = pm.variables.get(\"csv\");",
+							"        let sepLines = pm.variables.get(\"sepLines\");",
+							"        let sepWords = pm.variables.get(\"sepWords\");",
+							"        let params = pm.variables.get(\"params\");",
+							"        if (!csv || !sepLines || !sepWords || !params) {",
+							"            throw 'missing data csv=' + csv + \" sepLines=\" + sepLines + \" sepWords=\" + sepWords + \" params=\" + params;",
+							"        }",
+							"",
+							"        // find an existing collection variable that contains the next lines",
+							"        // if not variable that contains the next lines, split the csv in lines",
+							"        let lines = pm.variables.get(\"lines\");",
+							"        if (!lines || lines.length == 0) {",
+							"            lines = csv.split(sepLines).filter(s => s.replaceAll(sepWords, \"\").length > 0);",
+							"            pm.variables.set(\"lines\", lines);",
+							"        }",
+							"",
+							"        // split the current line in words",
+							"        let words = lines[0].split(sepWords);",
+							"",
+							"        // for each parameter, store the corresponding word as parameter",
+							"        params.forEach(function (param, idx, arr) {",
+							"            if (param !== null && words.length > idx) {",
+							"                pm.variables.set(param, words[idx])",
+							"            }",
+							"            else pm.variables.set(param, \"\");",
+							"        });",
+							"    },",
+							"    postRequest: function (postman, pm) {",
+							"        if (!pm || !postman) {",
+							"            throw new Error('missing data postman=' + postman + \" pm=\" + pm);",
+							"        }",
+							"        if ([200, 201, 202, 204].includes(pm.response.code)) {",
+							"            // if remaining lines, change the next request.",
+							"            let lines = pm.variables.get(\"lines\");",
+							"            lines.shift();",
+							"            // store the remaining lines for next iteration",
+							"            pm.variables.set(\"lines\", lines);",
+							"            if (lines && lines.length > 0) {",
+							"                postman.setNextRequest(pm.info.requestId);",
+							"            }",
+							"        }",
+							"    }",
+							"}"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

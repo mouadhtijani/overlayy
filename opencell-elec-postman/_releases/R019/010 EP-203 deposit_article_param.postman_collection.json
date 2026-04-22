@@ -1,0 +1,186 @@
+{
+	"info": {
+		"_postman_id": "b376165e-cc4e-44cf-bf1f-3bb20ba3e911",
+		"name": "010 EP-203 deposit_article_param",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847135"
+	},
+	"item": [
+		{
+			"name": "accouting code",
+			"item": [
+				{
+					"name": "165110",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"chartOfAccountTypeEnum\" : \"REVENUE\",\r\n  \"chartOfAccountViewTypeEnum\" : \"REGULAR\",\r\n  \"code\" : \"165110\",\r\n  \"description\" : \"Avance sur consommation police en cours\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{opencell.url}}/billing/accountingCode/createOrUpdate",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"billing",
+								"accountingCode",
+								"createOrUpdate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "article",
+			"item": [
+				{
+					"name": "article",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"var articleId = jsonData.id;\r",
+									"pm.environment.set(\"articleId\", articleId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{opencell.url}}/v2/articles/ART_SECURITY_DEPOSIT",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"v2",
+								"articles",
+								"ART_SECURITY_DEPOSIT"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "article",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"code\": \"ART_SECURITY_DEPOSIT\",\r\n   \"description\":\"Avance sur consommation police en cours\",\r\n    \"taxClass\": {\r\n        \"code\": \"TAXC_TGC_ZERO\"\r\n    },\r\n      \"invoiceSubCategory\": {\r\n        \"code\": \"ISCAT_SECURITY_DEPOSIT\"\r\n    },\r\n    \"accountingCode\": {\r\n        \"code\": \"165110\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{opencell.url}}/v2/articles/{{articleId}}",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"v2",
+								"articles",
+								"{{articleId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "occ template",
+			"item": [
+				{
+					"name": "DEB_SD",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"code\" : \"DEB_SD\",\r\n\"description\" : \"Debit for Security deposit transfer\",\r\n\"occCategory\" : \"DEBIT\",\r\n\"journalCode\":\"BAN\",\r\n\"accountingCode\":\"165110\",\r\n\"accountCodeClientSide\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{opencell.url}}/occTemplate/createOrUpdate",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"occTemplate",
+								"createOrUpdate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

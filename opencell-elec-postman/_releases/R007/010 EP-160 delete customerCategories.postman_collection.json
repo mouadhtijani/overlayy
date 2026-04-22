@@ -1,0 +1,105 @@
+{
+	"info": {
+		"_postman_id": "48e3db84-a932-46d6-ac25-e601f58ab3e4",
+		"name": "010 EP-160 delete customerCategories",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847135"
+	},
+	"item": [
+		{
+			"name": "CLIENT",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{opencell.url}}/account/customer/categories/CLIENT",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"account",
+						"customer",
+						"categories",
+						"CLIENT"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "B2B",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{opencell.url}}/account/customer/categories/B2B",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"account",
+						"customer",
+						"categories",
+						"B2B"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "regular accounty",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{opencell.url}}/account/customer/categories/regular account",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"account",
+						"customer",
+						"categories",
+						"regular account"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

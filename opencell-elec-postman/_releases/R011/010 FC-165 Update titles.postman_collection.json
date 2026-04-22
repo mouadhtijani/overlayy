@@ -1,0 +1,375 @@
+{
+	"info": {
+		"_postman_id": "f921703a-58e8-4aa5-bcc2-7eb012a4fb97",
+		"name": "010 FC-165 Update titles",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847069"
+	},
+	"item": [
+		{
+			"name": "titles csv",
+			"item": [
+				{
+					"name": "Create Titles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"code\" : \"TEST\",\r\n  \"description\" : \"TEST\",\r\n  \"isCompany\" : \"false\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{opencell.url}}/account/title/createOrUpdate",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"account",
+								"title",
+								"createOrUpdate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get All titles",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.variables.set('titles',jsonData.titles.title);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{opencell.url}}/account/title/list",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"account",
+								"title",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete All titles",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let titles = pm.variables.get(\"titles\");\r",
+									"let t = titles.shift();\r",
+									"pm.variables.set('defaultCode', t.code)"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let titles = pm.variables.get(\"titles\");\r",
+									"\r",
+									"if (titles && titles.length > 0) {\r",
+									"    postman.setNextRequest(pm.info.requestId);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{opencell.url}}/account/title/{{defaultCode}}",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"account",
+								"title",
+								"{{defaultCode}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Titles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"myIteration.postRequest(postman, pm);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"myIteration.preRequest(pm);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"code\" : \"{{titleCode}}\",\r\n  \"description\" : \"{{desc}}\",\r\n  \"isCompany\" : \"{{isCompany}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{opencell.url}}/account/title/createOrUpdate",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"account",
+								"title",
+								"createOrUpdate"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"pm.variables.set(\"sepLines\", \"\\n\");",
+							"pm.variables.set(\"sepWords\", \"\\t\");",
+							"//columns params.",
+							"pm.variables.set(\"params\", [",
+							"    \"titleCode\", \"desc\", \"isCompany\"]);",
+							"",
+							"let csv = `",
+							"MR\tMONSIEUR\tfalse",
+							"MME\tMADAME\tfalse",
+							"MRME\tMONSIEUR ET MADAME\tfalse",
+							"SCI\tSTE CIVILE IMMOBILIERE\ttrue",
+							"SARL\tSOCIETE A RESP. LIMITE\ttrue",
+							"STE\tSOCIETE\ttrue",
+							"MEMR\tMADAME ET MONSIEUR\tfalse",
+							"SYND\tSYNDIC OU SYNDICAT\ttrue",
+							"ASS\tASSOCIATION\ttrue",
+							"MRS\tMESSIEURS\tfalse",
+							"ADM\tADMINISTRATION\ttrue",
+							"SUCC\tSUCCESSION\tfalse",
+							"MMES\tMESDAMES\tfalse",
+							"SAS\tSOCIETE PAR ACTIONS SIMPL\ttrue",
+							"ENT\tENTREPRISE\ttrue",
+							"EURL\tENTREPRISE UNIPERSONNELLE\ttrue",
+							"SC\tSTE CIVILE\ttrue",
+							"SCA\tSTE EN COMMUNAUTE /ACTION\ttrue",
+							"AGEN\tAGENCE\ttrue",
+							"SNC\tSTE EN NOM COLLECTIF\ttrue",
+							"DIR\tDIRECTION\ttrue",
+							"SELA\tSTE EXERCIE LIB. RESP. LI\ttrue",
+							"SA\tSTE ANONYME\ttrue",
+							"ME\tMAITRE\tfalse",
+							"ET\tETABLISSEMENT\ttrue",
+							"SCE\tSERVICE\ttrue",
+							"GIE\tGROUPEMENT INTERET ECONO.\ttrue",
+							"SCM\tSTE CIVILE DES MOYENS\ttrue",
+							"CLUB\tCLUB\ttrue",
+							"ETS\tETABLISSEMENTS\ttrue",
+							"COPR\tCOPROPRIETE\ttrue",
+							"SCP\tSOCIETE CIVILE PARTICULIE\ttrue",
+							"GR\tGROUPEMENT\ttrue",
+							"INST\tINSTITUT\ttrue",
+							"IND\tINDIVISION\ttrue",
+							"DR\tDOCTEUR\tfalse",
+							"CIE\tCOMPAGNIE\ttrue",
+							"FED\tFEDERATION\ttrue",
+							"SCPA\tSOCIETE CIVILE\ttrue",
+							"SCIA\tSTE CIVILE IMM. ET AGRIC.\ttrue",
+							"COOP\tCOOPERATIVE\ttrue",
+							"CE\tCOMITE D'ENTREPRISE\ttrue",
+							"SEM\tSOCIETE D'ECONOMIE MIXTE\ttrue",
+							"MES\tMAITRES\tfalse",
+							"MISS\tMISSION\ttrue",
+							"SASU\tSTE ACTIONS SIMPL. UNIPER\ttrue",
+							"SCEA\tSTE CIV.D'EXP. AGRICOLE\ttrue",
+							"SCS\tSTE EN COMMUNAUTE SIMPLE\ttrue",
+							"DRS\tDOCTEURS\tfalse",
+							"CONC\tCONCESSION\ttrue",
+							"`;",
+							"",
+							"pm.variables.set(\"csv\", csv);",
+							"",
+							"myIteration = {",
+							"    preRequest: function (pm) {",
+							"        if (!pm) {",
+							"            throw new Error('missing data pm');",
+							"        }",
+							"        let csv = pm.variables.get(\"csv\");",
+							"        let sepLines = pm.variables.get(\"sepLines\");",
+							"        let sepWords = pm.variables.get(\"sepWords\");",
+							"        let params = pm.variables.get(\"params\");",
+							"        if (!csv || !sepLines || !sepWords || !params) {",
+							"            throw 'missing data csv=' + csv + \" sepLines=\" + sepLines + \" sepWords=\" + sepWords + \" params=\" + params;",
+							"        }",
+							"",
+							"        // find an existing collection variable that contains the next lines",
+							"        // if not variable that contains the next lines, split the csv in lines",
+							"        let lines = pm.variables.get(\"lines\");",
+							"        if (!lines || lines.length == 0) {",
+							"            lines = csv.split(sepLines).filter(s => s.replaceAll(sepWords, \"\").length > 0);",
+							"            pm.variables.set(\"lines\", lines);",
+							"        }",
+							"",
+							"        // split the current line in words",
+							"        let words = lines[0].split(sepWords);",
+							"",
+							"        // for each parameter, store the corresponding word as parameter",
+							"        params.forEach(function (param, idx, arr) {",
+							"            if (param !== null && words.length > idx) {",
+							"                pm.variables.set(param, words[idx])",
+							"            }",
+							"            else pm.variables.set(param, \"\");",
+							"        });",
+							"    },",
+							"    postRequest: function (postman, pm) {",
+							"        if (!pm || !postman) {",
+							"            throw new Error('missing data postman=' + postman + \" pm=\" + pm);",
+							"        }",
+							"        if ([200, 201, 202, 204].includes(pm.response.code)) {",
+							"            // if remaining lines, change the next request.",
+							"            let lines = pm.variables.get(\"lines\");",
+							"            lines.shift();",
+							"            // store the remaining lines for next iteration",
+							"            pm.variables.set(\"lines\", lines);",
+							"            if (lines && lines.length > 0) {",
+							"                postman.setNextRequest(pm.info.requestId);",
+							"            }",
+							"        }",
+							"    }",
+							"}"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

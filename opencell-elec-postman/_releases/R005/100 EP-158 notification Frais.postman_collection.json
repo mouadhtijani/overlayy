@@ -1,0 +1,72 @@
+{
+	"info": {
+		"_postman_id": "cf23f04e-eef1-4307-b440-9a80c4b4a4ae",
+		"name": "100 EP-158 notification Frais",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847135"
+	},
+	"item": [
+		{
+			"name": "notification",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"classNameFilter\":\"org.meveo.model.notification.InboundRequest\",\r\n    \"code\":\"NOTIF_FRAIS\",\r\n    \"elFilter\" : \"#{event.pathInfo.startsWith(\\\"/Frais\\\")}\",\r\n    \"eventTypeFilter\":\"INBOUND_REQ\",\r\n    \"scriptInstanceCode\":\"eec.epi.scripts.ws.GetFraisWs\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/notification/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"notification",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

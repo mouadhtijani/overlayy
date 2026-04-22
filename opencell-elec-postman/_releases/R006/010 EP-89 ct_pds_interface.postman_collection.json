@@ -1,0 +1,73 @@
+{
+	"info": {
+		"_postman_id": "4d5b3129-f574-43c2-b19f-2c8900110b0c",
+		"name": "010 EP-89 ct_pds_interface",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847069"
+	},
+	"item": [
+		{
+			"name": "ct_pds_interface",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"ct_pds_interface\",\r\n    \"description\": \"Table des fichiers json des pds\",\r\n    \"disabled\": false,\r\n    \"name\": \"ct_pds_interface\",\r\n    \"storeInES\": false,\r\n    \"storeAsTable\": true,\r\n    \"field\": [\r\n        {\r\n            \"code\": \"nom_fichier\",\r\n            \"description\": \"Nom du fichier\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"date_last_update\",\r\n            \"description\": \"Date de dernière modification du statut\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"statut\",\r\n            \"description\": \"Statut\",\r\n            \"fieldType\": \"LIST\",\r\n            \"listValues\": {\r\n                \"DECOUPE\": \"DECOUPE\",\r\n                \"A_TRAITER\": \"A_TRAITER\",\r\n                \"ERREUR\": \"ERREUR\"\r\n            }\r\n        },\r\n        {\r\n            \"code\": \"message_erreur\",\r\n            \"description\": \"Message d'erreur\",\r\n            \"fieldType\": \"STRING\",\r\n            \"maxValue\": 4000\r\n        },\r\n        {\r\n            \"code\": \"date_traitement\",\r\n            \"description\": \"Date de traitement\",\r\n            \"fieldType\": \"STRING\"\r\n        }\r\n    ],\r\n    \"action\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/entityCustomization/entity/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"entityCustomization",
+						"entity",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

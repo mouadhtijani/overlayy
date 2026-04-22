@@ -1,0 +1,72 @@
+{
+	"info": {
+		"_postman_id": "318a260d-ea66-4e9b-a6cf-4a491b98427e",
+		"name": "020 EP-129 CYC_CLIENT_MENSUEL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847069"
+	},
+	"item": [
+		{
+			"name": "CYC_CLIENT_MENSUEL",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"code\":\"CYC_CLIENT_MENSUEL\",\n    \"description\" : \"Cycle de facturation mensuel\",\n    \"calendar\":\"MONTHLY\",\n    \"dueDateDelayEL\":\"#{0}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/billingCycle/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"billingCycle",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

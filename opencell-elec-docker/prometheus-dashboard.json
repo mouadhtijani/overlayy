@@ -1,0 +1,133 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "Prometheus Monitoring",
+    "tags": ["prometheus", "monitoring"],
+    "timezone": "browser",
+    "schemaVersion": 38,
+    "version": 1,
+    "refresh": "30s",
+    "panels": [
+      {
+        "type": "stat",
+        "title": "Prometheus Uptime (days)",
+        "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0},
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "time() - process_start_time_seconds",
+            "format": "time_series"
+          }
+        ],
+        "options": {
+          "reduceOptions": {"calcs": ["mean"], "fields": "", "values": false},
+          "orientation": "horizontal",
+          "colorMode": "value"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "d",
+            "decimals": 1
+          }
+        }
+      },
+      {
+        "type": "stat",
+        "title": "Scrape Targets UP",
+        "gridPos": {"h": 4, "w": 6, "x": 6, "y": 0},
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "sum(up)",
+            "format": "time_series"
+          }
+        ],
+        "options": {
+          "reduceOptions": {"calcs": ["last"], "fields": "", "values": false}
+        }
+      },
+      {
+        "type": "stat",
+        "title": "Scrape Targets DOWN",
+        "gridPos": {"h": 4, "w": 6, "x": 12, "y": 0},
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "count(up == 0)",
+            "format": "time_series"
+          }
+        ]
+      },
+      {
+        "type": "graph",
+        "title": "Prometheus CPU Usage (total seconds)",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4},
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "process_cpu_seconds_total",
+            "format": "time_series"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "s"
+          }
+        }
+      },
+      {
+        "type": "graph",
+        "title": "Prometheus Memory Usage (bytes)",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "process_resident_memory_bytes",
+            "format": "time_series"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "bytes"
+          }
+        }
+      },
+      {
+        "type": "graph",
+        "title": "Scrape Duration (s)",
+        "gridPos": {"h": 6, "w": 12, "x": 0, "y": 12},
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "scrape_duration_seconds",
+            "format": "time_series"
+          }
+        ]
+      },
+      {
+        "type": "graph",
+        "title": "Sample Count per Scrape",
+        "gridPos": {"h": 6, "w": 12, "x": 12, "y": 12},
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "scrape_samples_post_metric_relabeling",
+            "format": "time_series"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "title": "Scrape Targets Status",
+        "gridPos": {"h": 6, "w": 24, "x": 0, "y": 18},
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "up",
+            "format": "time_series"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,209 @@
+{
+	"info": {
+		"_postman_id": "8dcff2b2-2258-4050-9811-18f2315d9033",
+		"name": "030 EP-312  Borne VE HTA-BT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847069"
+	},
+	"item": [
+		{
+			"name": "OFFER_BORNE_VE_HTA",
+			"item": [
+				{
+					"name": "Offre VE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"{{offerCode}}\",\n    \"description\": \"Offre borne VE HTA\",\n    \"offerProducts\": [\n        {\n            \"offerTemplateCode\": \"{{offerCode}}\",\n            \"product\": {\n                \"code\": \"PROD_CONSO_BVE_HTA\"\n            },\n            \"mandatory\": true,\n            \"quantityMin\": 1,\n            \"quantityMax\": 1,\n            \"sequence\": 1\n        },\n        {\n               \"offerTemplateCode\": \"{{offerCode}}\",\n            \"product\": {\n                \"code\": \"PROD_FRAIS\"\n            },\n            \"mandatory\": true,\n            \"quantityMin\": 1,\n            \"quantityMax\": 1,\n            \"sequence\": 2\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{opencell.url}}/catalog/offerTemplate/createOrUpdate",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"catalog",
+								"offerTemplate",
+								"createOrUpdate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ACTIVE Offre VE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{opencell.url}}/catalog/offerTemplate/{{offerCode}}/update/status?status=ACTIVE",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"catalog",
+								"offerTemplate",
+								"{{offerCode}}",
+								"update",
+								"status"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "ACTIVE"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.variables.set('offerCode',\"OFFER_BORNE_VE_HTA\");",
+							"",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "OFFER_BORNE_VE_BT",
+			"item": [
+				{
+					"name": "Offre VE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"{{offerCode}}\",\n    \"description\": \"Offre borne VE BT\",\n    \"offerProducts\": [\n        {\n            \"offerTemplateCode\": \"{{offerCode}}\",\n            \"product\": {\n                \"code\": \"PROD_CONSO_BVE_BT\"\n            },\n            \"mandatory\": true,\n            \"quantityMin\": 1,\n            \"quantityMax\": 1,\n            \"sequence\": 1\n        },\n        {\n            \"offerTemplateCode\": \"{{offerCode}}\",\n            \"product\": {\n                \"code\": \"PROD_FRAIS\"\n            },\n            \"mandatory\": true,\n            \"quantityMin\": 1,\n            \"quantityMax\": 1,\n            \"sequence\": 2\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{opencell.url}}/catalog/offerTemplate/createOrUpdate",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"catalog",
+								"offerTemplate",
+								"createOrUpdate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ACTIVE Offre VE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{opencell.url}}/catalog/offerTemplate/{{offerCode}}/update/status?status=ACTIVE",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"catalog",
+								"offerTemplate",
+								"{{offerCode}}",
+								"update",
+								"status"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "ACTIVE"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.variables.set('offerCode',\"OFFER_BORNE_VE_BT\");",
+							"",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

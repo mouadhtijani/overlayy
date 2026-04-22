@@ -1,0 +1,129 @@
+{
+	"info": {
+		"_postman_id": "0fae0874-14fe-4bb0-bb81-e7996994d35a",
+		"name": "010 EP-157 Param Category",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847069"
+	},
+	"item": [
+		{
+			"name": "Administration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"code\" : \"ADMINISTRATION\",\r\n   \"description\" : \"Administration\" ,\r\n   \"exoneratedFromTaxes\" : false ,\r\n   \"taxCategoryCode\" : \"TAXCAT_ASSUJ\",\r\n   \"defaultSellerCode\" : \"EEC\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/account/customer/createCategory",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"account",
+						"customer",
+						"createCategory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Particulier (Privé)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"PARTICULIER_PRIVE\",\r\n    \"description\": \"Particulier (Privé)\",\r\n    \"exoneratedFromTaxes\": false,\r\n    \"taxCategoryCode\": \"TAXCAT_ASSUJ\",\r\n    \"defaultSellerCode\": \"EEC\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/account/customer/createCategory",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"account",
+						"customer",
+						"createCategory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Professionnel (Privé)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"code\" : \"PROFESSIONNEL_PRIVE\",\r\n   \"description\" : \"Professionnel (Privé)\" ,\r\n   \"exoneratedFromTaxes\" : false ,\r\n   \"taxCategoryCode\" : \"TAXCAT_ASSUJ\",\r\n   \"defaultSellerCode\": \"EEC\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/account/customer/createCategory",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"account",
+						"customer",
+						"createCategory"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

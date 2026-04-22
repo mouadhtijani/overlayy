@@ -1,0 +1,98 @@
+{
+	"info": {
+		"_postman_id": "c8a19ab9-467e-445b-9ab9-8ac31d5be8d8",
+		"name": "010 EP-279 update de la CT ct_pds",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847135"
+	},
+	"item": [
+		{
+			"name": "delete ct_pds",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{opencell.url}}/entityCustomization/entity/ct_pds",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"entityCustomization",
+						"entity",
+						"ct_pds"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ct_pds",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"ct_pds\",\r\n    \"description\": \"Table des points de services\",\r\n    \"disabled\": false,\r\n    \"name\": \"ct_pds\",\r\n    \"storeInES\": false,\r\n    \"storeAsTable\": true,\r\n    \"field\": [\r\n        {\r\n            \"code\": \"id_pds\",\r\n            \"description\": \"Identifiant du point de service\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"num_compteur\",\r\n            \"description\": \"Numéro du compteur\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"exploitation\",\r\n            \"description\": \"Identifiant de l’exploitation\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"branchement\",\r\n            \"description\": \"Identifiant du branchement\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"tableau\",\r\n            \"description\": \"Identifiant du tableau\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"adresse\",\r\n            \"description\": \"Localisation du point de service\",\r\n            \"fieldType\": \"STRING\",\r\n            \"maxValue\": 4000\r\n        },\r\n        {\r\n            \"code\": \"roues\",\r\n            \"description\": \"Nombre de roues\",\r\n            \"fieldType\": \"LONG\"\r\n        },\r\n        {\r\n            \"code\": \"nb_fils\",\r\n            \"description\": \"Nombre de fils\",\r\n            \"fieldType\": \"LONG\"\r\n        },\r\n       {\r\n            \"code\": \"coefficient_lecture\",\r\n            \"description\": \"Coefficient de lecture\",\r\n            \"fieldType\": \"DOUBLE\"\r\n        },\r\n        {\r\n            \"code\": \"puissance_transformateur\",\r\n            \"description\": \"Puissance du transformateur\",\r\n            \"fieldType\": \"LONG\"\r\n        },\r\n        {\r\n            \"code\": \"is_transfo_avant_branchement\",\r\n            \"description\": \"Indication sur l’emplacement du transfo\",\r\n            \"fieldType\": \"LIST\",\r\n            \"listValues\": {\r\n                \"AVANT\": \"AVANT\",\r\n                \"APRES\": \"APRES\"\r\n            }\r\n        },\r\n        {\r\n            \"code\": \"transformateur_intensite\",\r\n            \"description\": \"Transformateur d'intensité\",\r\n            \"fieldType\": \"BOOLEAN\"\r\n        },\r\n        {\r\n            \"code\": \"gamme\",\r\n            \"description\": \"Gamme\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"longueur_conducteur\",\r\n            \"description\": \"Longueur du conducteur\",\r\n            \"fieldType\": \"LONG\"\r\n        },\r\n        {\r\n            \"code\": \"date_resiliation_contrat\",\r\n            \"description\": \"Date de résiliation du dernier contrat\",\r\n            \"fieldType\": \"DATE\"\r\n        },\r\n        {\r\n            \"code\": \"type_raccordement\",\r\n            \"description\": \"Type de raccordement\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"coef_tan_phi\",\r\n            \"description\": \"Coefficient Tan Phi\",\r\n            \"fieldType\": \"BOOLEAN\"\r\n        },\r\n        {\r\n            \"code\": \"prime_mensuel_raccordement\",\r\n            \"description\": \"Prime mensuelle de raccordement\",\r\n            \"fieldType\": \"LONG\"\r\n        },\r\n        {\r\n            \"code\": \"prime_mensuel_transformation\",\r\n            \"description\": \"Prime mensuelle de transformation\",\r\n            \"fieldType\": \"LONG\"\r\n        },\r\n        {\r\n            \"code\": \"classe_compteur\",\r\n            \"description\": \"Classe compteur\",\r\n            \"fieldType\": \"DOUBLE\"\r\n        },\r\n        {\r\n            \"code\": \"debut_validite\",\r\n            \"description\": \"Date de début de validité\",\r\n            \"fieldType\": \"DATE\"\r\n        },\r\n        {\r\n            \"code\": \"fin_validite\",\r\n            \"description\": \"Date de fin de validité\",\r\n            \"fieldType\": \"DATE\"\r\n        },\r\n        {\r\n            \"code\": \"code_erreur\",\r\n            \"description\": \"Code erreur\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"message_erreur\",\r\n            \"description\": \"Message erreur\",\r\n            \"fieldType\": \"STRING\",\r\n            \"maxValue\": 200\r\n        },\r\n        {\r\n            \"code\": \"statut_pds\",\r\n            \"description\": \"Statut\",\r\n            \"fieldType\": \"LIST\",\r\n            \"listValues\": {\r\n                \"ACTIF\": \"ACTIF\",\r\n                \"INACTIF\": \"INACTIF\"\r\n            }\r\n        }\r\n    ],\r\n    \"action\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/entityCustomization/entity/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"entityCustomization",
+						"entity",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

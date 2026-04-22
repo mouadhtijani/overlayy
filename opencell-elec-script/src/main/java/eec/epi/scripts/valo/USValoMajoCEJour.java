@@ -1,0 +1,145 @@
+package eec.epi.scripts.valo;
+
+import eec.epi.scripts.RatingScript;
+import org.meveo.admin.util.pagination.PaginationConfiguration;
+import org.meveo.api.exception.BusinessApiException;
+import org.meveo.model.billing.*;
+import org.meveo.model.catalog.OfferTemplate;
+import org.meveo.model.rating.EDR;
+import org.meveo.service.custom.CustomTableService;
+
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+import java.util.*;
+import java.util.stream.Collectors;
+/**
+ * @author Ahmed BAHRI ahmed.bahri@iliadeconsulting.com
+ */
+public class USValoMajoCEJour extends RatingScript {
+    protected static final String PX_EA_JOUR = "PX_EA_JOUR";
+    protected static final String CT_GRILLE_TARIFAIRE = "ct_grille_tarifaire";
+    protected static final String VALEUR = "valeur";
+    protected static final String CODE = "code";
+    public static final String CT_CONSO = "ct_conso";
+
+    public static final String ID_PDS = "id_pds";
+    public static final String QUANTITE = "quantite";
+    public static final String NATURE_MESURE = "nature_mesure";
+    public static final String COSPHI = "COSPHI";
+    public static final String CF_CODE_EXPLOITATION = "cf_code_exploitation";
+    public static final String ORIGINE = "origine";
+    public static final String STATUT = "statut";
+    public static final String OPENCELL = "OPENCELL";
+    public static final String VALORISE = "VALORISE";
+    protected static String EA = "EA";
+    protected static String POSTE_HOROSAISONNIER = "poste_horosaisonnier";
+    protected static String JOUR = "JOUR";
+    protected String subscriptionCode;
+    protected List<Map<String, Object>> conso;
+    protected Map<String, Object> filterConso;
+    protected String CPT_QUERY;
+
+
+
+
+    CustomTableService customTableService = getServiceInterface(CustomTableService.class.getSimpleName());
+
+    @Override
+    public void execute(RatingContext ratingContext) {
+        List<Map<String, Object>> list = initializeContext(ratingContext);
+        WalletOperation walletOperation = ratingContext.getWalletOperation();
+        if (walletOperation == null) {
+            throw new BusinessApiException("don't call this script out of rating job");
+        }
+        Subscription subscription = walletOperation.getSubscription();
+        if (subscription == null) throw new BusinessApiException("Subscription error wo : "+walletOperation.getId());
+        subscriptionCode = subscription.getCode();
+        ChargeInstance chargeInstance = walletOperation.getChargeInstance();
+        if(chargeInstance==null)throw new BusinessApiException("chargeInstance error wo : "+walletOperation.getId());
+        ServiceInstance chargeCode = chargeInstance.getServiceInstance();
+
+        Map<String, BigDecimal> resultList = applyAccordingToSubscription(ratingContext,list,subscription, chargeCode, walletOperation);
+        ratingContext.calculate(walletOperation, resultList.get("unitPriceWithoutTax"),resultList.get("quantity"), OperationTypeEnum.DEBIT, ratingContext.getOFFER(), ratingContext.getPROD());
+    }
+    private List<Map<String, Object>> initializeContext(RatingContext ratingContext) {
+        subscriptionCode = "";
+        filterConso = new HashMap<>();
+        CPT_QUERY = " id in ( select id\n" +
+                "             from ct_grille_tarifaire\n" +
+                "             where CURRENT_DATE BETWEEN date_debut_validite AND date_fin_validite )\n";
+        return ratingContext.getValues(CPT_QUERY, subscriptionCode);
+    }
+    private Map<String, BigDecimal> applyAccordingToSubscription(RatingContext ratingContext, List<Map<String, Object>> list, Subscription subscription, ServiceInstance prod, WalletOperation walletOperation) {
+        OfferTemplate offer = subscription.getOffer();
+        if (offer == null || offer.getCode() == null)
+            throw new BusinessApiException("Offer ERROR subscription :" + subscriptionCode);
+        ratingContext.setOFFER(offer.getCode());
+        String cf_nature_value = String.valueOf(subscription.getCfValue("cf_nature"));
+        Object cf_code_exploitation = subscription.getCfValue(CF_CODE_EXPLOITATION);
+        ratingContext.validateNature(ratingContext,cf_nature_value,subscriptionCode);
+        List<ServiceInstance> serviceInstances = subscription.getServiceInstances();
+        if (serviceInstances == null || serviceInstances.isEmpty())
+            throw new BusinessApiException("ServiceInstances[] ERROR subscription :" + subscriptionCode);
+        Optional<ServiceInstance> serviceInstance = serviceInstances.stream().filter(s -> s.getCode().equals(prod.getCode())).findFirst();
+        if (serviceInstance.isEmpty() || serviceInstance.get().getCode() == null)
+            throw new BusinessApiException("ServiceInstances ERROR subscription :" + subscriptionCode);
+        ratingContext.setPROD(serviceInstance.get().getCode());
+        EDR edr = walletOperation.getEdr();
+        if (edr == null) throw new BusinessApiException("EDR Not Found ERROR  :" + subscriptionCode);
+        if (edr.getQuantity() == null) throw new BusinessApiException("EDR Quantity is null  :" + subscriptionCode);
+
+
+        filterConso.put(ID_PDS, (String.valueOf(edr.getAccessCode())));
+        conso = getDataFromCT(CT_CONSO, filterConso);
+
+        if (conso.isEmpty())
+            throw new BusinessApiException("id_pds_conso is empty ERROR subscription :" + subscriptionCode);
+
+        List<Map<String, Object>> filteredConso = conso.stream()
+                .filter(map -> {
+                    Object natureMesure = map.get(NATURE_MESURE);
+                    Object posteHorosaisonier = map.get(POSTE_HOROSAISONNIER);
+                    Object origin = map.get(ORIGINE);
+                    Object statut = map.get(STATUT);
+                    return EA.equals(natureMesure) && JOUR.equals(posteHorosaisonier) && OPENCELL.equals(origin) && VALORISE.equals(statut);
+                })
+                .collect(Collectors.toList());
+        if (filteredConso.size() != 1)
+            throw new BusinessApiException("one ct_conso EA jour should be found ERROR subscription :" + subscriptionCode);
+
+        List<Map<String, Object>> filteredConsoCosphi = conso.stream()
+                .filter(map -> {
+                    Object natureMesure = map.get(NATURE_MESURE);
+                    return COSPHI.equals(natureMesure) ;
+                })
+                .collect(Collectors.toList());
+        if (filteredConsoCosphi.size() != 1)
+            throw new BusinessApiException("one ct_conso cosphi should be found ERROR subscription :" + subscriptionCode);
+
+        Object quantityConsoEA = filteredConso.get(0).get(QUANTITE);
+        if (quantityConsoEA == null) throw new BusinessApiException("quantite Conso EA jour is null :" + subscriptionCode);
+
+        Object quantityConsoCOSPHI = filteredConsoCosphi.get(0).get(QUANTITE);
+        if (quantityConsoCOSPHI == null) throw new BusinessApiException("quantite Conso COSPHI is null :" + subscriptionCode);
+        BigDecimal price=BigDecimal.ZERO;
+        if(Objects.equals(cf_nature_value, "BT")){
+            price=ratingContext.getValueFromList(PX_EA_JOUR, ratingContext.getOFFER(), "BT", cf_code_exploitation, list, subscriptionCode);
+        }else if(Objects.equals(cf_nature_value, "HTA")) {
+            price=ratingContext.getValueFromList(PX_EA_JOUR, ratingContext.getOFFER(), "HTA", cf_code_exploitation, list, subscriptionCode);
+        }
+        BigDecimal quantity = price.multiply(new BigDecimal(String.valueOf(quantityConsoEA)));
+//        BigDecimal quantity = price.multiply(edr.getQuantity());
+        BigDecimal unitPriceWithoutTax = (new BigDecimal("0.80").subtract(new BigDecimal(String.valueOf(quantityConsoCOSPHI))))
+                .divide(new BigDecimal("100"), new MathContext(10, RoundingMode.HALF_UP));
+        Map<String, BigDecimal> itemMap = new HashMap<>();
+        itemMap.put("quantity", quantity);
+        itemMap.put("unitPriceWithoutTax", unitPriceWithoutTax);
+        return  itemMap;
+    }
+
+    public List<Map<String, Object>> getDataFromCT(String tableName, Map<String, Object> filters) {
+        return customTableService.list(tableName, new PaginationConfiguration(filters));
+    }
+
+}

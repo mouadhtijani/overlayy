@@ -1,0 +1,209 @@
+{
+	"info": {
+		"_postman_id": "ce7c26e2-0c1c-4d49-b0f0-3c9b61b40e51",
+		"name": "030 EP-179 Update Produits obligatoire/optionnel",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847135"
+	},
+	"item": [
+		{
+			"name": "offre IRR",
+			"item": [
+				{
+					"name": "Offre IRR",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"{{offerCode}}\",\n    \"description\": \"Offre irrigation\",\n    \"offerProducts\": [\n        {\n            \"offerTemplateCode\": \"{{offerCode}}\",\n            \"product\": {\n                \"code\": \"PROD_CONSO_IRR\"\n            },\n            \"mandatory\": true,\n            \"quantityMin\": 1,\n            \"quantityMax\": 1,\n            \"sequence\": 1\n        },\n        {\n            \"offerTemplateCode\": \"{{offerCode}}\",\n            \"product\": {\n                \"code\": \"PROD_FRAIS\"\n            },\n            \"mandatory\": true,\n            \"quantityMin\": 1,\n            \"quantityMax\": 1,\n            \"sequence\": 2\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{opencell.url}}/catalog/offerTemplate/createOrUpdate",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"catalog",
+								"offerTemplate",
+								"createOrUpdate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ACTIVE Offre IRR",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{opencell.url}}/catalog/offerTemplate/{{offerCode}}/update/status?status=ACTIVE",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"catalog",
+								"offerTemplate",
+								"{{offerCode}}",
+								"update",
+								"status"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "ACTIVE"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.variables.set('offerCode',\"OFFER_IRRIGATION\");",
+							"",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "offre BorneVE",
+			"item": [
+				{
+					"name": "Offre VE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"{{offerCode}}\",\n    \"description\": \"Offre borne VE\",\n    \"offerProducts\": [\n        {\n            \"offerTemplateCode\": \"{{offerCode}}\",\n            \"product\": {\n                \"code\": \"PROD_CONSO_BVE_BT\"\n            },\n            \"mandatory\": false,\n            \"quantityMin\": 0,\n            \"quantityMax\": 1,\n            \"sequence\": 1\n        },\n        {\n            \"offerTemplateCode\": \"{{offerCode}}\",\n            \"product\": {\n                \"code\": \"PROD_CONSO_BVE_HTA\"\n            },\n            \"mandatory\": false,\n            \"quantityMin\": 0,\n            \"quantityMax\": 1,\n            \"sequence\": 2\n        },\n        {\n            \"offerTemplateCode\": \"{{offerCode}}\",\n            \"product\": {\n                \"code\": \"PROD_FRAIS\"\n            },\n            \"mandatory\": true,\n            \"quantityMin\": 1,\n            \"quantityMax\": 1,\n            \"sequence\": 3\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{opencell.url}}/catalog/offerTemplate/createOrUpdate",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"catalog",
+								"offerTemplate",
+								"createOrUpdate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ACTIVE Offre VE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{opencell.url}}/catalog/offerTemplate/{{offerCode}}/update/status?status=ACTIVE",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"catalog",
+								"offerTemplate",
+								"{{offerCode}}",
+								"update",
+								"status"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "ACTIVE"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.variables.set('offerCode',\"OFFER_BORNE_VE\");",
+							"",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

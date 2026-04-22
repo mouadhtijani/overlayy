@@ -1,0 +1,71 @@
+{
+	"info": {
+		"_postman_id": "8c971c08-1cdc-408c-9de2-b82b3b824baf",
+		"name": "030 EP-74 JOB calcul_conso",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "job calcul conso",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"Calcul_Conso\",\r\n    \"description\": \"Job qui fait la création des consommations\",\r\n    \"jobCategory\": \"MEDIATION\",\r\n    \"jobTemplate\": \"ScriptingJob\",\r\n    \"active\": true,\r\n    \"verboseReport\": true,\r\n    \"customFields\": {\r\n        \"customField\": [\r\n            {\r\n                \"code\": \"ScriptingJob_script\",\r\n                \"entityReferenceValue\": {\r\n                    \"classname\": \"org.meveo.model.scripts.ScriptInstance\",\r\n                    \"classnameCode\": null,\r\n                    \"code\": \"eec.epi.scripts.conso.Calcul_conso\"\r\n                }\r\n            }\r\n        ],\r\n        \"inheritedCustomField\": null\r\n    },\r\n    \"limitToSingleNode\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/jobInstance/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"jobInstance",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -1,0 +1,37 @@
+package eec.epi.scripts.billing;
+
+import org.meveo.api.exception.MissingParameterException;
+import org.meveo.model.billing.Invoice;
+import org.meveo.model.billing.InvoiceLine;
+import org.meveo.service.script.Script;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+/**
+ * @author Ahmed BAHRI ahmed.bahri@iliadeconsulting.com
+ */
+public class ValidEAJ extends Script {
+    private static final long serialVersionUID = -3842955629518523594L;
+
+    public ValidEAJ() {
+    }
+
+    public void execute(Map<String, Object> context) {
+        Invoice invoice = (Invoice) context.get("CONTEXT_ENTITY");
+        if (invoice == null) {
+            throw new MissingParameterException("CONTEXT_ENTITY");
+        } else {
+            Map<Object, Object> contextMap = new HashMap<>();
+            contextMap.put("invoice", invoice);
+            for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
+                if (invoiceLine.getAccountingArticle().getCode().equals("AA_BVE_EA_JOUR") && invoiceLine.getQuantity().compareTo(new BigDecimal(1000)) >= 0) {
+                    context.put("InvoiceValidation.STATUS", true);
+                    return;
+                } else {
+                    context.put("InvoiceValidation.STATUS", false);
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,368 @@
+{
+	"info": {
+		"_postman_id": "ab7e3be3-43b7-47ca-9e51-11602c5c22ca",
+		"name": "010 EP-46_PARAM Seller",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847069"
+	},
+	"item": [
+		{
+			"name": "Param country",
+			"item": [
+				{
+					"name": "get NC Country",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.variables.set('country',jsonData.country);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{opencell.url}}/countryIso?countryCode=NC",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"countryIso"
+							],
+							"query": [
+								{
+									"key": "countryCode",
+									"value": "NC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add NC Country",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"let c = pm.variables.get(\"country\");\r",
+									"\r",
+									"pm.variables.set('countryCode', c.countryCode)\r",
+									"pm.variables.set('name', c.description);\r",
+									"pm.variables.set('currencyCode', c.currencyCode);\r",
+									"pm.variables.set('languageCode', c.languageCode);\r",
+									"pm.variables.set('languageCodeENG', c.languageDescriptions[0].languageCode);\r",
+									"pm.variables.set('descriptionENG', c.languageDescriptions[0].description);\r",
+									"pm.variables.set('languageCodeFR', c.languageDescriptions[1].languageCode);\r",
+									"pm.variables.set('descriptionFR', c.languageDescriptions[1].description);\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"countryCode\": \"{{countryCode}}\",\r\n    \"name\": \"{{name}}\",\r\n    \"currencyCode\": \"{{currencyCode}}\",\r\n    \"languageCode\": \"{{languageCode}}\",\r\n    \"disabled\": false,\r\n    \"languageDescriptions\": [\r\n        {\r\n            \"languageCode\": \"{{languageCodeFR}}\",\r\n            \"description\": \"{{descriptionFR}}\"\r\n        },\r\n        {\r\n            \"languageCode\": \"{{languageCodeENG}}\",\r\n            \"description\": \"{{descriptionENG}}\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{opencell.url}}/country/createOrUpdate",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"country",
+								"createOrUpdate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Param currency",
+			"item": [
+				{
+					"name": "get XPF currency",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.variables.set('currency',jsonData.currency);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{opencell.url}}/currencyIso?currencyCode=XPF",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"currencyIso"
+							],
+							"query": [
+								{
+									"key": "currencyCode",
+									"value": "XPF"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add XPF",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"let c = pm.variables.get(\"currency\");\r",
+									"\r",
+									"pm.variables.set('currencyCode', c.code)\r",
+									"pm.variables.set('currencyDescription', c.description);\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\": \"{{currencyCode}}\",\r\n    \"description\": \"{{currencyDescription}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{opencell.url}}/currency/createOrUpdate",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"currency",
+								"createOrUpdate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Seller",
+			"item": [
+				{
+					"name": "EEC",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"address\": {\r\n        \"address1\": \"15 rue jean chalier – pk4\",\r\n        \"address2\": \"BP F3 - 98848 Nouméa Cedex\",\r\n        \"city\": \"Noumea\",\r\n        \"zipCode\": \"98800\",\r\n        \"country\": \"New Caledonia\"\r\n    },\r\n    \"contactInformation\": {\r\n        \"email\": \"clientele.eec@engie.com\",\r\n        \"phone\": \"46 36 36\",\r\n        \"address\": {\r\n            \"address1\": \"BP F3\",\r\n            \"zipCode\": \"98848\",\r\n            \"city\": \" Nouméa\",\r\n            \"country\": \"Nouvelle-Calédonie\"\r\n        }\r\n    },\r\n    \"code\": \"EEC\",\r\n    \"countryCode\": \"NC\",\r\n    \"currencyCode\": \"XPF\",\r\n    \"description\": \"EEC ENGIE Nouvelle-Calédonie\",\r\n    \"languageCode\": \"FRA\",\r\n    \"registrationNo\": \"RCS NOUMEA n° 100966\",\r\n    \"vatNo\": \"-\",\r\n    \"legalType\": \"Société anonyme\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{opencell.url}}/seller/createOrUpdate",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"seller",
+								"createOrUpdate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete old selllers",
+			"item": [
+				{
+					"name": "SELLER_FR",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{opencell.url}}/seller/SELLER_FR",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"seller",
+								"SELLER_FR"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SELLER_US",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{opencell.url}}/seller/SELLER_US",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"seller",
+								"SELLER_US"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MAIN_SELLER",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{opencell.url}}/seller/MAIN_SELLER",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"seller",
+								"MAIN_SELLER"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

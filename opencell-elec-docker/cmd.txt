@@ -1,0 +1,233 @@
+chmod +x devops-up.sh
+./devops-up.sh
+
+
+docker exec -it jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+
+
+SSH Slaves ou SSH Agent	
+
+
+root@devops-vm:/home/vagrant# mkdir -p /home/jenkins
+root@devops-vm:/home/vagrant# chmod 777 /home/jenkins
+root@devops-vm:/home/vagrant# ls
+devops-up.sh  docker-compose.yml  jenkins-up.sh  repo
+root@devops-vm:/home/vagrant#
+
+
+
+cat /root/.ssh/id_rsa_jenkins_agent.pub >> ~/.ssh/authorized_keys
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys
+chown -R jenkins:jenkins ~/.ssh
+
+ssh-keygen -p -m PEM -f /root/.ssh/id_rsa_jenkins_agent
+
+
+ssh-keygen -p -m PEM -f /root/.ssh/id_rsa_jenkins_agent
+
+ssh-keygen -t rsa -b 4096 -m PEM -f /root/.ssh/id_rsa_jenkins_agent -N "" -C "jenkins-agent-key"
+
+
+
+*---------------------
+
+
+Ensuite, configure :
+Champ	Valeur
+# of Executors	1 ou 2 selon ton besoin
+Remote root directory	/home/jenkins-agent/workspace
+Labels	vagrant (utile pour cibler ce noeud)
+Launch method	Launch agents via SSH
+Host	127.0.0.1 (ou IP réelle de la VM)
+Credentials	Sélectionne vagrant-ssh-agent
+Host Key Verification	Non verifying (le temps de tester)
+
+
+
+version: "3.9"
+services:
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    ports:
+      - "50000:50000"
+      - "9091:8080"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    group_add:
+      - 999
+    restart: always
+
+  nexus:
+    image: sonatype/nexus3
+    container_name: nexus
+    ports:
+      - "8081:8081"
+      - "8085:8085"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - nexus_data:/nexus-data
+    group_add:
+      - 999
+    restart: always
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - "8082:8080"
+    restart: always
+
+volumes:
+  jenkins_home:
+  nexus_data:
+
+
+
+
+  stage('Init Postgres keycloak DB') {
+            when { expression { params.DEPLOY_MODE.startsWith('init_env') && false} }
+            steps {
+                script {
+                    def status = sh(script: "docker inspect -f '{{.State.Status}}' postgres-wildfly || echo 'not_found'", returnStdout: true).trim()
+                    
+                    if (status == 'exited' || status == 'created') {
+                        echo "Le conteneur postgres-wildfly est arrêté. Démarrage..."
+                        sh "docker start postgres-wildfly"
+                        sh "sleep 10"
+                    } else if (status == 'running') {
+                        echo "Le conteneur postgres-wildfly est déjà en cours d'exécution."
+                    } else {
+                        error("Conteneur postgres-wildfly introuvable ou dans un état inconnu: ${status}")
+                    }
+
+                    echo "Création utilisateur et base keycloak..."
+
+                    // Création du fichier SQL temporaire
+                    writeFile file: 'init_keycloak.sql', text: '''\
+                        CREATE USER keycloak WITH PASSWORD 'keycloak';
+                        CREATE DATABASE keycloak;
+                        GRANT ALL PRIVILEGES ON DATABASE keycloak TO keycloak;
+                        ALTER USER keycloak WITH SUPERUSER;
+                        '''
+
+                    // Copie dans le conteneur
+                    sh 'docker cp init_keycloak.sql postgres-wildfly:/tmp/init_keycloak.sql'
+
+                    // Exécution dans le conteneur
+                    sh 'docker exec -i postgres-wildfly psql -U opencell_db_user -d opencell_db -f /tmp/init_keycloak.sql'
+
+                    // Suppression du fichier dans le conteneur
+                    sh 'docker exec -i postgres-wildfly rm /tmp/init_keycloak.sql'
+
+                    echo "Redémarrage du conteneur keycloak..."
+                    sh 'docker restart keycloak'
+
+                    echo "Redémarrage du service opencell..."
+                    sh 'docker restart opencell'
+                }
+            }
+        }
+
+
+
+        YOUR_ATLASSIAN_TOKEN_HERE
+
+
+
+
+
+
+        version: "3.9"
+        services:
+
+          jenkins:
+            image: jenkins/jenkins:lts
+            container_name: jenkins
+            ports:
+              - "50000:50000"
+              - "9091:8080"
+            volumes:
+              - jenkins_home:/var/jenkins_home
+              - /var/run/docker.sock:/var/run/docker.sock
+            group_add:
+              - 999
+            restart: always
+
+          nexus:
+            image: sonatype/nexus3
+            container_name: nexus
+            ports:
+              - "8081:8081"
+              - "8085:8085"
+            volumes:
+              - /var/run/docker.sock:/var/run/docker.sock
+              - nexus_data:/nexus-data
+            group_add:
+              - 999
+            restart: always
+
+          adminer:
+            image: adminer
+            container_name: adminer
+            ports:
+              - "8082:8080"
+            restart: always
+
+          prometheus:
+            image: prom/prometheus:latest
+            container_name: prometheus
+            ports:
+              - "9050:9090"
+            volumes:
+              - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+            restart: always
+
+          grafana:
+            image: grafana/grafana:latest
+            container_name: grafana
+            ports:
+              - "3000:3000"
+            volumes:
+              - grafana_data:/var/lib/grafana
+            restart: always
+
+          loki:
+            image: grafana/loki:2.8.2
+            container_name: loki
+            ports:
+              - "3100:3100"
+            volumes:
+              - ./loki-config.yaml:/etc/loki/local-config.yaml
+              - ./loki/chunks:/loki/chunks
+              - ./loki/index:/loki/index
+              - ./loki/index_cache:/loki/index_cache
+              - ./loki/wal:/wal
+              - ./loki/compactor:/loki/compactor
+            command: -config.file=/etc/loki/local-config.yaml
+            restart: always
+
+          promtail:
+            image: grafana/promtail:2.8.2
+            container_name: promtail
+            volumes:
+              - ./promtail-config.yaml:/etc/promtail/promtail-config.yaml
+              - /var/log:/var/log
+              - /var/lib/docker/containers:/var/lib/docker/containers:ro
+              - /etc/machine-id:/etc/machine-id:ro
+              - /var/run/docker.sock:/var/run/docker.sock
+            command: -config.file=/etc/promtail/promtail-config.yaml
+            restart: always
+
+        volumes:
+          jenkins_home:
+          nexus_data:
+          grafana_data:
+
+
+
+          mkdir -p /home/vagrant/loki/compactor
+          chmod 777 /home/vagrant/loki/compactor

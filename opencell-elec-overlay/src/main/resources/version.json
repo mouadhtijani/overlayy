@@ -1,0 +1,5 @@
+{
+  "name" : "Opencell Utilities Edition",
+  "version" : "@UE_VERSION_NUMBER@",
+  "commit" : "@UE_BUILD_NUMBER@"
+}

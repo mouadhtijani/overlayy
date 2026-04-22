@@ -1,0 +1,234 @@
+{
+	"info": {
+		"_postman_id": "d9d84a5d-9bfb-4930-ab10-96ef2ad360f3",
+		"name": "010 EP-48 Accounts Operations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847069"
+	},
+	"item": [
+		{
+			"name": "PAY_DDT_TEMP",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"code\" : \"PAY_DDT_TEMP\",\r\n\"description\" : \"Paiement prélèvement temporaire\",\r\n\"occCategory\" : \"CREDIT\",\r\n\"journalCode\":\"BAN\",\r\n\"accountingCode\":\"512180\",\r\n\"accountCodeClientSide\":\"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/occTemplate/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"occTemplate",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PAY_CHK",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"code\" : \"PAY_CHK\",\r\n\"description\" : \"Paiement par chèque\",\r\n\"occCategory\" : \"CREDIT\",\r\n\"journalCode\":\"BAN\",\r\n\"accountingCode\":\"512180\",\r\n\"accountCodeClientSide\":\"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/occTemplate/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"occTemplate",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PAY_WIRE",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"code\" : \"PAY_WIRE\",\r\n\"description\" : \"Paiement par virement\",\r\n\"occCategory\" : \"CREDIT\",\r\n\"journalCode\":\"BAN\",\r\n\"accountingCode\":\"512180\",\r\n\"accountCodeClientSide\":\"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/occTemplate/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"occTemplate",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TAX_TGC_3",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"code\" : \"TAX_TGC_3\",\r\n\"description\" : \"Tax - TGC\",\r\n\"occCategory\" : \"CREDIT\",\r\n\"journalCode\":\"SAL\",\r\n\"accountingCode\":\"445701\",\r\n\"accountCodeClientSide\":\"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/occTemplate/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"occTemplate",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TAX_TGC_6",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"code\" : \"TAX_TGC_6\",\r\n\"description\" : \"Tax - TGC\",\r\n\"occCategory\" : \"CREDIT\",\r\n\"journalCode\":\"SAL\",\r\n\"accountingCode\":\"445702\",\r\n\"accountCodeClientSide\":\"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/occTemplate/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"occTemplate",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TAX_TGC_0",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"code\" : \"TAX_TGC_0\",\r\n\"description\" : \"Tax - TGC\",\r\n\"occCategory\" : \"CREDIT\",\r\n\"journalCode\":\"SAL\",\r\n\"accountingCode\":\"0\",\r\n\"accountCodeClientSide\":\"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/occTemplate/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"occTemplate",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "INV_STD",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"code\" : \"INV_STD\",\r\n\"description\" : \"Facture client\",\r\n\"occCategory\" : \"DEBIT\",\r\n\"journalCode\":\"SAL\",\r\n\"accountingCode\":\"701011\",\r\n\"accountCodeClientSide\":\"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/occTemplate/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"occTemplate",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

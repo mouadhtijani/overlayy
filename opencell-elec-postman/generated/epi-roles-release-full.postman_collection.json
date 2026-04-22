@@ -1,0 +1,2565 @@
+{
+  "event" : [ {
+    "disabled" : false,
+    "listen" : "test",
+    "script" : {
+      "type" : "text/javascript",
+      "exec" : [ "if ([401, 504].includes(pm.response.code)) {\n    // in case of some error , we need to wait 5s and start again\n    console.warn(\"resending same request after 5s\")\n    var endTime = new Date().getTime() + 5000;\n    while (new Date().getTime() < endTime) { }\n    postman.setNextRequest(pm.info.requestId);\n} else {\n    pm.test(\"success reponse code\", () => {\n        pm.expect(pm.response.code, \"received code \"+pm.response.code+\" with status \"+pm.response.status).to.be.oneOf([200, 201, 202, 204]);\n    });\n}" ]
+    }
+  } ],
+  "info" : {
+    "name" : "roles-full",
+    "schema" : "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item" : [ {
+    "item" : [ {
+      "item" : [ ],
+      "name" : "version=1.1.8"
+    }, {
+      "item" : [ ],
+      "name" : "release=R025"
+    } ],
+    "name" : ".META"
+  }, {
+    "item" : [ {
+      "auth" : {
+        "type" : "basic",
+        "basic" : [ {
+          "key" : "password",
+          "type" : "string",
+          "value" : "{{opencell.password}}"
+        }, {
+          "key" : "username",
+          "type" : "string",
+          "value" : "{{opencell.username}}"
+        } ]
+      },
+      "event" : [ {
+        "disabled" : false,
+        "listen" : "prerequest",
+        "script" : {
+          "type" : "text/javascript",
+          "exec" : [ "" ]
+        }
+      }, {
+        "disabled" : false,
+        "listen" : "test",
+        "script" : {
+          "type" : "text/javascript",
+          "exec" : [ "" ]
+        }
+      } ],
+      "item" : [ {
+        "auth" : {
+          "type" : "noauth"
+        },
+        "event" : [ {
+          "disabled" : false,
+          "listen" : "prerequest",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        }, {
+          "disabled" : false,
+          "listen" : "test",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        } ],
+        "item" : [ {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "if ([200, 201, 202, 204].includes(pm.response.code)) {", "    const jsonResponse = pm.response.json();", "    pm.variables.set(\"access_token_kc_878\", jsonResponse.access_token);", "} " ]
+            }
+          } ],
+          "name" : "get token",
+          "request" : {
+            "body" : {
+              "mode" : "urlencoded",
+              "urlencoded" : [ {
+                "key" : "grant_type",
+                "value" : "password",
+                "type" : "text"
+              }, {
+                "key" : "client_id",
+                "value" : "admin-cli",
+                "type" : "text"
+              }, {
+                "key" : "username",
+                "value" : "{{keycloak.username}}",
+                "type" : "text"
+              }, {
+                "key" : "password",
+                "value" : "{{keycloak.password}}",
+                "type" : "text"
+              } ]
+            },
+            "header" : [ ],
+            "method" : "POST",
+            "url" : {
+              "raw" : "{{opencell.auth.url}}/realms/master/protocol/openid-connect/token",
+              "host" : [ "{{opencell.auth.url}}" ],
+              "path" : [ "realms", "master", "protocol", "openid-connect", "token" ]
+            }
+          },
+          "response" : [ ]
+        } ],
+        "name" : "get token"
+      }, {
+        "auth" : {
+          "type" : "bearer",
+          "bearer" : [ {
+            "key" : "token",
+            "type" : "string",
+            "value" : "{{access_token_kc_878}}"
+          } ]
+        },
+        "event" : [ {
+          "disabled" : false,
+          "listen" : "prerequest",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "let now=new Date();", "pm.globals.set(\"timestamp.iso\", now.toISOString());", "pm.globals.set(\"request.label\", pm.info.requestName);", "let parts = pm.info.requestName.split(\"|\");", "for(let i=0; i<parts.length; i++) {", "    pm.globals.set(\"wait\", 0);", "    pm.globals.set(\"request.label.\"+i, parts[i]);", "    if(parts[i].indexOf(\"=\") != -1 ){", "        propName = parts[i].split(\"=\")[0].trim();", "        propValue = parts[i].split(\"=\")[1];", "        pm.globals.set(propName, propValue);", "    }", "}", "" ]
+          }
+        }, {
+          "disabled" : false,
+          "listen" : "test",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        } ],
+        "item" : [ {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "if (pm.response.code == 200) {\r", "    let jsonData = pm.response.json();\r", "    pm.variables.set(\"keycloak.opencell.portal.id\", jsonData[0].id);\r", "}" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "get id client|clientId=opencell-portal",
+          "request" : {
+            "header" : [ ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients?clientId={{clientId}}",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients" ],
+              "query" : [ {
+                "key" : "clientId",
+                "value" : "{{clientId}}"
+              } ]
+            }
+          },
+          "response" : [ ]
+        } ],
+        "name" : "get id clients portal"
+      }, {
+        "auth" : {
+          "type" : "bearer",
+          "bearer" : [ {
+            "key" : "token",
+            "type" : "string",
+            "value" : "{{access_token_kc_878}}"
+          } ]
+        },
+        "event" : [ {
+          "disabled" : false,
+          "listen" : "prerequest",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "pm.variables.set(\"sepLines\", \"\\n\");", "pm.variables.set(\"sepWords\", \"\\t\");", "//columns params.", "pm.variables.set(\"params\", [\"role_name\"]);", "", "let csv = `", "SERVICE_CLIENT_MENUS", "USER_METIER", "CLIENT_ABONNEMENT", "OPERATION_MENUS", "ATTRIBUTES_PAYMENT_TERM", "BA_INFO_ADD", "CLIENT_FACTURATION", "`;", "", "pm.variables.set(\"csv_base\", csv);", "", "", "", "myIteration = {", "    preRequest: function (pm) {", "        if (!pm) {", "            throw new Error('missing data pm');", "        }", "        let csv = pm.variables.get(\"csv\");", "        let sepLines = pm.variables.get(\"sepLines\");", "        let sepWords = pm.variables.get(\"sepWords\");", "        let params = pm.variables.get(\"params\");", "        if (!csv || !sepLines || !sepWords || !params) {", "            throw 'missing data csv=' + csv + \" sepLines=\" + sepLines + \" sepWords=\" + sepWords + \" params=\" + params;", "        }", "", "        // find an existing collection variable that contains the next lines", "        // if not variable that contains the next lines, split the csv in lines", "        let lines = pm.variables.get(\"lines\");", "        if (!lines || lines.length == 0) {", "            lines = csv.split(sepLines).filter(s => s.replaceAll(sepWords, \"\").length > 0);", "            pm.variables.set(\"lines\", lines);", "        }", "", "        // split the current line in words", "        let words = lines[0].split(sepWords);", "", "        // for each parameter, store the corresponding word as parameter", "        params.forEach(function (param, idx, arr) {", "            if (param !== null && words.length > idx) {", "                pm.variables.set(param, words[idx])", "            }", "            else pm.variables.set(param, \"\");", "        });", "    },", "    postRequest: function (postman, pm) {", "        if (!pm || !postman) {", "            throw new Error('missing data postman=' + postman + \" pm=\" + pm);", "        }", "        if ([200, 201, 202, 204].includes(pm.response.code)) {", "            // if remaining lines, change the next request.", "            let lines = pm.variables.get(\"lines\");", "            lines.shift();", "            // store the remaining lines for next iteration", "            pm.variables.set(\"lines\", lines);", "            if (lines && lines.length > 0) {", "                postman.setNextRequest(pm.info.requestId);", "            }", "        }", "    }", "}" ]
+          }
+        }, {
+          "disabled" : false,
+          "listen" : "test",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        } ],
+        "item" : [ {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let existing = pm.response.json().map(role=> role.name)", "let required = pm.variables.get(\"csv_base\").split(\"\\n\").filter(name=>name!==\"\")", "let filtered = required.filter(role=> !existing.includes(role))", "console.log(\"remaining roles to add : \"+filtered+\" from \"+required)", "if(filtered.length>0){", "    pm.variables.set(\"csv\", filtered.join(\"\\n\"))", "} else {", "    postman.setNextRequest(\"Get Role APIv2_FULL_ACCESS 878\")", "}" ]
+            }
+          } ],
+          "name" : "list roles opencell.portal.id",
+          "request" : {
+            "header" : [ ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "myIteration.postRequest(postman, pm);" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "myIteration.preRequest(pm);" ]
+            }
+          } ],
+          "name" : "Create Role",
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : "{\r\n    \"name\": \"{{role_name}}\",\r\n    \"composite\": true,\r\n    \"clientRole\": true,\r\n    \"containerId\": \"{{keycloak.opencell.portal.id}}\"\r\n}"
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "POST",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles" ]
+            }
+          },
+          "response" : [ ]
+        } ],
+        "name" : "Créer roles portail"
+      }, {
+        "auth" : {
+          "type" : "bearer",
+          "bearer" : [ {
+            "key" : "token",
+            "type" : "string",
+            "value" : "{{access_token_kc_878}}"
+          } ]
+        },
+        "event" : [ {
+          "disabled" : false,
+          "listen" : "prerequest",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        }, {
+          "disabled" : false,
+          "listen" : "test",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        } ],
+        "item" : [ {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role C_CARE",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/C_CARE",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "C_CARE" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role CLIENT_ABONNEMENT",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/CLIENT_ABONNEMENT",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "CLIENT_ABONNEMENT" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role SERVICE_CLIENT_MENUS1",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/SERVICE_CLIENT_MENUS",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "SERVICE_CLIENT_MENUS" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role OPERATION_MENUS1",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/OPERATION_MENUS",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "OPERATION_MENUS" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role OPERATIONS",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/OPERATIONS",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "OPERATIONS" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role FINANCE_MANAGER",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/FINANCE_MANAGER",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "FINANCE_MANAGER" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role PORTAL_USER",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/PORTAL_USER",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "PORTAL_USER" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role ATTRIBUTES_PAYMENT_TERM",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/ATTRIBUTES_PAYMENT_TERM",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "ATTRIBUTES_PAYMENT_TERM" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role BA_INFO_ADD",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/BA_INFO_ADD",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "BA_INFO_ADD" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role CLIENT_FACTURATION",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/CLIENT_FACTURATION",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "CLIENT_FACTURATION" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "myIteration.postRequest(postman, pm);", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "\r", "myIteration.preRequest(pm);" ]
+            }
+          } ],
+          "name" : "Ajouter les roles opencell-portal",
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : "{{subRolesStr}}"
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "POST",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/USER_METIER/composites",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "USER_METIER", "composites" ]
+            }
+          },
+          "response" : [ ]
+        } ],
+        "name" : "Ajout des roles opencell-portal"
+      } ],
+      "name" : "010 EP-209 Ajout client role USER_METIER"
+    }, {
+      "auth" : {
+        "type" : "basic",
+        "basic" : [ {
+          "key" : "password",
+          "type" : "string",
+          "value" : "{{opencell.password}}"
+        }, {
+          "key" : "username",
+          "type" : "string",
+          "value" : "{{opencell.username}}"
+        } ]
+      },
+      "event" : [ {
+        "disabled" : false,
+        "listen" : "prerequest",
+        "script" : {
+          "type" : "text/javascript",
+          "exec" : [ "" ]
+        }
+      }, {
+        "disabled" : false,
+        "listen" : "test",
+        "script" : {
+          "type" : "text/javascript",
+          "exec" : [ "" ]
+        }
+      } ],
+      "item" : [ {
+        "auth" : {
+          "type" : "noauth"
+        },
+        "event" : [ {
+          "disabled" : false,
+          "listen" : "prerequest",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        }, {
+          "disabled" : false,
+          "listen" : "test",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        } ],
+        "item" : [ {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "if ([200, 201, 202, 204].includes(pm.response.code)) {", "    const jsonResponse = pm.response.json();", "    pm.variables.set(\"access_token_kc_881\", jsonResponse.access_token);", "} " ]
+            }
+          } ],
+          "name" : "get token",
+          "request" : {
+            "body" : {
+              "mode" : "urlencoded",
+              "urlencoded" : [ {
+                "key" : "grant_type",
+                "value" : "password",
+                "type" : "text"
+              }, {
+                "key" : "client_id",
+                "value" : "admin-cli",
+                "type" : "text"
+              }, {
+                "key" : "username",
+                "value" : "{{keycloak.username}}",
+                "type" : "text"
+              }, {
+                "key" : "password",
+                "value" : "{{keycloak.password}}",
+                "type" : "text"
+              } ]
+            },
+            "header" : [ ],
+            "method" : "POST",
+            "url" : {
+              "raw" : "{{opencell.auth.url}}/realms/master/protocol/openid-connect/token",
+              "host" : [ "{{opencell.auth.url}}" ],
+              "path" : [ "realms", "master", "protocol", "openid-connect", "token" ]
+            }
+          },
+          "response" : [ ]
+        } ],
+        "name" : "get token"
+      }, {
+        "auth" : {
+          "type" : "bearer",
+          "bearer" : [ {
+            "key" : "token",
+            "type" : "string",
+            "value" : "{{access_token_kc_881}}"
+          } ]
+        },
+        "event" : [ {
+          "disabled" : false,
+          "listen" : "prerequest",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "let now=new Date();", "pm.globals.set(\"timestamp.iso\", now.toISOString());", "pm.globals.set(\"request.label\", pm.info.requestName);", "let parts = pm.info.requestName.split(\"|\");", "for(let i=0; i<parts.length; i++) {", "    pm.globals.set(\"wait\", 0);", "    pm.globals.set(\"request.label.\"+i, parts[i]);", "    if(parts[i].indexOf(\"=\") != -1 ){", "        propName = parts[i].split(\"=\")[0].trim();", "        propValue = parts[i].split(\"=\")[1];", "        pm.globals.set(propName, propValue);", "    }", "}", "" ]
+          }
+        }, {
+          "disabled" : false,
+          "listen" : "test",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        } ],
+        "item" : [ {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "if (pm.response.code == 200) {\r", "    let jsonData = pm.response.json();\r", "    pm.variables.set(\"keycloak.opencell.client.id\", jsonData[0].id);\r", "    console.log(\"keycloak.opencell.client.id: \" + pm.variables.get(\"keycloak.opencell.client.id\"));\r", "}" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "get id client|clientId=opencell-web",
+          "request" : {
+            "header" : [ ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients?clientId={{clientId}}",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients" ],
+              "query" : [ {
+                "key" : "clientId",
+                "value" : "{{clientId}}"
+              } ]
+            }
+          },
+          "response" : [ ]
+        } ],
+        "name" : "get id clients web"
+      }, {
+        "auth" : {
+          "type" : "bearer",
+          "bearer" : [ {
+            "key" : "token",
+            "type" : "string",
+            "value" : "{{access_token_kc_881}}"
+          } ]
+        },
+        "event" : [ {
+          "disabled" : false,
+          "listen" : "prerequest",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "let now=new Date();", "pm.globals.set(\"timestamp.iso\", now.toISOString());", "pm.globals.set(\"request.label\", pm.info.requestName);", "let parts = pm.info.requestName.split(\"|\");", "for(let i=0; i<parts.length; i++) {", "    pm.globals.set(\"wait\", 0);", "    pm.globals.set(\"request.label.\"+i, parts[i]);", "    if(parts[i].indexOf(\"=\") != -1 ){", "        propName = parts[i].split(\"=\")[0].trim();", "        propValue = parts[i].split(\"=\")[1];", "        pm.globals.set(propName, propValue);", "    }", "}", "" ]
+          }
+        }, {
+          "disabled" : false,
+          "listen" : "test",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        } ],
+        "item" : [ {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "if (pm.response.code == 200) {\r", "    let jsonData = pm.response.json();\r", "    pm.variables.set(\"keycloak.opencell.portal.id\", jsonData[0].id);\r", "}" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "get id client|clientId=opencell-portal",
+          "request" : {
+            "header" : [ ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients?clientId={{clientId}}",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients" ],
+              "query" : [ {
+                "key" : "clientId",
+                "value" : "{{clientId}}"
+              } ]
+            }
+          },
+          "response" : [ ]
+        } ],
+        "name" : "get id clients portal"
+      }, {
+        "auth" : {
+          "type" : "bearer",
+          "bearer" : [ {
+            "key" : "token",
+            "type" : "string",
+            "value" : "{{access_token_kc_881}}"
+          } ]
+        },
+        "event" : [ {
+          "disabled" : false,
+          "listen" : "prerequest",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "pm.variables.set(\"sepLines\", \"\\n\");", "pm.variables.set(\"sepWords\", \"\\t\");", "//columns params.", "pm.variables.set(\"params\", [", "    \"role_name\"]);", "", "let csv = `", "user_metier", "`;", "", "pm.variables.set(\"csv\", csv);", "", "", "", "myIteration = {", "    preRequest: function (pm) {", "        if (!pm) {", "            throw new Error('missing data pm');", "        }", "        let csv = pm.variables.get(\"csv\");", "        let sepLines = pm.variables.get(\"sepLines\");", "        let sepWords = pm.variables.get(\"sepWords\");", "        let params = pm.variables.get(\"params\");", "        if (!csv || !sepLines || !sepWords || !params) {", "            throw 'missing data csv=' + csv + \" sepLines=\" + sepLines + \" sepWords=\" + sepWords + \" params=\" + params;", "        }", "", "        // find an existing collection variable that contains the next lines", "        // if not variable that contains the next lines, split the csv in lines", "        let lines = pm.variables.get(\"lines\");", "        if (!lines || lines.length == 0) {", "            lines = csv.split(sepLines).filter(s => s.replaceAll(sepWords, \"\").length > 0);", "            pm.variables.set(\"lines\", lines);", "        }", "", "        // split the current line in words", "        let words = lines[0].split(sepWords);", "", "        // for each parameter, store the corresponding word as parameter", "        params.forEach(function (param, idx, arr) {", "            if (param !== null && words.length > idx) {", "                pm.variables.set(param, words[idx])", "            }", "            else pm.variables.set(param, \"\");", "        });", "    },", "    postRequest: function (postman, pm) {", "        if (!pm || !postman) {", "            throw new Error('missing data postman=' + postman + \" pm=\" + pm);", "        }", "        if ([200, 201, 202, 204].includes(pm.response.code)) {", "            // if remaining lines, change the next request.", "            let lines = pm.variables.get(\"lines\");", "            lines.shift();", "            // store the remaining lines for next iteration", "            pm.variables.set(\"lines\", lines);", "            if (lines && lines.length > 0) {", "                postman.setNextRequest(pm.info.requestId);", "            }", "        }", "    }", "}" ]
+          }
+        }, {
+          "disabled" : false,
+          "listen" : "test",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        } ],
+        "item" : [ {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "myIteration.postRequest(postman, pm);" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "myIteration.preRequest(pm);" ]
+            }
+          } ],
+          "name" : "Create Role",
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : "{\r\n    \"name\": \"{{role_name}}\",\r\n    \"composite\": true,\r\n    \"clientRole\": true,\r\n    \"containerId\": \"opencell\"\r\n}"
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "POST",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/roles",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "roles" ]
+            }
+          },
+          "response" : [ ]
+        } ],
+        "name" : "Créer realm role"
+      }, {
+        "auth" : {
+          "type" : "bearer",
+          "bearer" : [ {
+            "key" : "token",
+            "type" : "string",
+            "value" : "{{access_token_kc_881}}"
+          } ]
+        },
+        "event" : [ {
+          "disabled" : false,
+          "listen" : "prerequest",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "pm.variables.set(\"sepLines\", \"\\n\");", "pm.variables.set(\"sepWords\", \"\\t\");", "//columns params.", "pm.variables.set(\"params\", [", "    \"role_name\"]);", "", "let csv = `cc-liste-contrats", "cc-liste-cartes", "cc-liste-reporting", "cc-liste-factures", "cc-liste-factures-pdf", "cc-liste-factures-lanc-factu-globale", "cc-liste-transactions", "cc-vue360-onglet-client", "cc-vue360-onglet-chorus", "cc-vue360-onglet-info-paiement", "cc-vue360-onglet-offre", "cc-vue360-onglet-contact", "cc-vue360-entete", "cc-vue360-onglet-factures", "cc-vue360-onglet-factures-lanc-factu-manu", "cc-vue360-onglet-factures-pdf", "cc-vue360-onglet-factures-paiement", "cc-vue360-onglet-factures-blocage", "cc-vue360-onglet-factures-annulation", "cc-vue360-onglet-paiements", "cc-vue360-onglet-cartes", "cc-vue360-onglet-frais", "cc-vue360-onglet-frais-saisie", "cc-vue360-onglet-conditions-com`;", "", "pm.variables.set(\"csv\", csv);", "", "", "", "myIteration = {", "    preRequest: function (pm) {", "        if (!pm) {", "            throw new Error('missing data pm');", "        }", "        let csv = pm.variables.get(\"csv\");", "        let sepLines = pm.variables.get(\"sepLines\");", "        let sepWords = pm.variables.get(\"sepWords\");", "        let params = pm.variables.get(\"params\");", "        if (!csv || !sepLines || !sepWords || !params) {", "            throw 'missing data csv=' + csv + \" sepLines=\" + sepLines + \" sepWords=\" + sepWords + \" params=\" + params;", "        }", "", "        // find an existing collection variable that contains the next lines", "        // if not variable that contains the next lines, split the csv in lines", "        let lines = pm.variables.get(\"lines\");", "        if (!lines || lines.length == 0) {", "            lines = csv.split(sepLines).filter(s => s.replaceAll(sepWords, \"\").length > 0);", "            pm.variables.set(\"lines\", lines);", "        }", "", "        // split the current line in words", "        let words = lines[0].split(sepWords);", "", "        // for each parameter, store the corresponding word as parameter", "        params.forEach(function (param, idx, arr) {", "            if (param !== null && words.length > idx) {", "                pm.variables.set(param, words[idx])", "            }", "            else pm.variables.set(param, \"\");", "        });", "    },", "    postRequest: function (postman, pm) {", "        if (!pm || !postman) {", "            throw new Error('missing data postman=' + postman + \" pm=\" + pm);", "        }", "        if ([200, 201, 202, 204].includes(pm.response.code)) {", "            // if remaining lines, change the next request.", "            let lines = pm.variables.get(\"lines\");", "            lines.shift();", "            // store the remaining lines for next iteration", "            pm.variables.set(\"lines\", lines);", "            if (lines && lines.length > 0) {", "                postman.setNextRequest(pm.info.requestId);", "            }", "        }", "    }", "}" ]
+          }
+        }, {
+          "disabled" : false,
+          "listen" : "test",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        } ],
+        "item" : [ {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role apiAdministrateur",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.client.id}}/roles/apiAdministrateur",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.client.id}}", "roles", "apiAdministrateur" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role test",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/USER_METIER",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "USER_METIER" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role administrateur",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.client.id}}/roles/administrateur",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.client.id}}", "roles", "administrateur" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role userManagement",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/roles/userManagement",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "roles", "userManagement" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role apiUserManagement",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/roles/apiUserManagement",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "roles", "apiUserManagement" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role default-roles-opencell",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/roles/default-roles-opencell",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "roles", "default-roles-opencell" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Ajouter les roles opencell-web",
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : "{{subRolesStr}}"
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "POST",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/roles/{{role_name}}/composites",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "roles", "{{role_name}}", "composites" ]
+            }
+          },
+          "response" : [ ]
+        } ],
+        "name" : "Ajout des roles opencell-web"
+      } ],
+      "name" : "011 EP-209 Ajout realm rôle"
+    } ],
+    "name" : "R013"
+  }, {
+    "item" : [ {
+      "auth" : {
+        "type" : "basic",
+        "basic" : [ {
+          "key" : "password",
+          "type" : "string",
+          "value" : "{{opencell.password}}"
+        }, {
+          "key" : "username",
+          "type" : "string",
+          "value" : "{{opencell.username}}"
+        } ]
+      },
+      "event" : [ {
+        "disabled" : false,
+        "listen" : "prerequest",
+        "script" : {
+          "type" : "text/javascript",
+          "exec" : [ "" ]
+        }
+      }, {
+        "disabled" : false,
+        "listen" : "test",
+        "script" : {
+          "type" : "text/javascript",
+          "exec" : [ "" ]
+        }
+      } ],
+      "item" : [ {
+        "auth" : {
+          "type" : "noauth"
+        },
+        "event" : [ {
+          "disabled" : false,
+          "listen" : "prerequest",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        }, {
+          "disabled" : false,
+          "listen" : "test",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        } ],
+        "item" : [ {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "if ([200, 201, 202, 204].includes(pm.response.code)) {", "    const jsonResponse = pm.response.json();", "    pm.variables.set(\"access_token_kc_878\", jsonResponse.access_token);", "} " ]
+            }
+          } ],
+          "name" : "get token",
+          "request" : {
+            "body" : {
+              "mode" : "urlencoded",
+              "urlencoded" : [ {
+                "key" : "grant_type",
+                "value" : "password",
+                "type" : "text"
+              }, {
+                "key" : "client_id",
+                "value" : "admin-cli",
+                "type" : "text"
+              }, {
+                "key" : "username",
+                "value" : "{{keycloak.username}}",
+                "type" : "text"
+              }, {
+                "key" : "password",
+                "value" : "{{keycloak.password}}",
+                "type" : "text"
+              } ]
+            },
+            "header" : [ ],
+            "method" : "POST",
+            "url" : {
+              "raw" : "{{opencell.auth.url}}/realms/master/protocol/openid-connect/token",
+              "host" : [ "{{opencell.auth.url}}" ],
+              "path" : [ "realms", "master", "protocol", "openid-connect", "token" ]
+            }
+          },
+          "response" : [ ]
+        } ],
+        "name" : "get token"
+      }, {
+        "auth" : {
+          "type" : "bearer",
+          "bearer" : [ {
+            "key" : "token",
+            "type" : "string",
+            "value" : "{{access_token_kc_878}}"
+          } ]
+        },
+        "event" : [ {
+          "disabled" : false,
+          "listen" : "prerequest",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "let now=new Date();", "pm.globals.set(\"timestamp.iso\", now.toISOString());", "pm.globals.set(\"request.label\", pm.info.requestName);", "let parts = pm.info.requestName.split(\"|\");", "for(let i=0; i<parts.length; i++) {", "    pm.globals.set(\"wait\", 0);", "    pm.globals.set(\"request.label.\"+i, parts[i]);", "    if(parts[i].indexOf(\"=\") != -1 ){", "        propName = parts[i].split(\"=\")[0].trim();", "        propValue = parts[i].split(\"=\")[1];", "        pm.globals.set(propName, propValue);", "    }", "}", "" ]
+          }
+        }, {
+          "disabled" : false,
+          "listen" : "test",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        } ],
+        "item" : [ {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "if (pm.response.code == 200) {\r", "    let jsonData = pm.response.json();\r", "    pm.variables.set(\"keycloak.opencell.portal.id\", jsonData[0].id);\r", "}" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "get id client|clientId=opencell-portal",
+          "request" : {
+            "header" : [ ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients?clientId={{clientId}}",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients" ],
+              "query" : [ {
+                "key" : "clientId",
+                "value" : "{{clientId}}"
+              } ]
+            }
+          },
+          "response" : [ ]
+        } ],
+        "name" : "get id clients portal"
+      }, {
+        "auth" : {
+          "type" : "bearer",
+          "bearer" : [ {
+            "key" : "token",
+            "type" : "string",
+            "value" : "{{access_token_kc_878}}"
+          } ]
+        },
+        "event" : [ {
+          "disabled" : false,
+          "listen" : "prerequest",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "pm.variables.set(\"sepLines\", \"\\n\");", "pm.variables.set(\"sepWords\", \"\\t\");", "//columns params.", "pm.variables.set(\"params\", [\"role_name\"]);", "", "let csv = `", "TAB_COMPTA", "`;", "", "pm.variables.set(\"csv_base\", csv);", "", "", "", "myIteration = {", "    preRequest: function (pm) {", "        if (!pm) {", "            throw new Error('missing data pm');", "        }", "        let csv = pm.variables.get(\"csv\");", "        let sepLines = pm.variables.get(\"sepLines\");", "        let sepWords = pm.variables.get(\"sepWords\");", "        let params = pm.variables.get(\"params\");", "        if (!csv || !sepLines || !sepWords || !params) {", "            throw 'missing data csv=' + csv + \" sepLines=\" + sepLines + \" sepWords=\" + sepWords + \" params=\" + params;", "        }", "", "        // find an existing collection variable that contains the next lines", "        // if not variable that contains the next lines, split the csv in lines", "        let lines = pm.variables.get(\"lines\");", "        if (!lines || lines.length == 0) {", "            lines = csv.split(sepLines).filter(s => s.replaceAll(sepWords, \"\").length > 0);", "            pm.variables.set(\"lines\", lines);", "        }", "", "        // split the current line in words", "        let words = lines[0].split(sepWords);", "", "        // for each parameter, store the corresponding word as parameter", "        params.forEach(function (param, idx, arr) {", "            if (param !== null && words.length > idx) {", "                pm.variables.set(param, words[idx])", "            }", "            else pm.variables.set(param, \"\");", "        });", "    },", "    postRequest: function (postman, pm) {", "        if (!pm || !postman) {", "            throw new Error('missing data postman=' + postman + \" pm=\" + pm);", "        }", "        if ([200, 201, 202, 204].includes(pm.response.code)) {", "            // if remaining lines, change the next request.", "            let lines = pm.variables.get(\"lines\");", "            lines.shift();", "            // store the remaining lines for next iteration", "            pm.variables.set(\"lines\", lines);", "            if (lines && lines.length > 0) {", "                postman.setNextRequest(pm.info.requestId);", "            }", "        }", "    }", "}" ]
+          }
+        }, {
+          "disabled" : false,
+          "listen" : "test",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        } ],
+        "item" : [ {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let existing = pm.response.json().map(role=> role.name)", "let required = pm.variables.get(\"csv_base\").split(\"\\n\").filter(name=>name!==\"\")", "let filtered = required.filter(role=> !existing.includes(role))", "console.log(\"remaining roles to add : \"+filtered+\" from \"+required)", "if(filtered.length>0){", "    pm.variables.set(\"csv\", filtered.join(\"\\n\"))", "} else {", "    postman.setNextRequest(\"Get Role APIv2_FULL_ACCESS 878\")", "}" ]
+            }
+          } ],
+          "name" : "list roles opencell.portal.id",
+          "request" : {
+            "header" : [ ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "myIteration.postRequest(postman, pm);" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "myIteration.preRequest(pm);" ]
+            }
+          } ],
+          "name" : "Create Role",
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : "{\r\n    \"name\": \"{{role_name}}\",\r\n    \"description\":\"Accès onglet comptabilité\",\r\n    \"composite\": true,\r\n    \"clientRole\": true,\r\n    \"containerId\": \"{{keycloak.opencell.portal.id}}\"\r\n}"
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "POST",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles" ]
+            }
+          },
+          "response" : [ ]
+        } ],
+        "name" : "Créer roles portail"
+      }, {
+        "auth" : {
+          "type" : "bearer",
+          "bearer" : [ {
+            "key" : "token",
+            "type" : "string",
+            "value" : "{{access_token_kc_878}}"
+          } ]
+        },
+        "event" : [ {
+          "disabled" : false,
+          "listen" : "prerequest",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        }, {
+          "disabled" : false,
+          "listen" : "test",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        } ],
+        "item" : [ {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role TAB_COMPTA",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/TAB_COMPTA",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "TAB_COMPTA" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "myIteration.postRequest(postman, pm);", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "\r", "myIteration.preRequest(pm);" ]
+            }
+          } ],
+          "name" : "Ajouter les roles opencell-portal",
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : "{{subRolesStr}}"
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "POST",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/USER_METIER/composites",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "USER_METIER", "composites" ]
+            }
+          },
+          "response" : [ ]
+        } ],
+        "name" : "Ajout des roles opencell-portal"
+      } ],
+      "name" : "010 EP-288 Ajout role portal TAB_COMPTA"
+    } ],
+    "name" : "R016"
+  }, {
+    "item" : [ {
+      "auth" : {
+        "type" : "basic",
+        "basic" : [ {
+          "key" : "password",
+          "type" : "string",
+          "value" : "{{opencell.password}}"
+        }, {
+          "key" : "username",
+          "type" : "string",
+          "value" : "{{opencell.username}}"
+        } ]
+      },
+      "event" : [ {
+        "disabled" : false,
+        "listen" : "prerequest",
+        "script" : {
+          "type" : "text/javascript",
+          "exec" : [ "" ]
+        }
+      }, {
+        "disabled" : false,
+        "listen" : "test",
+        "script" : {
+          "type" : "text/javascript",
+          "exec" : [ "" ]
+        }
+      } ],
+      "item" : [ {
+        "auth" : {
+          "type" : "noauth"
+        },
+        "event" : [ {
+          "disabled" : false,
+          "listen" : "prerequest",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        }, {
+          "disabled" : false,
+          "listen" : "test",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        } ],
+        "item" : [ {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "if ([200, 201, 202, 204].includes(pm.response.code)) {", "    const jsonResponse = pm.response.json();", "    pm.variables.set(\"access_token_kc_878\", jsonResponse.access_token);", "} " ]
+            }
+          } ],
+          "name" : "get token",
+          "request" : {
+            "body" : {
+              "mode" : "urlencoded",
+              "urlencoded" : [ {
+                "key" : "grant_type",
+                "value" : "password",
+                "type" : "text"
+              }, {
+                "key" : "client_id",
+                "value" : "admin-cli",
+                "type" : "text"
+              }, {
+                "key" : "username",
+                "value" : "{{keycloak.username}}",
+                "type" : "text"
+              }, {
+                "key" : "password",
+                "value" : "{{keycloak.password}}",
+                "type" : "text"
+              } ]
+            },
+            "header" : [ ],
+            "method" : "POST",
+            "url" : {
+              "raw" : "{{opencell.auth.url}}/realms/master/protocol/openid-connect/token",
+              "host" : [ "{{opencell.auth.url}}" ],
+              "path" : [ "realms", "master", "protocol", "openid-connect", "token" ]
+            }
+          },
+          "response" : [ ]
+        } ],
+        "name" : "get token"
+      }, {
+        "auth" : {
+          "type" : "bearer",
+          "bearer" : [ {
+            "key" : "token",
+            "type" : "string",
+            "value" : "{{access_token_kc_878}}"
+          } ]
+        },
+        "event" : [ {
+          "disabled" : false,
+          "listen" : "prerequest",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "let now=new Date();", "pm.globals.set(\"timestamp.iso\", now.toISOString());", "pm.globals.set(\"request.label\", pm.info.requestName);", "let parts = pm.info.requestName.split(\"|\");", "for(let i=0; i<parts.length; i++) {", "    pm.globals.set(\"wait\", 0);", "    pm.globals.set(\"request.label.\"+i, parts[i]);", "    if(parts[i].indexOf(\"=\") != -1 ){", "        propName = parts[i].split(\"=\")[0].trim();", "        propValue = parts[i].split(\"=\")[1];", "        pm.globals.set(propName, propValue);", "    }", "}", "" ]
+          }
+        }, {
+          "disabled" : false,
+          "listen" : "test",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        } ],
+        "item" : [ {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "if (pm.response.code == 200) {\r", "    let jsonData = pm.response.json();\r", "    pm.variables.set(\"keycloak.opencell.portal.id\", jsonData[0].id);\r", "}" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "get id client|clientId=opencell-portal",
+          "request" : {
+            "header" : [ ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients?clientId={{clientId}}",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients" ],
+              "query" : [ {
+                "key" : "clientId",
+                "value" : "{{clientId}}"
+              } ]
+            }
+          },
+          "response" : [ ]
+        } ],
+        "name" : "get id clients portal"
+      }, {
+        "auth" : {
+          "type" : "bearer",
+          "bearer" : [ {
+            "key" : "token",
+            "type" : "string",
+            "value" : "{{access_token_kc_878}}"
+          } ]
+        },
+        "event" : [ {
+          "disabled" : false,
+          "listen" : "prerequest",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "pm.variables.set(\"sepLines\", \"\\n\");", "pm.variables.set(\"sepWords\", \"\\t\");", "//columns params.", "pm.variables.set(\"params\", [\"role_name\",\"description\"]);", "", "let csv = `", "TAB_GROUP\taccès aux champs non obligatoires de l'onglet GROUPE", "REFERENCE_EXTERNE\taccès au champ reference externe de l'onglet GENERAL", "NUM_IDENTIFICATION\taccès au champ n°identification de l'onglet GENERAL", "NUM_TVA\taccès au champ n° TVA de l'onglet GENERAL", "PARENT\taccès au champ Parent de l'onglet PAYEUR (Particulier)", "ALIAS\taccès au champ Alias de l'onglet PAYEUR (Particulier)", "CUSTOM_FIELD\taccès à l'onglet CUSTOMER_CUSTOM_FIELD de l'onglet PAYEUR (Particulier)", "CATEGORY_CREDIT\taccès au champ Catégorie de crédit de l'onglet PAYEUR (Particulier)", "PARENT_RACINE\taccès au champ parent racine de l'onglet PAYEUR (Particulier)", "`;", "", "pm.variables.set(\"csv_base\", csv);", "", "", "", "myIteration = {", "    preRequest: function (pm) {", "        if (!pm) {", "            throw new Error('missing data pm');", "        }", "        let csv = pm.variables.get(\"csv\");", "        let sepLines = pm.variables.get(\"sepLines\");", "        let sepWords = pm.variables.get(\"sepWords\");", "        let params = pm.variables.get(\"params\");", "        if (!csv || !sepLines || !sepWords || !params) {", "            throw 'missing data csv=' + csv + \" sepLines=\" + sepLines + \" sepWords=\" + sepWords + \" params=\" + params;", "        }", "", "        // find an existing collection variable that contains the next lines", "        // if not variable that contains the next lines, split the csv in lines", "        let lines = pm.variables.get(\"lines\");", "        if (!lines || lines.length == 0) {", "            lines = csv.split(sepLines).filter(s => s.replaceAll(sepWords, \"\").length > 0);", "            pm.variables.set(\"lines\", lines);", "        }", "", "        // split the current line in words", "        let words = lines[0].split(sepWords);", "", "        // for each parameter, store the corresponding word as parameter", "        params.forEach(function (param, idx, arr) {", "            if (param !== null && words.length > idx) {", "                pm.variables.set(param, words[idx])", "            }", "            else pm.variables.set(param, \"\");", "        });", "    },", "    postRequest: function (postman, pm) {", "        if (!pm || !postman) {", "            throw new Error('missing data postman=' + postman + \" pm=\" + pm);", "        }", "        if ([200, 201, 202, 204].includes(pm.response.code)) {", "            // if remaining lines, change the next request.", "            let lines = pm.variables.get(\"lines\");", "            lines.shift();", "            // store the remaining lines for next iteration", "            pm.variables.set(\"lines\", lines);", "            if (lines && lines.length > 0) {", "                postman.setNextRequest(pm.info.requestId);", "            }", "        }", "    }", "}" ]
+          }
+        }, {
+          "disabled" : false,
+          "listen" : "test",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        } ],
+        "item" : [ {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let existing = pm.response.json().map(role=> role.name)", "let required = pm.variables.get(\"csv_base\").split(\"\\n\").filter(name=>name!==\"\")", "let filtered = required.filter(role=> !existing.includes(role))", "console.log(\"remaining roles to add : \"+filtered+\" from \"+required)", "if(filtered.length>0){", "    pm.variables.set(\"csv\", filtered.join(\"\\n\"))", "} else {", "    postman.setNextRequest(\"Get Role APIv2_FULL_ACCESS 878\")", "}" ]
+            }
+          } ],
+          "name" : "list roles opencell.portal.id",
+          "request" : {
+            "header" : [ ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "myIteration.postRequest(postman, pm);" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "myIteration.preRequest(pm);" ]
+            }
+          } ],
+          "name" : "Create Role",
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : "{\r\n    \"name\": \"{{role_name}}\",\r\n    \"description\":\"{{description}}\",\r\n    \"composite\": true,\r\n    \"clientRole\": true,\r\n    \"containerId\": \"{{keycloak.opencell.portal.id}}\"\r\n}"
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "POST",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles" ]
+            }
+          },
+          "response" : [ ]
+        } ],
+        "name" : "Créer roles portail"
+      }, {
+        "auth" : {
+          "type" : "bearer",
+          "bearer" : [ {
+            "key" : "token",
+            "type" : "string",
+            "value" : "{{access_token_kc_878}}"
+          } ]
+        },
+        "event" : [ {
+          "disabled" : false,
+          "listen" : "prerequest",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        }, {
+          "disabled" : false,
+          "listen" : "test",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        } ],
+        "item" : [ {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role TAB_GROUP",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/TAB_GROUP",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "TAB_GROUP" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role REFERENCE_EXTERNE",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/REFERENCE_EXTERNE",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "REFERENCE_EXTERNE" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role NUM_IDENTIFICATION",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/NUM_IDENTIFICATION",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "NUM_IDENTIFICATION" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role NUM_TVA",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/NUM_TVA",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "NUM_TVA" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role PARENT",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/PARENT",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "PARENT" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role ALIAS",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/ALIAS",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "ALIAS" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role CUSTOM_FIELD",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/CUSTOM_FIELD",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "CUSTOM_FIELD" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role CATEGORY_CREDIT",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/CATEGORY_CREDIT",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "CATEGORY_CREDIT" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role PARENT_RACINE",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/PARENT_RACINE",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "PARENT_RACINE" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Ajouter les roles opencell-portal",
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : "{{subRolesStr}}"
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "POST",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/USER_METIER/composites",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "USER_METIER", "composites" ]
+            }
+          },
+          "response" : [ ]
+        } ],
+        "name" : "Ajout des roles opencell-portal"
+      } ],
+      "name" : "010 EP-327 Ajout roles portal UI"
+    } ],
+    "name" : "R019"
+  }, {
+    "item" : [ {
+      "auth" : {
+        "type" : "basic",
+        "basic" : [ {
+          "key" : "password",
+          "type" : "string",
+          "value" : "{{opencell.password}}"
+        }, {
+          "key" : "username",
+          "type" : "string",
+          "value" : "{{opencell.username}}"
+        } ]
+      },
+      "event" : [ {
+        "disabled" : false,
+        "listen" : "prerequest",
+        "script" : {
+          "type" : "text/javascript",
+          "exec" : [ "" ]
+        }
+      }, {
+        "disabled" : false,
+        "listen" : "test",
+        "script" : {
+          "type" : "text/javascript",
+          "exec" : [ "" ]
+        }
+      } ],
+      "item" : [ {
+        "auth" : {
+          "type" : "noauth"
+        },
+        "event" : [ {
+          "disabled" : false,
+          "listen" : "prerequest",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        }, {
+          "disabled" : false,
+          "listen" : "test",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        } ],
+        "item" : [ {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "if ([200, 201, 202, 204].includes(pm.response.code)) {", "    const jsonResponse = pm.response.json();", "    pm.variables.set(\"access_token_kc_878\", jsonResponse.access_token);", "} " ]
+            }
+          } ],
+          "name" : "get token",
+          "request" : {
+            "body" : {
+              "mode" : "urlencoded",
+              "urlencoded" : [ {
+                "key" : "grant_type",
+                "value" : "password",
+                "type" : "text"
+              }, {
+                "key" : "client_id",
+                "value" : "admin-cli",
+                "type" : "text"
+              }, {
+                "key" : "username",
+                "value" : "{{keycloak.username}}",
+                "type" : "text"
+              }, {
+                "key" : "password",
+                "value" : "{{keycloak.password}}",
+                "type" : "text"
+              } ]
+            },
+            "header" : [ ],
+            "method" : "POST",
+            "url" : {
+              "raw" : "{{opencell.auth.url}}/realms/master/protocol/openid-connect/token",
+              "host" : [ "{{opencell.auth.url}}" ],
+              "path" : [ "realms", "master", "protocol", "openid-connect", "token" ]
+            }
+          },
+          "response" : [ ]
+        } ],
+        "name" : "get token"
+      }, {
+        "auth" : {
+          "type" : "bearer",
+          "bearer" : [ {
+            "key" : "token",
+            "type" : "string",
+            "value" : "{{access_token_kc_878}}"
+          } ]
+        },
+        "event" : [ {
+          "disabled" : false,
+          "listen" : "prerequest",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "let now=new Date();", "pm.globals.set(\"timestamp.iso\", now.toISOString());", "pm.globals.set(\"request.label\", pm.info.requestName);", "let parts = pm.info.requestName.split(\"|\");", "for(let i=0; i<parts.length; i++) {", "    pm.globals.set(\"wait\", 0);", "    pm.globals.set(\"request.label.\"+i, parts[i]);", "    if(parts[i].indexOf(\"=\") != -1 ){", "        propName = parts[i].split(\"=\")[0].trim();", "        propValue = parts[i].split(\"=\")[1];", "        pm.globals.set(propName, propValue);", "    }", "}", "" ]
+          }
+        }, {
+          "disabled" : false,
+          "listen" : "test",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        } ],
+        "item" : [ {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "if (pm.response.code == 200) {\r", "    let jsonData = pm.response.json();\r", "    pm.variables.set(\"keycloak.opencell.portal.id\", jsonData[0].id);\r", "}" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "get id client|clientId=opencell-portal",
+          "request" : {
+            "header" : [ ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients?clientId={{clientId}}",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients" ],
+              "query" : [ {
+                "key" : "clientId",
+                "value" : "{{clientId}}"
+              } ]
+            }
+          },
+          "response" : [ ]
+        } ],
+        "name" : "get id clients portal"
+      }, {
+        "auth" : {
+          "type" : "bearer",
+          "bearer" : [ {
+            "key" : "token",
+            "type" : "string",
+            "value" : "{{access_token_kc_878}}"
+          } ]
+        },
+        "event" : [ {
+          "disabled" : false,
+          "listen" : "prerequest",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "let now=new Date();", "pm.globals.set(\"timestamp.iso\", now.toISOString());", "pm.globals.set(\"request.label\", pm.info.requestName);", "let parts = pm.info.requestName.split(\"|\");", "for(let i=0; i<parts.length; i++) {", "    pm.globals.set(\"wait\", 0);", "    pm.globals.set(\"request.label.\"+i, parts[i]);", "    if(parts[i].indexOf(\"=\") != -1 ){", "        propName = parts[i].split(\"=\")[0].trim();", "        propValue = parts[i].split(\"=\")[1];", "        pm.globals.set(propName, propValue);", "    }", "}", "" ]
+          }
+        }, {
+          "disabled" : false,
+          "listen" : "test",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        } ],
+        "item" : [ {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "if (pm.response.code == 200) {\r", "    let jsonData = pm.response.json();\r", "    pm.variables.set(\"keycloak.opencell.portal.id\", jsonData[0].id);\r", "}" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "delete role",
+          "request" : {
+            "header" : [ ],
+            "method" : "DELETE",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/CONSOMMATEUR",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "CONSOMMATEUR" ]
+            }
+          },
+          "response" : [ ]
+        } ],
+        "name" : "delete role consommateur"
+      }, {
+        "auth" : {
+          "type" : "bearer",
+          "bearer" : [ {
+            "key" : "token",
+            "type" : "string",
+            "value" : "{{access_token_kc_878}}"
+          } ]
+        },
+        "event" : [ {
+          "disabled" : false,
+          "listen" : "prerequest",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "pm.variables.set(\"sepLines\", \"\\n\");", "pm.variables.set(\"sepWords\", \"\\t\");", "//columns params.", "pm.variables.set(\"params\", [\"role_name\"]);", "", "let csv = `", "CONSOMMATEUR", "`;", "", "pm.variables.set(\"csv_base\", csv);", "", "", "", "myIteration = {", "    preRequest: function (pm) {", "        if (!pm) {", "            throw new Error('missing data pm');", "        }", "        let csv = pm.variables.get(\"csv\");", "        let sepLines = pm.variables.get(\"sepLines\");", "        let sepWords = pm.variables.get(\"sepWords\");", "        let params = pm.variables.get(\"params\");", "        if (!csv || !sepLines || !sepWords || !params) {", "            throw 'missing data csv=' + csv + \" sepLines=\" + sepLines + \" sepWords=\" + sepWords + \" params=\" + params;", "        }", "", "        // find an existing collection variable that contains the next lines", "        // if not variable that contains the next lines, split the csv in lines", "        let lines = pm.variables.get(\"lines\");", "        if (!lines || lines.length == 0) {", "            lines = csv.split(sepLines).filter(s => s.replaceAll(sepWords, \"\").length > 0);", "            pm.variables.set(\"lines\", lines);", "        }", "", "        // split the current line in words", "        let words = lines[0].split(sepWords);", "", "        // for each parameter, store the corresponding word as parameter", "        params.forEach(function (param, idx, arr) {", "            if (param !== null && words.length > idx) {", "                pm.variables.set(param, words[idx])", "            }", "            else pm.variables.set(param, \"\");", "        });", "    },", "    postRequest: function (postman, pm) {", "        if (!pm || !postman) {", "            throw new Error('missing data postman=' + postman + \" pm=\" + pm);", "        }", "        if ([200, 201, 202, 204].includes(pm.response.code)) {", "            // if remaining lines, change the next request.", "            let lines = pm.variables.get(\"lines\");", "            lines.shift();", "            // store the remaining lines for next iteration", "            pm.variables.set(\"lines\", lines);", "            if (lines && lines.length > 0) {", "                postman.setNextRequest(pm.info.requestId);", "            }", "        }", "    }", "}" ]
+          }
+        }, {
+          "disabled" : false,
+          "listen" : "test",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        } ],
+        "item" : [ {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let existing = pm.response.json().map(role=> role.name)", "let required = pm.variables.get(\"csv_base\").split(\"\\n\").filter(name=>name!==\"\")", "let filtered = required.filter(role=> !existing.includes(role))", "console.log(\"remaining roles to add : \"+filtered+\" from \"+required)", "if(filtered.length>0){", "    pm.variables.set(\"csv\", filtered.join(\"\\n\"))", "} else {", "    postman.setNextRequest(\"Get Role APIv2_FULL_ACCESS 878\")", "}" ]
+            }
+          } ],
+          "name" : "list roles opencell.portal.id",
+          "request" : {
+            "header" : [ ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "myIteration.postRequest(postman, pm);" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "myIteration.preRequest(pm);" ]
+            }
+          } ],
+          "name" : "Create Role",
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : "{\r\n    \"name\": \"{{role_name}}\",\r\n    \"description\":\"Accès au champ consommateur\",\r\n    \"composite\": true,\r\n    \"clientRole\": true,\r\n    \"containerId\": \"{{keycloak.opencell.portal.id}}\"\r\n}"
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "POST",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles" ]
+            }
+          },
+          "response" : [ ]
+        } ],
+        "name" : "Créer roles portail"
+      }, {
+        "auth" : {
+          "type" : "bearer",
+          "bearer" : [ {
+            "key" : "token",
+            "type" : "string",
+            "value" : "{{access_token_kc_878}}"
+          } ]
+        },
+        "event" : [ {
+          "disabled" : false,
+          "listen" : "prerequest",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        }, {
+          "disabled" : false,
+          "listen" : "test",
+          "script" : {
+            "type" : "text/javascript",
+            "exec" : [ "" ]
+          }
+        } ],
+        "item" : [ {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "let jsonData = pm.response.json();", "let subRoles = pm.variables.get(\"subRoles\") || [];", "subRoles.push(jsonData);", "pm.variables.set(\"subRoles\", subRoles);", "pm.variables.set(\"subRolesStr\", JSON.stringify(subRoles));", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "" ]
+            }
+          } ],
+          "name" : "Get Role CONSOMMATEUR",
+          "protocolProfileBehavior" : {
+            "disableBodyPruning" : true
+          },
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : ""
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "GET",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/CONSOMMATEUR",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "CONSOMMATEUR" ]
+            }
+          },
+          "response" : [ ]
+        }, {
+          "event" : [ {
+            "disabled" : false,
+            "listen" : "test",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "myIteration.postRequest(postman, pm);", "" ]
+            }
+          }, {
+            "disabled" : false,
+            "listen" : "prerequest",
+            "script" : {
+              "type" : "text/javascript",
+              "exec" : [ "\r", "myIteration.preRequest(pm);" ]
+            }
+          } ],
+          "name" : "Ajouter les roles opencell-portal",
+          "request" : {
+            "body" : {
+              "mode" : "raw",
+              "raw" : "{{subRolesStr}}"
+            },
+            "header" : [ {
+              "key" : "Content-Type",
+              "value" : "application/json"
+            } ],
+            "method" : "POST",
+            "url" : {
+              "raw" : "{{keycloak.url}}/opencell/clients/{{keycloak.opencell.portal.id}}/roles/USER_METIER/composites",
+              "host" : [ "{{keycloak.url}}" ],
+              "path" : [ "opencell", "clients", "{{keycloak.opencell.portal.id}}", "roles", "USER_METIER", "composites" ]
+            }
+          },
+          "response" : [ ]
+        } ],
+        "name" : "Ajout des roles opencell-portal"
+      } ],
+      "name" : "010 EP-288 Ajout role portal CONSOMMATEUR"
+    } ],
+    "name" : "R021"
+  } ]
+}

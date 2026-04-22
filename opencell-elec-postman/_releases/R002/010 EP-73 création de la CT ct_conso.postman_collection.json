@@ -1,0 +1,73 @@
+{
+	"info": {
+		"_postman_id": "afe1d41b-5025-4e5f-811a-6ff09c6810dc",
+		"name": "010 EP-73 création de la CT ct_conso",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847135"
+	},
+	"item": [
+		{
+			"name": "ct_conso",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"ct_conso\",\r\n    \"description\": \"Table des consommations\",\r\n    \"disabled\": false,\r\n    \"name\": \"ct_conso\",\r\n    \"storeInES\": false,\r\n    \"storeAsTable\": true,\r\n    \"field\": [\r\n        {\r\n            \"code\": \"quantite\",\r\n            \"description\": \"Quantité consommée\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"unite\",\r\n            \"description\": \"Unité de la consommation\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"id_pds\",\r\n            \"description\": \"Identifiant du point de service\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"num_compteur\",\r\n            \"description\": \"Numéro du compteur\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"index_precedent\",\r\n            \"description\": \"Index précédent\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"index_nouveau\",\r\n            \"description\": \"Index ayant permis le calcul de la consommation\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"date_index_precedent\",\r\n            \"description\": \"Date de la relève précédente\",\r\n            \"fieldType\": \"DATE\"\r\n        },\r\n        {\r\n            \"code\": \"date_releve\",\r\n            \"description\": \"Date de la relève ayant permis le calcul de la consommation\",\r\n            \"fieldType\": \"DATE\"\r\n        },\r\n        {\r\n            \"code\": \"nature_releve\",\r\n            \"description\": \"Nature de la relève\",\r\n            \"fieldType\": \"LIST\",\r\n            \"listValues\": {\r\n                \"REEL\": \"REEL\",\r\n                \"ESTIME\": \"ESTIME\",\r\n                \"EVENEMENT\": \"EVENEMENT\",\r\n                \"DEPOSE\": \"DEPOSE\"\r\n            }\r\n        },\r\n        {\r\n            \"code\": \"origine\",\r\n            \"description\": \"Origine de la relève\",\r\n            \"fieldType\": \"LIST\",\r\n            \"listValues\": {\r\n                \"MAREL\": \"MAREL\",\r\n                \"SATURNE\": \"SATURNE\",\r\n                \"SMARTSIDE\": \"SMARTSIDE\",\r\n                \"ENERLAKE\": \"ENERLAKE\",\r\n                \"ADVANCE\": \"ADVANCE\",\r\n                \"DI\": \"DI\",\r\n                \"AEL\": \"AEL\",\r\n                \"TELEPHONE\": \"TELEPHONE\",\r\n                \"MANUEL\": \"MANUEL\",\r\n                \"OPENCELL\": \"OPENCELL\"\r\n            }\r\n        },\r\n        {\r\n            \"code\": \"poste_horosaisonnier\",\r\n            \"description\": \"Poste horosaisonnier\",\r\n            \"fieldType\": \"LIST\",\r\n            \"listValues\": {\r\n                \"BASE\": \"BASE\",\r\n                \"HP\": \"HP\",\r\n                \"HC\": \"HC\",\r\n                \"JOUR\": \"JOUR\",\r\n                \"NUIT\": \"NUIT\"\r\n            }\r\n        },\r\n        {\r\n            \"code\": \"nature_mesure\",\r\n            \"description\": \"Nature de la mesure\",\r\n            \"fieldType\": \"LIST\",\r\n            \"listValues\": {\r\n                \"EA\": \"EA\",\r\n                \"ER\": \"ER\",\r\n                \"EAi\": \"EAi\",\r\n                \"ERi\": \"ERi\",\r\n                \"Imax\": \"Imax\",\r\n                \"PA\": \"PA\",\r\n                \"DD\": \"DD\",\r\n                \"VOL\": \"VOL\",\r\n                \"VOLR\": \"VOLR\",\r\n                \"COSPHI\": \"COSPHI\",\r\n                \"DP\": \"DP\"\r\n            }\r\n        },\r\n        {\r\n            \"code\": \"edr_id\",\r\n            \"description\": \"Identifiant de l’EDR associé à la consommation\",\r\n            \"fieldType\": \"LONG\"\r\n        },\r\n        {\r\n            \"code\": \"code_erreur\",\r\n            \"description\": \"Code erreur\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"message_erreur\",\r\n            \"description\": \"Message erreur\",\r\n            \"fieldType\": \"STRING\",\r\n            \"maxValue\": 200\r\n        },\r\n        {\r\n            \"code\": \"statut\",\r\n            \"description\": \"Statut\",\r\n            \"fieldType\": \"LIST\",\r\n            \"listValues\": {\r\n                \"IMPORTE\": \"IMPORTE\",\r\n                \"VALORISE\": \"VALORISE\",\r\n                \"CALCULE\": \"CALCULE\",\r\n                \"INFO\": \"INFO\",\r\n                \"ERREUR\": \"ERREUR\"\r\n            }\r\n        }\r\n    ],\r\n    \"action\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/entityCustomization/entity/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"entityCustomization",
+						"entity",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -1,0 +1,189 @@
+{
+	"info": {
+		"_postman_id": "4931f1b5-e943-4266-9fdf-d8488145a82f",
+		"name": "040 EP-118 CH_US_IR_ENER_HC",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847069"
+	},
+	"item": [
+		{
+			"name": "usage charges csv",
+			"item": [
+				{
+					"name": "Charge",
+					"item": [
+						{
+							"name": "Charge Usage",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"\r",
+											"myIteration.preRequest(pm);\r",
+											"\r",
+											"if(pm.variables.has(\"triggerNextCharge\")){\r",
+											"    pm.variables.set(\"triggerNextCharge\",pm.variables.get(\"triggerNextCharge\").toLowerCase());\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"myIteration.postRequest(postman, pm);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"code\": \"{{chargeCode}}\",\r\n    \"description\": \"{{chargeDesc}}\",\r\n    \"filterParam1\":\"{{filterParam1}}\",\r\n    \"filterParam2\":\"{{filterParam2}}\",\r\n    \"filterParam3\":\"kWh\",\r\n    \"ratingScriptCode\":\"eec.epi.scripts.valo.USValo\",\r\n    \"triggerNextCharge\":{{triggerNextCharge}},\r\n    \"status\" : \"ACTIVE\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{opencell.url}}/catalog/usageChargeTemplate/createOrUpdate",
+									"host": [
+										"{{opencell.url}}"
+									],
+									"path": [
+										"catalog",
+										"usageChargeTemplate",
+										"createOrUpdate"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.variables.set(\"productCode\", \"PROD_LIBERT\")",
+							"",
+							"pm.variables.set(\"sepLines\", \"\\n\");",
+							"pm.variables.set(\"sepWords\", \"\\t\");",
+							"//columns params.",
+							"pm.variables.set(\"params\", [\"chargeCode\", \"chargeDesc\", \"triggerNextCharge\", \"filterParam1\", \"filterParam2\", \"ratingScript\", \"chargeAmount\", \"chargeCF\", \"chargeAmountWithoutTaxEL\", \"articleCode\", \"Description\", \"Taxclass\", \"InvoiceSubCategory\", \"accountingCode\", \"productCode\"",
+							"]);",
+							"",
+							"let csv = `CH_US_IR_ENER_HC\tEnergie heures creuses (kWh)\tTrue\tEA\tHC\t\t\t\t\tAA_IR_ENER_HC\tEnergie heures creuses (kWh)\tTAXC_TGC_CONSO_3\tISCAT_IR_VALO_CONSO\t701011\tPROD_CONSO_IRR",
+							"`;",
+							"pm.variables.set(\"csv\", csv);",
+							"",
+							"myIteration = {",
+							"    preRequest: function (pm) {",
+							"        if (!pm) {",
+							"            throw new Error('missing data pm');",
+							"        }",
+							"        let csv = pm.variables.get(\"csv\");",
+							"        let sepLines = pm.variables.get(\"sepLines\");",
+							"        let sepWords = pm.variables.get(\"sepWords\");",
+							"        let params = pm.variables.get(\"params\");",
+							"        if (!csv || !sepLines || !sepWords || !params) {",
+							"            throw 'missing data csv=' + csv + \" sepLines=\" + sepLines + \" sepWords=\" + sepWords + \" params=\" + params;",
+							"        }",
+							"",
+							"        // find an existing collection variable that contains the next lines",
+							"        // if not variable that contains the next lines, split the csv in lines",
+							"        let lines = pm.variables.get(\"lines\");",
+							"        if (!lines || lines.length == 0) {",
+							"            lines = csv.split(sepLines).filter(s => s.replaceAll(sepWords, \"\").length > 0);",
+							"            pm.variables.set(\"lines\", lines);",
+							"        }",
+							"",
+							"        // split the current line in words",
+							"        let words = lines[0].split(sepWords);",
+							"",
+							"        // for each parameter, store the corresponding word as parameter",
+							"        params.forEach(function (param, idx, arr) {",
+							"            if (param !== null && words.length > idx) {",
+							"                pm.variables.set(param, words[idx])",
+							"            }",
+							"            else pm.variables.set(param, \"\");",
+							"        });",
+							"    },",
+							"    postRequest: function (postman, pm) {",
+							"        if (!pm || !postman) {",
+							"            throw new Error('missing data postman=' + postman + \" pm=\" + pm);",
+							"        }",
+							"        if ([200, 201, 202, 204].includes(pm.response.code)) {",
+							"            // if remaining lines, change the next request.",
+							"            let lines = pm.variables.get(\"lines\");",
+							"            lines.shift();",
+							"            // store the remaining lines for next iteration",
+							"            pm.variables.set(\"lines\", lines);",
+							"            if (lines && lines.length > 0) {",
+							"                postman.setNextRequest(pm.info.requestId);",
+							"            }",
+							"        }",
+							"    }",
+							"}"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

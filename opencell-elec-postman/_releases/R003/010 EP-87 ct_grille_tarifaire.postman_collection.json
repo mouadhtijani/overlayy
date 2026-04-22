@@ -1,0 +1,73 @@
+{
+	"info": {
+		"_postman_id": "22bc7719-d6b1-4d9c-ac9a-c20138221fd0",
+		"name": "010 EP-87 ct_grille_tarifaire",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847069"
+	},
+	"item": [
+		{
+			"name": "ct_grille_tarifaire",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"ct_grille_tarifaire\",\r\n    \"description\": \"Table des prix\",\r\n    \"disabled\": false,\r\n    \"name\": \"ct_grille_tarifaire\",\r\n    \"storeInES\": false,\r\n    \"storeAsTable\": true,\r\n    \"field\": [\r\n        {\r\n            \"code\": \"code\",\r\n            \"description\": \"Code du prix\",\r\n            \"fieldType\": \"STRING\",\r\n            \"maxValue\": 100\r\n        },\r\n        {\r\n            \"code\": \"description\",\r\n            \"description\": \"Description du prix\",\r\n            \"fieldType\": \"STRING\",\r\n            \"maxValue\": 100\r\n        },\r\n        {\r\n            \"code\": \"offre\",\r\n            \"description\": \"Offre\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"domaine_tension\",\r\n            \"description\": \"Domaine de tension\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"poste_horosaisonnier\",\r\n            \"description\": \"Poste Horosaisonnier\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"nature_mesure\",\r\n            \"description\": \"Nature de la mesure\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"transformateur_intensite\",\r\n            \"description\": \"Transformateur intensite\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"phasage_comptage\",\r\n            \"description\": \"Phasage du comptage\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"gamme_compteur\",\r\n            \"description\": \"Gamme du compteur\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"date_debut_validite\",\r\n            \"description\": \"Date de début de validite du prix\",\r\n            \"fieldType\": \"DATE\"\r\n        },\r\n        {\r\n            \"code\": \"date_fin_validite\",\r\n            \"description\": \"Date de fin de validite du prix\",\r\n            \"fieldType\": \"DATE\"\r\n        },\r\n        {\r\n            \"code\": \"valeur\",\r\n            \"description\": \"Valeur\",\r\n            \"fieldType\": \"DOUBLE\"\r\n        }\r\n    ],\r\n    \"action\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/entityCustomization/entity/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"entityCustomization",
+						"entity",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

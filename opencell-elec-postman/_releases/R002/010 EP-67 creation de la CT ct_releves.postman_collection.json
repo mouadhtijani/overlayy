@@ -1,0 +1,73 @@
+{
+	"info": {
+		"_postman_id": "c7de313e-16a4-4a6b-aa9d-3e5add2d7f16",
+		"name": "010 EP-67 creation de la CT ct_releves",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847135"
+	},
+	"item": [
+		{
+			"name": "ct_releves",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"ct_releves\",\r\n    \"description\": \"Table des relevés\",\r\n    \"disabled\": false,\r\n    \"name\": \"ct_releves\",\r\n    \"storeInES\": false,\r\n    \"storeAsTable\": true,\r\n    \"field\": [\r\n        {\r\n            \"code\": \"id_releve\",\r\n            \"description\": \"Identifiant de la relève\",\r\n            \"fieldType\": \"LONG\"\r\n        },\r\n        {\r\n            \"code\": \"num_compteur\",\r\n            \"description\": \"Numéro du compteur\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"date_releve\",\r\n            \"description\": \"Date de la relève\",\r\n            \"fieldType\": \"DATE\"\r\n        },\r\n        {\r\n            \"code\": \"nature_releve\",\r\n            \"description\": \"Nature de la relève\",\r\n            \"fieldType\": \"LIST\",\r\n            \"listValues\": {\r\n                \"REEL\": \"REEL\",\r\n                \"ESTIME\": \"ESTIME\",\r\n                \"EVENEMENT\": \"EVENEMENT\",\r\n                \"DEPOSE\": \"DEPOSE\",\r\n                \"POSE\": \"POSE\"\r\n            }\r\n        },\r\n        {\r\n            \"code\": \"origine\",\r\n            \"description\": \"Origine de la relève\",\r\n            \"fieldType\": \"LIST\",\r\n            \"listValues\": {\r\n                \"MAREL\": \"MAREL\",\r\n                \"SATURNE\": \"SATURNE\",\r\n                \"SMARTSIDE\": \"SMARTSIDE\",\r\n                \"ENERLAKE\": \"ENERLAKE\",\r\n                \"ADVANCE\": \"ADVANCE\",\r\n                \"DI\": \"DI\",\r\n                \"AEL\": \"AEL\",\r\n                \"TELEPHONE\": \"TELEPHONE\",\r\n                \"MANUEL\": \"MANUEL\"\r\n            }\r\n        },\r\n        {\r\n            \"code\": \"id_pds\",\r\n            \"description\": \"Identifiant du point de service\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"code_releve\",\r\n            \"description\": \"Code de la relève\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"code_observation\",\r\n            \"description\": \"Code observation\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"code_rfe\",\r\n            \"description\": \"Code RFE\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"lot\",\r\n            \"description\": \"Lot\",\r\n            \"fieldType\": \"LONG\"\r\n        },\r\n        {\r\n            \"code\": \"tournee\",\r\n            \"description\": \"Tournée\",\r\n            \"fieldType\": \"LONG\"\r\n        },\r\n        {\r\n            \"code\": \"exploitation\",\r\n            \"description\": \"Exploitation\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"poste_horosaisonnier\",\r\n            \"description\": \"Poste horosaisonnier\",\r\n            \"fieldType\": \"LIST\",\r\n            \"listValues\": {\r\n                \"BASE\": \"BASE\",\r\n                \"HP\": \"HP\",\r\n                \"HC\": \"HC\",\r\n                \"JOUR\": \"JOUR\",\r\n                \"NUIT\": \"NUIT\"\r\n            }\r\n        },\r\n        {\r\n            \"code\": \"nature_mesure\",\r\n            \"description\": \"Nature de la mesure\",\r\n            \"fieldType\": \"LIST\",\r\n            \"listValues\": {\r\n                \"EA\": \"EA\",\r\n                \"ER\": \"ER\",\r\n                \"EAi\": \"EAi\",\r\n                \"ERi\": \"ERi\",\r\n                \"Imax\": \"Imax\",\r\n                \"PA\": \"PA\",\r\n                \"DD\": \"DD\",\r\n                \"VOL\": \"VOL\",\r\n                \"VOLR\": \"VOLR\"\r\n            }\r\n        },\r\n        {\r\n            \"code\": \"mesure\",\r\n            \"description\": \"Mesure\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"unite\",\r\n            \"description\": \"Unite\",\r\n            \"fieldType\": \"LIST\",\r\n            \"listValues\": {\r\n                \"kVA\": \"kVA\",\r\n                \"kW\": \"kW\",\r\n                \"h\": \"h\",\r\n                \"min\": \"min\",\r\n                \"m3\": \"m3\",\r\n                \"L\": \"L\",\r\n                \"A\": \"A\"\r\n            }\r\n        },\r\n        {\r\n            \"code\": \"code_erreur\",\r\n            \"description\": \"Code de l'erreur\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"message_erreur\",\r\n            \"description\": \"Message de l'erreur\",\r\n            \"fieldType\": \"STRING\",\r\n            \"maxValue\": 200\r\n        },\r\n        {\r\n            \"code\": \"statut_releve\",\r\n            \"description\": \"Statut\",\r\n            \"fieldType\": \"LIST\",\r\n            \"listValues\": {\r\n                \"VALIDE\": \"VALIDE\",\r\n                \"CALCULE\": \"CALCULE\",\r\n                \"ERREUR\": \"ERREUR\"\r\n            }\r\n        }\r\n    ],\r\n    \"action\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/entityCustomization/entity/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"entityCustomization",
+						"entity",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

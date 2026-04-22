@@ -1,0 +1,72 @@
+{
+	"info": {
+		"_postman_id": "2e5d6b02-f7fc-42c1-bcf3-6fdf09d43830",
+		"name": "030 EP-183 JOB DataVerification",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30217061"
+	},
+	"item": [
+		{
+			"name": "JOB DataVerification",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"DataVerification\",\r\n    \"description\": \"DataVerification\",\r\n    \"jobCategory\": \"MEDIATION\",\r\n    \"jobTemplate\": \"ScriptingJob\",\r\n    \"active\": true,\r\n    \"verboseReport\": true,\r\n    \"customFields\": {\r\n        \"customField\": [\r\n            {\r\n                \"code\": \"ScriptingJob_script\",\r\n                \"entityReferenceValue\": {\r\n                    \"classname\": \"org.meveo.model.scripts.ScriptInstance\",\r\n                    \"code\": \"eec.epi.scripts.verification.DataVerification\"\r\n                }\r\n            }\r\n        ],\r\n        \"inheritedCustomField\": null\r\n    },\r\n    \"limitToSingleNode\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/jobInstance/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"jobInstance",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

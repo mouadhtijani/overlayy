@@ -1,0 +1,72 @@
+{
+	"info": {
+		"_postman_id": "e665cebf-04ff-44cc-8e66-b0e088d35fab",
+		"name": "030 EP-136 JOB Calcul_Conso_HTA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847069"
+	},
+	"item": [
+		{
+			"name": "Job Calcul_Conso_HTA",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"Calcul_Conso_HTA\",\r\n    \"description\": \"Calcul des données de consommations HTA\",\r\n    \"jobCategory\": \"MEDIATION\",\r\n    \"jobTemplate\": \"ScriptingJob\",\r\n    \"active\": true,\r\n    \"verboseReport\": true,\r\n    \"customFields\": {\r\n        \"customField\": [\r\n            {\r\n                \"code\": \"ScriptingJob_script\",\r\n                \"entityReferenceValue\": {\r\n                    \"classname\": \"org.meveo.model.scripts.ScriptInstance\",\r\n                    \"classnameCode\": null,\r\n                    \"code\": \"eec.epi.scripts.conso.CalculConsoHTA\"\r\n                }\r\n            }\r\n        ],\r\n        \"inheritedCustomField\": null\r\n    },\r\n    \"limitToSingleNode\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/jobInstance/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"jobInstance",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -1,0 +1,129 @@
+{
+	"info": {
+		"_postman_id": "49f338f7-1c1e-4989-be64-f487fa45c992",
+		"name": "010 EP-168: Paramétrage des comptes comptables des Customer Category",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30217061"
+	},
+	"item": [
+		{
+			"name": "ADMINISTRATION",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\" : \"ADMINISTRATION\",\r\n    \"accountingCode\" : \"411112\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/account/customer/updateCategory",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"account",
+						"customer",
+						"updateCategory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PARTICULIER_PRIVE",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\" : \"PARTICULIER_PRIVE\",\r\n    \"accountingCode\" : \"411111\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/account/customer/updateCategory",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"account",
+						"customer",
+						"updateCategory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PROFESSIONNEL_PRIVE",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\" : \"PROFESSIONNEL_PRIVE\",\r\n    \"accountingCode\" : \"411111\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/account/customer/updateCategory",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"account",
+						"customer",
+						"updateCategory"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

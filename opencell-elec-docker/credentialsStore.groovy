@@ -1,0 +1,85 @@
+import com.cloudbees.plugins.credentials.*
+import com.cloudbees.plugins.credentials.domains.*
+import com.cloudbees.plugins.credentials.impl.*
+import hudson.util.Secret
+import jenkins.model.Jenkins
+import com.cloudbees.plugins.credentials.CredentialsScope
+import hudson.plugins.sshslaves.verifiers.*
+import com.cloudbees.jenkins.plugins.sshcredentials.impl.*
+
+def credentialsId = "jenkins-agent-key-id"
+def username = "jenkins-agent"
+def description = "Clé privée pour l'agent Jenkins sur VM 192.168.56.50"
+
+// Remplace par ta vraie clé privée :
+def privateKey = '''-----BEGIN OPENSSH PRIVATE KEY-----
+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
+-----END OPENSSH PRIVATE KEY-----'''
+
+def sshKey = new BasicSSHUserPrivateKey(
+    CredentialsScope.GLOBAL,
+    credentialsId,
+    username,
+    new BasicSSHUserPrivateKey.DirectEntryPrivateKeySource(privateKey),
+    null, // pas de passphrase
+    description
+)
+
+def credentialsStore = Jenkins.instance.getExtensionList(
+    com.cloudbees.plugins.credentials.SystemCredentialsProvider
+)[0].getStore()
+
+def existing = credentialsStore.getCredentials(Domain.global()).find { it.id == credentialsId }
+
+if (existing != null) {
+    println "🔁 La credential '${credentialsId}' existe déjà."
+} else {
+    credentialsStore.addCredentials(Domain.global(), sshKey)
+    println "✅ Credential SSH '${credentialsId}' ajoutée avec succès."
+}

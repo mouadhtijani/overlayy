@@ -1,0 +1,64 @@
+package eec.epi.scripts.valo;
+
+import eec.epi.scripts.RatingScript;
+import org.meveo.api.exception.BusinessApiException;
+import org.meveo.model.billing.*;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.*;
+
+public class RRValoPF extends RatingScript {
+    protected static final String CT_GRILLE_TARIFAIRE = "ct_grille_tarifaire";
+
+
+    protected static final String CH_RR_BVE_PRIME_FIXE = "CH_RR_BVE_PRIME_FIXE";
+    protected static final String PX_PRIMEFIXE_BT = "PX_PRIMEFIXE_BT";
+    protected static final String PX_PRIMEFIXE_HTA = "PX_PRIMEFIXE_HTA";
+    private static final String BT = "BT";
+    private static final String HTA = "HTA";
+
+    public static final String CF_NATURE = "cf_nature";
+    protected static final String CF_CODE_EXPLOITATION = "cf_code_exploitation";
+
+
+    protected Object cf_code_exploitation;
+
+    protected BigDecimal pricePF;
+    protected String subscriptionCode;
+    protected String CPT_QUERY;
+    
+
+    @Override
+    public void execute(RatingContext ratingContext) {
+        List<Map<String, Object>> list = initializeContext(ratingContext);
+        WalletOperation walletOperation = ratingContext.getWalletOperation(ratingContext);
+        Subscription subscription = ratingContext.getSubscription(walletOperation);
+        subscriptionCode = subscription.getCode();
+        ChargeInstance chargeInstance = ratingContext.getChargeInstance(walletOperation, CH_RR_BVE_PRIME_FIXE);
+        ServiceInstance productCode = chargeInstance.getServiceInstance();
+        ratingContext.applyAccordingToSubscription(subscription, productCode, subscriptionCode,ratingContext);
+        cf_code_exploitation = subscription.getCfValue(CF_CODE_EXPLOITATION);
+        ratingContext.setPuissanceSouscrite(subscription);
+        if (Objects.equals(ratingContext.getCf_nature(), BT)) {
+            pricePF = ratingContext.getValueFromList(PX_PRIMEFIXE_BT, ratingContext.getOFFER(), BT, cf_code_exploitation, list, subscriptionCode);
+        }
+        if (Objects.equals(ratingContext.getCf_nature(), HTA)) {
+            pricePF = ratingContext.getValueFromList(PX_PRIMEFIXE_HTA, ratingContext.getOFFER(), HTA, cf_code_exploitation, list, subscriptionCode);
+        }
+        pricePF =ratingContext.reCalculate(pricePF.divide(new BigDecimal(12), 0, RoundingMode.HALF_UP),walletOperation);
+        ratingContext.calculate(walletOperation, pricePF, ratingContext.getCf_puissance_souscrite(), OperationTypeEnum.DEBIT, ratingContext.getOFFER(), ratingContext.getPROD());
+    }
+
+
+
+    private List<Map<String, Object>> initializeContext(RatingContext ratingContext) {
+        subscriptionCode = "";
+        pricePF = BigDecimal.ZERO;
+        CPT_QUERY = " id in ( select id\n" +
+                "             from ct_grille_tarifaire\n" +
+                "             where CURRENT_DATE BETWEEN date_debut_validite AND date_fin_validite )\n";
+        return ratingContext.getValues(CPT_QUERY, subscriptionCode);
+    }
+
+}

@@ -1,0 +1,126 @@
+{
+	"info": {
+		"_postman_id": "4dd31afc-6d67-4783-89bb-62d8fcc3e84a",
+		"name": "010 EP-133 Création des CF de l'entité Customer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30217061"
+	},
+	"item": [
+		{
+			"name": "cf_date_naissance",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"appliesTo\" : \"Customer\",\r\n    \"code\" : \"cf_date_naissance\",\r\n    \"description\" : \"Date de naissance\",\r\n    \"fieldType\":\"DATE\",\r\n    \"storageType\":\"SINGLE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/customFieldTemplate/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"customFieldTemplate",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cf_code_naf",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"appliesTo\" : \"Customer\",\r\n    \"code\" : \"cf_code_naf\",\r\n    \"description\" : \"Code NAF\",\r\n    \"fieldType\":\"STRING\",\r\n    \"storageType\":\"SINGLE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/customFieldTemplate/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"customFieldTemplate",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cf_code_etablissement",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"appliesTo\" : \"Customer\",\r\n    \"code\" : \"cf_code_etablissement\",\r\n    \"description\" : \"Code établissement\",\r\n    \"fieldType\":\"STRING\",\r\n    \"storageType\":\"SINGLE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/customFieldTemplate/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"customFieldTemplate",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

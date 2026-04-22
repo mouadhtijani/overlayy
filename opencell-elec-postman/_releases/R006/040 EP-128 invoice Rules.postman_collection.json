@@ -1,0 +1,157 @@
+{
+	"info": {
+		"_postman_id": "9dd533e6-e256-4267-bc57-fa1041e3e480",
+		"name": "040 EP-128 invoice Rules",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847069"
+	},
+	"item": [
+		{
+			"name": "invoice Rules EAN",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"invoiceType\": \"COM\",\r\n    \"description\": \"Condition de vérification seuil mesure Energie nuit EA\",\r\n    \"type\": \"SCRIPT\",\r\n    \"evaluationMode\": \"REJECTION\",\r\n    \"failStatus\": \"SUSPECT\",\r\n    \"priority\": 0,\r\n    \"operator\": null,\r\n    \"validFrom\": \"2023-01-01\",\r\n    \"validTo\": \"9999-12-31\",\r\n    \"validationScript\": \"eec.epi.scripts.billing.ValidEAN\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/v2/billing/invoicevalidationrules",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"v2",
+						"billing",
+						"invoicevalidationrules"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "invoice Rules EAJ",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"invoiceType\": \"COM\",\r\n    \"description\": \"Condition de vérification seuil mesure Energie jour EA\",\r\n    \"type\": \"SCRIPT\",\r\n    \"evaluationMode\": \"REJECTION\",\r\n    \"failStatus\": \"SUSPECT\",\r\n    \"priority\": 0,\r\n    \"operator\": null,\r\n    \"validFrom\": \"2023-01-01\",\r\n    \"validTo\": \"9999-12-31\",\r\n    \"validationScript\": \"eec.epi.scripts.billing.ValidEAJ\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/v2/billing/invoicevalidationrules",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"v2",
+						"billing",
+						"invoicevalidationrules"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "invoice Rules EHC",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"invoiceType\": \"COM\",\r\n    \"description\": \"Condition de vérification seuil mesure Energie heures creuses\",\r\n    \"type\": \"SCRIPT\",\r\n    \"evaluationMode\": \"REJECTION\",\r\n    \"failStatus\": \"SUSPECT\",\r\n    \"priority\": 0,\r\n    \"operator\": null,\r\n    \"validFrom\": \"2023-01-01\",\r\n    \"validTo\": \"9999-12-31\",\r\n    \"validationScript\": \"eec.epi.scripts.billing.ValidEHC\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/v2/billing/invoicevalidationrules",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"v2",
+						"billing",
+						"invoicevalidationrules"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "invoice Rules EHP",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"invoiceType\": \"COM\",\r\n    \"description\": \"Condition de vérification seuil mesure Energie heures pleines\",\r\n    \"type\": \"SCRIPT\",\r\n    \"evaluationMode\": \"REJECTION\",\r\n    \"failStatus\": \"SUSPECT\",\r\n    \"priority\": 0,\r\n    \"operator\": null,\r\n    \"validFrom\": \"2023-01-01\",\r\n    \"validTo\": \"9999-12-31\",\r\n    \"validationScript\": \"eec.epi.scripts.billing.ValidEHP\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/v2/billing/invoicevalidationrules",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"v2",
+						"billing",
+						"invoicevalidationrules"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

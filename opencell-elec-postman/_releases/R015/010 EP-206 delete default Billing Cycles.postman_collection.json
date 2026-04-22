@@ -1,0 +1,81 @@
+{
+	"info": {
+		"_postman_id": "dbdd137b-0c27-4d29-aa9e-14ece601cf79",
+		"name": "010 EP-206 delete default Billing Cycles",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847135"
+	},
+	"item": [
+		{
+			"name": "CYC_INV_MT_1",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{opencell.url}}/billingCycle/CYC_INV_MT_1",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"billingCycle",
+						"CYC_INV_MT_1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CYC_INV_MT_2",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{opencell.url}}/billingCycle/CYC_INV_MT_2",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"billingCycle",
+						"CYC_INV_MT_2"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

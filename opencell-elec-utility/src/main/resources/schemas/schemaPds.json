@@ -1,0 +1,97 @@
+{
+  "type": "object",
+  "properties": {
+    "Pds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "idPds": {
+            "type": "string"
+          },
+          "numCompteur": {
+            "type": "string"
+          },
+          "debutValidite": {
+            "type": "string",
+            "format": "date"
+          },
+          "exploitation": {
+            "type": "string"
+          },
+          "branchement": {
+            "type": "string"
+          },
+          "adresse": {
+            "type": "string"
+          },
+          "tableau": {
+            "type": "string"
+          },
+          "roues": {
+            "type": "number"
+          },
+          "nbFils": {
+            "type": "number"
+          },
+          "coefLecture": {
+            "type": "number"
+          },
+          "puissanceTransfo": {
+            "type": "number"
+          },
+          "IsTransfoAvantBranchement": {
+            "type": ["boolean","null"]
+          },
+          "transfoIntensite": {
+            "type": "boolean"
+          },
+          "gamme": {
+            "type": ["string","null"]
+          },
+          "longueurConducteur": {
+            "type": ["number","null"]
+          },
+          "typeRaccordement": {
+            "type": ["string","null"]
+          },
+          "coefTanPhi": {
+            "type": ["boolean","null"]
+          },
+          "classeCompteur": {
+            "type": ["number","null"]
+          },
+          "primeMensuelTransformation": {
+            "type": ["number","null"]
+          },
+          "primeMensuelRaccordement": {
+            "type": ["number","null"]
+          }
+        },
+        "required": [
+          "idPds",
+          "numCompteur",
+          "debutValidite",
+          "exploitation",
+          "branchement",
+          "adresse",
+          "tableau",
+          "roues",
+          "nbFils",
+          "coefLecture",
+          "puissanceTransfo",
+          "IsTransfoAvantBranchement",
+          "transfoIntensite",
+          "gamme",
+          "longueurConducteur",
+          "typeRaccordement",
+          "coefTanPhi",
+          "classeCompteur",
+          "primeMensuelTransformation",
+          "primeMensuelRaccordement"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

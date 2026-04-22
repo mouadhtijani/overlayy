@@ -1,0 +1,74 @@
+{
+	"info": {
+		"_postman_id": "6df61bbe-6908-4c5b-8bde-508b7c4c7662",
+		"name": "010 EP-188 modify paymentMethods Provider",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847135"
+	},
+	"item": [
+		{
+			"name": "Modify Provider",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"paymentMethods\": [\r\n        \"WIRETRANSFER\",\r\n        \"CHECK\",\r\n        \"DIRECTDEBIT\"\r\n    ],\r\n    \"paymentPlanPolicy\": {\r\n        \"allowedPaymentMethods\": [\r\n            \"CHECK\",\r\n            \"DIRECTDEBIT\",\r\n            \"WIRETRANSFER\"\r\n        ]\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/v2/admin/providers/EEC",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"v2",
+						"admin",
+						"providers",
+						"EEC"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

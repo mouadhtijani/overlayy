@@ -1,0 +1,99 @@
+{
+	"info": {
+		"_postman_id": "2098644e-bcfc-41b4-b946-8886d913e0ee",
+		"name": "050 MDD Inbound",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40465273"
+	},
+	"item": [
+		{
+			"name": "createCustomerHierarchy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"classNameFilter\":\"org.meveo.model.notification.InboundRequest\",\r\n    \"code\":\"cus\",\r\n    \"elFilter\" : \"#{event.pathInfo.startsWith(\\\"/customerHierarchy\\\")}\",\r\n    \"eventTypeFilter\":\"INBOUND_REQ\",\r\n    \"scriptInstanceCode\":\"eec.epi.scripts.inbound.CustomerCreateOrUpdateWS\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/notification/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"notification",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SubscriptionCreateOrUpdateWS",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"classNameFilter\":\"org.meveo.model.notification.InboundRequest\",\r\n    \"code\":\"sub\",\r\n    \"elFilter\" : \"#{event.pathInfo.startsWith(\\\"/subscription\\\")}\",\r\n    \"eventTypeFilter\":\"INBOUND_REQ\",\r\n    \"scriptInstanceCode\":\"eec.epi.scripts.inbound.SubscriptionCreateOrUpdateWS\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/notification/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"notification",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

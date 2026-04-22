@@ -1,0 +1,71 @@
+{
+	"info": {
+		"_postman_id": "d5ea2332-e395-41e6-9cf6-bfc87cb73fee",
+		"name": "EP-47_PARAM Provider",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847069"
+	},
+	"item": [
+		{
+			"name": "Provider",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"EEC\",\r\n    \"description\": \"EEC ENGIE Nouvelle-Calédonie\",\r\n    \"rounding\": 2,\r\n    \"roundingMode\": \"NEAREST\",\r\n    \"invoiceRounding\": 2,\r\n    \"invoiceRoundingMode\": \"NEAREST\",\r\n    \"email\": \"clientele.eec@engie.com\",\r\n    \"bankCoordinates\": {\r\n        \"bic\": \"CEPANCNM\",\r\n        \"iban\": \"FR76 1488 9000 0130 0814 0100 054\",\r\n        \"branchCode\": \"00001\",\r\n        \"accountNumber\": \"30081401000\",\r\n        \"bankCode\": \"14889\",\r\n        \"bankId\" : \"\",\r\n        \"issuerName\": \"EEC\",\r\n        \"issuerNumber\" : \"\",\r\n        \"ics\" : \"\",\r\n        \"key\" : \"\"\r\n    },\r\n    \"invoiceConfiguration\": {\r\n        \"displayBillingCycle\": true,\r\n        \"displayCfAsXML\": true,\r\n        \"displayChargesPeriods\": false,\r\n        \"displayDetail\": true,\r\n        \"displayEdrs\": true,\r\n        \"displayFreeTransacInInvoice\": true,\r\n        \"displayServices\" : true,\r\n        \"displayOffers\": true,\r\n        \"displayOrders\": true,\r\n        \"displaySubscriptions\": true,\r\n        \"displayTaxDetails\": true,\r\n        \"displayUserAccountHierarchy\": true\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/provider",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"provider"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

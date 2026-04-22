@@ -1,0 +1,207 @@
+{
+	"info": {
+		"_postman_id": "62df77c4-4fc8-47c0-b38b-99d8f2d74a5f",
+		"name": "040 EP-321 Article mapping lines",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847069"
+	},
+	"item": [
+		{
+			"name": "mappingLignes csv",
+			"item": [
+				{
+					"name": "mappingLine",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"myIteration.preRequest(pm);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"myIteration.postRequest(postman, pm);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accountingArticle\": {\r\n        \"code\": \"{{articleCode}}\"\r\n    },\r\n    \"product\": {\r\n        \"code\": \"{{productCode}}\"\r\n    },\r\n    \"charge\": {\r\n        \"code\": \"{{chargeCode}}\"\r\n    },\r\n    \"offer\": {\r\n        \"code\": \"{{offerCode}}\"\r\n    },\r\n    \"description\": \"MAP_Lines_{{articleCode}}{{type}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{opencell.url}}/v2/articleMappingLines",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"v2",
+								"articleMappingLines"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.variables.set(\"productCode\", \"PROD_LIBERT\")",
+							"",
+							"pm.variables.set(\"sepLines\", \"\\n\");",
+							"pm.variables.set(\"sepWords\", \"\\t\");",
+							"//columns params.",
+							"pm.variables.set(\"params\", [ \"articleCode\", \"productCode\",\"chargeCode\", \"offerCode\" , \"type\" ]);",
+							"",
+							"let csv = `AA_BVE_EA_JOUR\tPROD_CONSO_BVE_BT\tCH_US_BVE_EA_JOUR\tOFFER_BORNE_VE_BT\t_BT",
+							"AA_BVE_EA_NUIT\tPROD_CONSO_BVE_BT\tCH_US_BVE_EA_NUIT\tOFFER_BORNE_VE_BT\t_BT",
+							"AA_BVE_PRIME_FIXE\tPROD_CONSO_BVE_BT\tCH_RR_BVE_PRIME_FIXE\tOFFER_BORNE_VE_BT\t_BT",
+							"AA_BVE_TAX_COM\tPROD_CONSO_BVE_BT\tCH_US_BVE_TAXECOM_EAJ\tOFFER_BORNE_VE_BT\t_BT",
+							"AA_BVE_TAX_COM\tPROD_CONSO_BVE_BT\tCH_US_BVE_TAXECOM_EAN\tOFFER_BORNE_VE_BT\t_BT",
+							"AA_BVE_TAX_COM\tPROD_CONSO_BVE_BT\tCH_RR_BVE_TAXECOM_PF\tOFFER_BORNE_VE_BT\t_BT",
+							"AA_ETALONNAGE_COMPTEUR\tPROD_FRAIS\tCH_OS_ETALONNAGE_COMPTEUR\tOFFER_BORNE_VE_BT\t_BT",
+							"AA_FRAIS_COUPURE_IMPAYES\tPROD_FRAIS\tCH_OS_FRAIS_COUPURE_IMPAYES\tOFFER_BORNE_VE_BT\t_BT",
+							"AA_FRAIS_DEPANNAGE_INJUS\tPROD_FRAIS\tCH_OS_FRAIS_DEPANNAGE_INJUS\tOFFER_BORNE_VE_BT\t_BT",
+							"AA_PENALITE_FRAUDE\tPROD_FRAIS\tCH_OS_PENALITE_FRAUDE\tOFFER_BORNE_VE_BT\t_BT",
+							"AA_BVE_EA_JOUR\tPROD_CONSO_BVE_HTA\tCH_US_BVE_EA_JOUR\tOFFER_BORNE_VE_HTA\t_HTA",
+							"AA_BVE_EA_NUIT\tPROD_CONSO_BVE_HTA\tCH_US_BVE_EA_NUIT\tOFFER_BORNE_VE_HTA\t_HTA",
+							"AA_BVE_MAJ_ENER\tPROD_CONSO_BVE_HTA\tCH_US_BVE_MAJ_ENER_JOUR\tOFFER_BORNE_VE_HTA\t_HTA",
+							"AA_BVE_MAJ_ENER\tPROD_CONSO_BVE_HTA\tCH_US_BVE_MAJ_ENER_NUIT\tOFFER_BORNE_VE_HTA\t_HTA",
+							"AA_BVE_MIN_ENER\tPROD_CONSO_BVE_HTA\tCH_US_BVE_MIN_ENER_JOUR\tOFFER_BORNE_VE_HTA\t_HTA",
+							"AA_BVE_MIN_ENER\tPROD_CONSO_BVE_HTA\tCH_US_BVE_MIN_ENER_NUIT\tOFFER_BORNE_VE_HTA\t_HTA",
+							"AA_BVE_PEN_PUISS\tPROD_CONSO_BVE_HTA\tCH_US_BVE_PEN_PUISS\tOFFER_BORNE_VE_HTA\t_HTA",
+							"AA_BVE_PRIME_FIXE\tPROD_CONSO_BVE_HTA\tCH_RR_BVE_PRIME_FIXE\tOFFER_BORNE_VE_HTA\t_HTA",
+							"AA_BVE_PRIME_RACC\tPROD_CONSO_BVE_HTA\tCH_RR_PRIME_RACC\tOFFER_BORNE_VE_HTA\t_HTA",
+							"AA_BVE_PRIME_TRANSFO\tPROD_CONSO_BVE_HTA\tCH_RR_PRIME_TRANSFO\tOFFER_BORNE_VE_HTA\t_HTA",
+							"AA_BVE_TAX_COM\tPROD_CONSO_BVE_HTA\tCH_US_BVE_TAXECOM_EAJ\tOFFER_BORNE_VE_HTA\t_HTA",
+							"AA_BVE_TAX_COM\tPROD_CONSO_BVE_HTA\tCH_US_BVE_TAXECOM_EAN\tOFFER_BORNE_VE_HTA\t_HTA",
+							"AA_BVE_TAX_COM\tPROD_CONSO_BVE_HTA\tCH_RR_BVE_TAXECOM_PF\tOFFER_BORNE_VE_HTA\t_HTA",
+							"AA_ETALONNAGE_COMPTEUR\tPROD_FRAIS\tCH_OS_ETALONNAGE_COMPTEUR\tOFFER_BORNE_VE_HTA\t_HTA",
+							"AA_FRAIS_COUPURE_IMPAYES\tPROD_FRAIS\tCH_OS_FRAIS_COUPURE_IMPAYES\tOFFER_BORNE_VE_HTA\t_HTA",
+							"AA_FRAIS_DEPANNAGE_INJUS\tPROD_FRAIS\tCH_OS_FRAIS_DEPANNAGE_INJUS\tOFFER_BORNE_VE_HTA\t_HTA",
+							"AA_PENALITE_FRAUDE\tPROD_FRAIS\tCH_OS_PENALITE_FRAUDE\tOFFER_BORNE_VE_HTA\t_HTA",
+							"AA_BVE_RED_CPT_BT\tPROD_CONSO_BVE_BT\tCH_RR_BVE_RED_CPT_BT\tOFFER_BORNE_VE_BT",
+							"AA_BVE_RED_CPT_HTA\tPROD_CONSO_BVE_HTA\tCH_RR_BVE_RED_CPT_HTA\tOFFER_BORNE_VE_HTA",
+							"`;",
+							"pm.variables.set(\"csv\", csv);",
+							"",
+							"myIteration = {",
+							"    preRequest: function (pm) {",
+							"        if (!pm) {",
+							"            throw new Error('missing data pm');",
+							"        }",
+							"        let csv = pm.variables.get(\"csv\");",
+							"        let sepLines = pm.variables.get(\"sepLines\");",
+							"        let sepWords = pm.variables.get(\"sepWords\");",
+							"        let params = pm.variables.get(\"params\");",
+							"        if (!csv || !sepLines || !sepWords || !params) {",
+							"            throw 'missing data csv=' + csv + \" sepLines=\" + sepLines + \" sepWords=\" + sepWords + \" params=\" + params;",
+							"        }",
+							"",
+							"        // find an existing collection variable that contains the next lines",
+							"        // if not variable that contains the next lines, split the csv in lines",
+							"        let lines = pm.variables.get(\"lines\");",
+							"        if (!lines || lines.length == 0) {",
+							"            lines = csv.split(sepLines).filter(s => s.replaceAll(sepWords, \"\").length > 0);",
+							"            pm.variables.set(\"lines\", lines);",
+							"        }",
+							"",
+							"        // split the current line in words",
+							"        let words = lines[0].split(sepWords);",
+							"",
+							"        // for each parameter, store the corresponding word as parameter",
+							"        params.forEach(function (param, idx, arr) {",
+							"            if (param !== null && words.length > idx) {",
+							"                pm.variables.set(param, words[idx])",
+							"            }",
+							"            else pm.variables.set(param, \"\");",
+							"        });",
+							"    },",
+							"    postRequest: function (postman, pm) {",
+							"        if (!pm || !postman) {",
+							"            throw new Error('missing data postman=' + postman + \" pm=\" + pm);",
+							"        }",
+							"        if ([200, 201, 202, 204].includes(pm.response.code)) {",
+							"            // if remaining lines, change the next request.",
+							"            let lines = pm.variables.get(\"lines\");",
+							"            lines.shift();",
+							"            // store the remaining lines for next iteration",
+							"            pm.variables.set(\"lines\", lines);",
+							"            if (lines && lines.length > 0) {",
+							"                postman.setNextRequest(pm.info.requestId);",
+							"            }",
+							"        }",
+							"    }",
+							"}"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

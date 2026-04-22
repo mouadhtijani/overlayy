@@ -1,0 +1,183 @@
+{
+	"info": {
+		"_postman_id": "77699ab2-290c-4efa-abeb-82de70b1e1fd",
+		"name": "020 EP-50 TAX Class",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16847069"
+	},
+	"item": [
+		{
+			"name": "TaxClass",
+			"item": [
+				{
+					"name": "TaxClass",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"",
+									"myIteration.preRequest(pm);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"myIteration.postRequest(postman, pm);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\":\"{{taxClassCode}}\",\r\n    \"description\" : \"{{taxDesc}}\",\r\n    \"descriptionI18n\" : [\r\n        {\r\n            \"languageCode\" : \"FRA\",\r\n            \"description\" : \"{{taxDesc}}\"\r\n        }\r\n    ]\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{opencell.url}}/taxClass/createOrUpdate",
+							"host": [
+								"{{opencell.url}}"
+							],
+							"path": [
+								"taxClass",
+								"createOrUpdate"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.variables.set(\"sepLines\", \"\\n\");",
+							"pm.variables.set(\"sepWords\", \"\\t\");",
+							"//columns params.",
+							"pm.variables.set(\"params\", [\"taxClassCode\",\"taxDesc\"]);",
+							"",
+							"",
+							"let csv = `",
+							"TAXC_TGC_CONSO_3\tTGC 3%",
+							"TAXC_TGC_CONSO_6\tTGC 6%",
+							"TAXC_TGC_ZERO\tTGC 0%",
+							"`;",
+							"",
+							"pm.variables.set(\"csv\", csv);",
+							"",
+							"myIteration = {",
+							"    preRequest: function (pm) {",
+							"        if (!pm) {",
+							"            throw new Error('missing data pm');",
+							"        }",
+							"        let csv = pm.variables.get(\"csv\");",
+							"        let sepLines = pm.variables.get(\"sepLines\");",
+							"        let sepWords = pm.variables.get(\"sepWords\");",
+							"        let params = pm.variables.get(\"params\");",
+							"        if (!csv || !sepLines || !sepWords || !params) {",
+							"            throw 'missing data csv=' + csv + \" sepLines=\" + sepLines + \" sepWords=\" + sepWords + \" params=\" + params;",
+							"        }",
+							"",
+							"        // find an existing collection variable that contains the next lines",
+							"        // if not variable that contains the next lines, split the csv in lines",
+							"        let lines = pm.variables.get(\"lines\");",
+							"        if (!lines || lines.length == 0) {",
+							"            lines = csv.split(sepLines).filter(s => s.replaceAll(sepWords, \"\").length > 0);",
+							"            pm.variables.set(\"lines\", lines);",
+							"        }",
+							"",
+							"        // split the current line in words",
+							"        let words = lines[0].split(sepWords);",
+							"",
+							"        // for each parameter, store the corresponding word as parameter",
+							"        params.forEach(function (param, idx, arr) {",
+							"            if (param !== null && words.length > idx) {",
+							"                pm.variables.set(param, words[idx])",
+							"            }",
+							"            else pm.variables.set(param, \"\");",
+							"        });",
+							"    },",
+							"    postRequest: function (postman, pm) {",
+							"        if (!pm || !postman) {",
+							"            throw new Error('missing data postman=' + postman + \" pm=\" + pm);",
+							"        }",
+							"        if ([200, 201, 202, 204].includes(pm.response.code)) {",
+							"            // if remaining lines, change the next request.",
+							"            let lines = pm.variables.get(\"lines\");",
+							"            lines.shift();",
+							"            // store the remaining lines for next iteration",
+							"            pm.variables.set(\"lines\", lines);",
+							"            if (lines && lines.length > 0) {",
+							"                postman.setNextRequest(pm.info.requestId);",
+							"            }",
+							"        }",
+							"    }",
+							"}",
+							"",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

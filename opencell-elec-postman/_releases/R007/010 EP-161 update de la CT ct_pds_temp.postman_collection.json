@@ -1,0 +1,98 @@
+{
+	"info": {
+		"_postman_id": "585102bc-2229-460e-8b5c-42ffacda9381",
+		"name": "010 EP-161 update de la CT ct_pds_temp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30217061"
+	},
+	"item": [
+		{
+			"name": "delete ct_pds_temp",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{opencell.url}}/entityCustomization/entity/ct_pds_temp",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"entityCustomization",
+						"entity",
+						"ct_pds_temp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ct_pds_temp",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"ct_pds_temp\",\r\n    \"description\" : \"Table des fichiers json découpés des pds\",\r\n    \"disabled\": false,\r\n    \"name\": \"ct_pds_temp\",\r\n    \"storeInES\": false,\r\n    \"storeAsTable\": true,\r\n    \"field\": [\r\n        {\r\n            \"code\": \"id_pds_interface\",\r\n            \"description\": \"ID du PDS de la table ct_pds_interface \",\r\n            \"fieldType\": \"LONG\"\r\n        },\r\n        {\r\n            \"code\": \"id_pds\",\r\n            \"description\": \"Identifiant du PDS\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"date_pds\",\r\n            \"description\": \"Date à laquelle la pds a été effectuée\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"nom_fichier\",\r\n            \"description\": \"Nom du fichier json\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"date_last_update\",\r\n            \"description\": \"Date de dernière modification dans Next Energie\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"contenu\",\r\n            \"description\": \"Contenu json du pds\",\r\n            \"fieldType\": \"TEXT_AREA\"\r\n        },\r\n        {\r\n            \"code\": \"statut\",\r\n            \"description\": \"Statut\",\r\n            \"fieldType\": \"LIST\",\r\n            \"listValues\": {\r\n                \"TRAITE\": \"TRAITE\",\r\n                \"A_TRAITER\": \"A_TRAITER\",\r\n                \"ERREUR\": \"ERREUR\"\r\n            }\r\n        },\r\n        {\r\n            \"code\": \"date_traitement\",\r\n            \"description\": \"Date identique l'entrée de ct_pds_interface\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"code_erreur\",\r\n            \"description\": \"Code erreur\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"message_erreur\",\r\n            \"description\": \"Message erreur\",\r\n            \"fieldType\": \"STRING\",\r\n            \"maxValue\":4000\r\n        }\r\n    ],\r\n    \"action\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/entityCustomization/entity/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"entityCustomization",
+						"entity",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -1,0 +1,705 @@
+package eec.epi.scripts.conso;
+
+import eec.epi.scripts.HandlingResult;
+import eec.epi.scripts.JobScript;
+import org.meveo.admin.exception.BusinessException;
+import org.meveo.admin.util.pagination.PaginationConfiguration;
+import org.meveo.model.billing.Subscription;
+import org.meveo.service.billing.impl.SubscriptionService;
+import org.meveo.service.custom.CustomTableService;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
+
+/**
+ * @author Ahmed BAHRI ahmed.bahri@iliadeconsulting.com
+ */
+public class CalculConsoHTA extends JobScript {
+    protected final static double P0_000003 = 0.000003;
+    protected final static String GET_SUB_HTA = "select *\n"
+            + "from billing_subscription bs\n"
+            + "where bs.id in (SELECT subscription_id\n"
+            + "                FROM billing_subscription sub\n"
+            + "                         JOIN medina_access ma on sub.id = ma.subscription_id\n"
+            + "                         JOIN ct_conso ctc on ma.acces_user_id = ctc.id_pds\n"
+            + "                         JOIN ct_pds ctp on ctp.id_pds = ctc.id_pds\n"
+            + "                WHERE sub.cf_values ->> 'cf_nature' IS NOT NULL\n"
+            + "                  AND sub.cf_values ->> 'cf_nature' LIKE '%HTA%'\n"
+            + "                  AND ctp.statut_pds = 'ACTIF'\n" +
+            "                    AND (ctc.calcul_hta=false or ctc.calcul_hta is null)\n"
+            + "                  AND DATE(ctc.date_releve) >= :deb\n"
+            + "                  AND DATE(ctc.date_releve) <= :fin)";
+    protected final static String GET_PDS = "id in\n" +
+            "      (SELECT ctp.id\n" +
+            "       FROM billing_subscription sub\n" +
+            "                JOIN medina_access ma on sub.id = ma.subscription_id\n" +
+            "                JOIN ct_conso ctc on ma.acces_user_id = ctc.id_pds\n" +
+            "                JOIN ct_pds ctp on ctp.id_pds = ctc.id_pds\n" +
+            "       WHERE sub.cf_values ->> 'cf_nature' IS NOT NULL\n" +
+            "         AND sub.cf_values ->> 'cf_nature' LIKE '%HTA%'\n" +
+            "         AND ctp.statut_pds = 'ACTIF'\n" +
+            "         AND (ctc.calcul_hta=false or ctc.calcul_hta is null)\n" +
+            "         AND DATE(ctc.date_releve) >= :deb\n" +
+            "         AND DATE(ctc.date_releve) <= :fin)";
+    protected final static String GET_CONSO = "id in\n" +
+            "      (SELECT ctc.id\n" +
+            "       FROM billing_subscription sub\n" +
+            "                JOIN medina_access ma on sub.id = ma.subscription_id\n" +
+            "                JOIN ct_conso ctc on ma.acces_user_id = ctc.id_pds\n" +
+            "                JOIN ct_pds ctp on ctp.id_pds = ctc.id_pds\n" +
+            "       WHERE sub.cf_values ->> 'cf_nature' IS NOT NULL\n" +
+            "         AND sub.cf_values ->> 'cf_nature' LIKE '%HTA%'\n" +
+            "         AND ctp.statut_pds = 'ACTIF'\n" +
+            "         AND (ctc.calcul_hta=false or ctc.calcul_hta is null)\n" +
+            "         AND DATE(ctc.date_releve) >= :deb\n" +
+            "         AND DATE(ctc.date_releve) <= :fin)";
+    SubscriptionService subscriptionService = getServiceInterface(SubscriptionService.class);
+    CustomTableService customTableService = getServiceInterface(CustomTableService.class);
+
+    protected List<Map<String, Object>> consoList;
+    protected List<Map<String, Object>> pdsList;
+    protected List<Subscription> subscriptions;
+    protected List<Map<String, Object>> listeConsoER;
+    protected List<Map<String, Object>> listePdsER;
+
+    protected List<Subscription> listeSubER;
+
+
+    protected List<Map<String, Object>> listeConsoEREA;
+    protected List<Map<String, Object>> listePdsEREA;
+    protected List<Subscription> listeSubEREA;
+    protected List<Map<String, Object>> listeConsoAPA;
+    protected List<Map<String, Object>> listePdsAPA;
+    protected List<Subscription> listeSubAPA;
+    protected List<Map<String, Object>> listeConsoEA;
+    protected List<Map<String, Object>> listePdsEA;
+    protected List<Subscription> listeSubEA;
+    protected List<Map<String, Object>> listeConsoDP;
+    protected List<Map<String, Object>> listePdsDP;
+    protected List<Subscription> listeSubDP;
+    protected List<Object> period;
+    protected DecimalFormat df;
+    protected int nbh;
+    protected int ok;
+    protected int ko;
+
+    protected double[][] matrice = {
+            {25, 0.12, 0.70},
+            {40, 0.16, 0.94},
+            {50, 0.19, 1.10},
+            {63, 0.22, 1.27},
+            {100, 0.32, 1.75},
+            {160, 0.46, 2.35},
+            {250, 0.65, 3.25},
+            {315, 0.77, 3.83},
+            {400, 0.93, 4.60},
+            {630, 1.30, 6.50},
+            {800, 1.55, 7.80},
+            {1000, 1.84, 9.40},
+    };
+
+    @Override
+    public void execute(JobContext jobContext) {
+        prepare();
+        HandlingResult initialize = initialize();
+        if (initialize.isError()) {
+            if (initialize.code.equals("CODE002")) {
+                jobContext.reportKO(initialize.error);
+            } else {
+                jobContext.reportWARN(initialize.error);
+            }
+            return;
+        }
+        //Calcul de la consommation réactive sur la période de référence complète
+        HandlingResult initializeER = initializeER();
+        if (!initializeER.isError()) {
+            crp(jobContext);
+        }
+        //Calcul du Cos phi
+        HandlingResult initializeCosphi = initializeEREA();
+        if (!initializeCosphi.isError()) {
+            cCosphi(jobContext);
+        }
+        //Ajustment et Calcul de la puissance atteinte réelle.
+        HandlingResult initializePA = initializePA();
+        if (!initializePA.isError()) {
+            apa(jobContext);
+            cpar(jobContext);
+        }
+        //Calcul de la consommation active avec pertes
+        HandlingResult initializeEA = initializeEA();
+        if (!initializeEA.isError()) {
+            cap(jobContext);
+        }
+        //Dépassement de puissance
+        HandlingResult initializeDP = initializeDP();
+        if (!initializeDP.isError()) {
+            cdp(jobContext);
+        }
+    }
+
+
+    private void prepare() {
+        df = new DecimalFormat("#.##");
+        period = getPeriod();
+        nbh = (int) period.get(2);
+        ok = 0;
+        ko = 0;
+    }
+
+    private void jobReport(JobContext jobContext, String... message) {
+        if (ok > 0)
+            jobContext.addReport(ok + " " + message[0]);
+        if (ko > 0)
+            jobContext.addReport(ko + " " + message[1]);
+        ok = 0;
+        ko = 0;
+    }
+
+    public List<Object> getPeriod() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.MONTH, -1);
+
+        Calendar lastDayMonthPrevious = Calendar.getInstance();
+        lastDayMonthPrevious.setTime(calendar.getTime());
+        lastDayMonthPrevious.set(Calendar.DAY_OF_MONTH, lastDayMonthPrevious.getActualMaximum(Calendar.DAY_OF_MONTH));
+
+        Calendar firstDayMonthPrevious = Calendar.getInstance();
+        firstDayMonthPrevious.setTime(lastDayMonthPrevious.getTime());
+        firstDayMonthPrevious.set(Calendar.DAY_OF_MONTH, firstDayMonthPrevious.getActualMinimum(Calendar.DAY_OF_MONTH));
+
+        Date dateDebutMoisPrecedant = firstDayMonthPrevious.getTime();
+        Date dateFinMoisPrecedant = lastDayMonthPrevious.getTime();
+        int totalHoursInPreviousMonth = lastDayMonthPrevious.getActualMaximum(Calendar.DAY_OF_MONTH) * 24;
+        return List.of(dateDebutMoisPrecedant, dateFinMoisPrecedant, totalHoursInPreviousMonth);
+    }
+
+    private List<Map<String, Object>> getData(String requete, String tableName) {
+        return getDataFromCT(modifierRequete(requete, (Date) period.get(0), (Date) period.get(1)), tableName);
+    }
+
+    public String modifierRequete(String req, Date dateDebut, Date dateFin) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return req.replace(":deb", "'" + sdf.format(dateDebut) + "'")
+                .replace(":fin", "'" + sdf.format(dateFin) + "'");
+    }
+
+    private List<Map<String, Object>> getDataFromCT(String req, String tableName) {
+        try {
+            return customTableService.list(tableName, new PaginationConfiguration(Map.of("SQL", req)));
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage());
+        }
+    }
+
+    private List<Subscription> getSubscriptionsHTA() {
+        try {
+            @SuppressWarnings("unchecked")
+            List<Subscription> subscriptions =
+                    (List<Subscription>) subscriptionService
+                            .getEntityManager()
+                            .createNativeQuery(GET_SUB_HTA, Subscription.class)
+                            .setParameter("deb", period.get(0))
+                            .setParameter("fin", period.get(1))
+                            .getResultList();
+            return subscriptions;
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage());
+        }
+    }
+
+    private HandlingResult initialize() {
+        subscriptions = getSubscriptionsHTA();
+        if (subscriptions == null || subscriptions.isEmpty())
+            return HandlingResult.error("HTA Subscriptions list is Empty", "CODE001");
+        pdsList = getData(GET_PDS, "ct_pds");
+        if (subscriptions.size() != pdsList.size()) return HandlingResult.error("PDS list is Empty", "CODE002");
+        consoList = getData(GET_CONSO, "ct_conso");
+        if (consoList == null || consoList.isEmpty()) return HandlingResult.error("Conso list is Empty", "CODE003");
+        return HandlingResult.SUCCESS;
+    }
+
+
+    private List<Object> getEntryList(List<Map<String, Object>> listeConso, List<Map<String, Object>> listePds, List<Subscription> listeSub) {
+        if (listeConso.isEmpty()) return null;
+        listePds = listPdsFromConso(listeConso);
+        if (listePds == null || listePds.isEmpty())
+            return null;
+        listeSub = listSubFromConso(listeConso);
+        if (listeSub == null || listeSub.isEmpty())
+            return null;
+        return List.of(listePds, listeSub);
+    }
+
+    @SuppressWarnings("unchecked")
+    private HandlingResult initializeER() {
+        listeConsoER = consoList.stream().filter(c -> "ER".equals(c.get("nature_mesure")) && "IMPORTE".equals(c.get("statut"))).collect(Collectors.toList());
+        List<Object> entryList = getEntryList(listeConsoER, listePdsER, listeSubER);
+        if (entryList == null || entryList.isEmpty() || entryList.get(0) == null || entryList.get(1) == null)
+            return HandlingResult.error("entryList error");
+        listePdsER = (List<Map<String, Object>>) entryList.get(0);
+        listeSubER = (List<Subscription>) entryList.get(1);
+        return HandlingResult.SUCCESS;
+    }
+
+    @SuppressWarnings("unchecked")
+    private HandlingResult initializeEREA() {
+        listeConsoEREA = consoList.stream()
+                .filter(c -> ("ER".equals(c.get("nature_mesure")) || "EA".equals(c.get("nature_mesure"))) && "IMPORTE".equals(c.get("statut"))).collect(Collectors.toList());
+        List<Object> entryList = getEntryList(listeConsoEREA, listePdsEREA, listeSubEREA);
+        if (entryList == null || entryList.isEmpty() || entryList.get(0) == null || entryList.get(1) == null)
+            return HandlingResult.error("entryList error");
+        listePdsEREA = (List<Map<String, Object>>) entryList.get(0);
+        listeSubEREA = (List<Subscription>) entryList.get(1);
+        return HandlingResult.SUCCESS;
+    }
+
+    @SuppressWarnings("unchecked")
+    private HandlingResult initializePA() {
+        listeConsoAPA = consoList.stream().filter(c -> "PA".equals(c.get("nature_mesure"))).collect(Collectors.toList());
+        List<Object> entryList = getEntryList(listeConsoAPA, listePdsAPA, listeSubAPA);
+        if (entryList == null || entryList.isEmpty() || entryList.get(0) == null || entryList.get(1) == null)
+            return HandlingResult.error("entryList error");
+        listePdsAPA = (List<Map<String, Object>>) entryList.get(0);
+        listeSubAPA = (List<Subscription>) entryList.get(1);
+        return HandlingResult.SUCCESS;
+    }
+
+    @SuppressWarnings("unchecked")
+    private HandlingResult initializeEA() {
+        listeConsoEA = consoList.stream()
+                .filter(c -> "EA".equals(c.get("nature_mesure"))
+                        && "IMPORTE".equals(c.get("statut"))).collect(Collectors.toList());
+        List<Object> entryList = getEntryList(listeConsoEA, listePdsEA, listeSubEA);
+        if (entryList == null || entryList.isEmpty() || entryList.get(0) == null || entryList.get(1) == null)
+            return HandlingResult.error("entryList error");
+        listePdsEA = (List<Map<String, Object>>) entryList.get(0);
+        listeSubEA = (List<Subscription>) entryList.get(1);
+        return HandlingResult.SUCCESS;
+    }
+
+    @SuppressWarnings("unchecked")
+    private HandlingResult initializeDP() {
+//        listeConsoDP = consoList.stream().filter(c -> c.get("nature_mesure").equals("PA") && c.get("statut").equals("CALCULE") && c.get("unite").equals("kVA")).collect(Collectors.toList());
+        listeConsoDP = consoList.stream()
+                .filter(c -> "PA".equals(c.get("nature_mesure"))
+                        && "CALCULE".equals(c.get("statut"))
+                        && "kVA".equals(c.get("unite")))
+                .collect(Collectors.toList());
+        List<Object> entryList = getEntryList(listeConsoDP, listePdsDP, listeSubDP);
+        if (entryList == null || entryList.isEmpty() || entryList.get(0) == null || entryList.get(1) == null)
+            return HandlingResult.error("entryList error");
+        listePdsDP = (List<Map<String, Object>>) entryList.get(0);
+        listeSubDP = (List<Subscription>) entryList.get(1);
+        return HandlingResult.SUCCESS;
+    }
+
+    private List<Map<String, Object>> listPdsFromConso(List<Map<String, Object>> listConso) {
+        return pdsList.stream()
+                .filter(pds -> listConso.stream()
+                        .anyMatch(conso -> conso.get("id_pds").equals(pds.get("id_pds"))))
+                .collect(Collectors.toList());
+    }
+
+    private List<Subscription> listSubFromConso(List<Map<String, Object>> consoList) {
+        return subscriptions.stream()
+                .filter(sub -> consoList.stream()
+                        .anyMatch(c -> sub.getAccessPoints().get(0).getAccessUserId().equals(c.get("id_pds"))))
+                .collect(Collectors.toList());
+    }
+
+    private int getSumQuantity(List<Map<String, Object>> list, String key, String value) {
+        return list.stream()
+                .filter(c -> c.get(key).equals(value))
+                .mapToInt(element -> Integer.parseInt((String) element.get("quantite")))
+                .sum();
+    }
+
+    private Map<String, String> getInfo(List<Map<String, Object>> list, String key, String value) {
+        Map<String, String> info = new HashMap<>();
+        Map<String, Object> firstLigneInfos = list.stream()
+                .filter(c -> c.get(key).equals(value))
+                .findFirst().orElse(null);
+        if (firstLigneInfos == null) return null;
+        info.put("exploitation", String.valueOf(firstLigneInfos.get("exploitation")));
+        info.put("num_contrat", String.valueOf(firstLigneInfos.get("num_contrat")));
+        info.put("nom_client", String.valueOf(firstLigneInfos.get("nom_client")));
+        return info;
+    }
+
+    private Map<String, Object> findPds(List<Map<String, Object>> listPds, String idPds) {
+        Optional<Map<String, Object>> pds = listPds
+                .stream()
+                .filter(p -> p.get("id_pds") != null
+                        && p.get("id_pds").equals(idPds))
+                .findFirst();
+        return pds.orElse(null);
+    }
+
+    private Double maxQuantity(List<Map<String, Object>> listConso, String idPds) {
+        OptionalDouble maxQValue = listConso.stream()
+                .filter(p -> p.get("id_pds") != null && p.get("id_pds").equals(idPds))
+                .mapToDouble(p -> {
+                    Object quantiteObj = p.get("quantite");
+                    if (quantiteObj == null) return 0.0;
+
+                    if (quantiteObj instanceof String) {
+                        try {
+                            return Double.parseDouble((String) quantiteObj);
+                        } catch (NumberFormatException e) {
+                            // Gérer le cas où la conversion échoue (la chaîne n'est pas un nombre)
+                            return 0.0;
+                        }
+                    } else if (quantiteObj instanceof Double) {
+                        return (Double) quantiteObj;
+                    } else {
+                        // Gérer les autres types si nécessaire
+                        return 0.0;
+                    }
+                })
+                .max();
+        return maxQValue.isPresent() ? maxQValue.getAsDouble() : null;
+    }
+
+
+    private Subscription findSub(List<Subscription> subscriptionList, String idPds) {
+        Optional<Subscription> subscription = subscriptionList
+                .stream()
+                .filter(sub ->
+                        (sub.getAccessPoints() != null
+                                && !sub.getAccessPoints().isEmpty())
+                                && sub.getAccessPoints().get(0) != null
+                                && sub.getAccessPoints().get(0).getAccessUserId().equals(idPds))
+                .findFirst();
+        return subscription.orElse(null);
+    }
+
+    private Map<String, Object> PrepareDataTocreateConso(Map<String, String> info, String accessUserId, String quantity, String unite, Date date_index_precedent, Date date_releve, String origine, String poste_horosaisonnier, String nature_mesure, String statut, boolean addIt) {
+        Map<String, Object> values = new HashMap<>();
+        values.put("quantite", quantity);
+        if (info != null) {
+            values.put("exploitation", info.get("exploitation"));
+            values.put("num_contrat", info.get("num_contrat"));
+            values.put("nom_client", info.get("nom_client"));
+        }
+        if (unite != null) values.put("unite", unite);
+        values.put("id_pds", accessUserId);
+        values.put("date_index_precedent", date_index_precedent);
+        values.put("date_releve", date_releve);
+        values.put("origine", origine);
+        values.put("calcul_hta", true);
+        if (poste_horosaisonnier != null) values.put("poste_horosaisonnier", poste_horosaisonnier);
+        values.put("nature_mesure", nature_mesure);
+        values.put("statut", statut);
+        if (addIt) {
+            consoList.add(values);
+        }
+        return values;
+    }
+
+    private List<Map<String, Object>> getConsoWithIDPDS(String idpds, List<Map<String, Object>> listeConsoEREA) {
+        return listeConsoEREA.stream().filter(c -> c.get("id_pds").equals(idpds)).collect(Collectors.toList());
+    }
+
+    public double correspondingValue(double valeurRecherchee, int indexC) {
+        for (double[] doubles : matrice) {
+            if (Objects.equals(doubles[0], valeurRecherchee)) {
+                return doubles[indexC];
+            }
+        }
+        return Double.NaN;
+    }
+
+    public int roundSupInf(double value) {
+        if (value - Math.floor(value) < 0.5) {
+            return (int) Math.floor(value);
+        } else {
+            return (int) Math.ceil(value);
+        }
+    }
+
+    private void crp(JobContext jobContext) {
+        for (Subscription subscription : listeSubER) {
+            List<Map<String, Object>> pdsConsoList = getConsoWithIDPDS(subscription.getAccessPoints().get(0).getAccessUserId(), listeConsoER);
+            if (pdsConsoList.isEmpty()) {
+                jobContext.addKO();
+                ko++;
+                continue;
+            }
+            String quantityJour = String.valueOf(getSumQuantity(pdsConsoList, "poste_horosaisonnier", "JOUR"));
+            String quantityNuit = String.valueOf(getSumQuantity(pdsConsoList, "poste_horosaisonnier", "NUIT"));
+            Map<String, String> infoJour = getInfo(pdsConsoList, "poste_horosaisonnier", "JOUR");
+            Map<String, String> infoNuit = getInfo(pdsConsoList, "poste_horosaisonnier", "NUIT");
+            Map<String, Object> PrepareDataTocreateConsoJour = PrepareDataTocreateConso(infoJour, subscription.getAccessPoints().get(0).getAccessUserId(), quantityJour, "kVArh", (Date) period.get(0), (Date) period.get(1), "OPENCELL", "JOUR", "ER", "CALCULE", false);
+            customTableService.create("ct_conso", PrepareDataTocreateConsoJour);
+            Map<String, Object> PrepareDataTocreateConsoNuit = PrepareDataTocreateConso(infoNuit, subscription.getAccessPoints().get(0).getAccessUserId(), quantityNuit, "kVArh", (Date) period.get(0), (Date) period.get(1), "OPENCELL", "NUIT", "ER", "CALCULE", false);
+            customTableService.create("ct_conso", PrepareDataTocreateConsoNuit);
+            jobContext.addOK();
+            ok++;
+        }
+        for (Map<String, Object> consoER : listeConsoER) {
+            consoER.put("calcul_hta", true);
+            customTableService.update("ct_conso", consoER);
+        }
+        jobReport(jobContext, "SUCCES  Calcul de la consommation réactive",
+                "ECHEC Calcul de la consommation réactive");
+    }
+
+    private void cCosphi(JobContext jobContext) {
+        for (Subscription subscription : listeSubEREA) {
+            List<Map<String, Object>> pdsConsoList = getConsoWithIDPDS(subscription.getAccessPoints().get(0).getAccessUserId(), listeConsoEREA);
+            if (pdsConsoList.isEmpty()) {
+                jobContext.addKO();
+                ko++;
+                continue;
+            }
+            double quantityER = getSumQuantity(pdsConsoList, "nature_mesure", "ER");
+            double quantityEA = getSumQuantity(pdsConsoList, "nature_mesure", "EA");
+            Map<String, String> info = getInfo(pdsConsoList, "nature_mesure", "ER");
+            Map<String, Object> pds = findPds(listePdsEREA, subscription.getAccessPoints().get(0).getAccessUserId());
+            double COEF;
+            boolean isCoef_tan_phi = (boolean) pds.get("coef_tan_phi");
+            COEF = isCoef_tan_phi ? 0.13 : 0;
+            double result = 1 /
+                    (Math.sqrt
+                            (1 +
+                                    (Math.pow(
+                                            ((quantityER / quantityEA) + COEF), 2)
+                                    )
+                            )
+                    );
+            double roundedResult = Math.round(result * 100.0) / 100.0;
+            Map<String, Object> PrepareDataTocreateConso = PrepareDataTocreateConso(info, subscription.getAccessPoints().get(0).getAccessUserId(), String.valueOf(roundedResult), null, (Date) period.get(0), (Date) period.get(1), "OPENCELL", null, "COSPHI", "CALCULE", true);
+            customTableService.create("ct_conso", PrepareDataTocreateConso);
+            jobContext.addOK();
+            ok++;
+        }
+        for (Map<String, Object> consoEREA : listeConsoEREA) {
+            consoEREA.put("calcul_hta", true);
+            customTableService.update("ct_conso", consoEREA);
+        }
+        jobReport(jobContext, "SUCCES Calcul du Cos phi",
+                "ECHEC Calcul du Cos phi");
+    }
+
+    private void apa(JobContext jobContext) {
+        for (Map<String, Object> conso : listeConsoAPA) {
+            String idPds = String.valueOf(conso.get("id_pds"));
+            List<Map<String, Object>> pdsConsoList = getConsoWithIDPDS(idPds, listeConsoAPA);
+            if (pdsConsoList.isEmpty()) {
+                jobContext.addKO();
+                ko++;
+                continue;
+            }
+            Number id = (Number) conso.get("id");
+            Map<String, Object> values = new HashMap<>();
+            values.put("id", id);
+            values.put("statut", "CALCULE");
+            values.put("origine", "OPENCELL");
+            conso.put("statut", "CALCULE");
+            conso.put("origine", "OPENCELL");
+            values.put("calcul_hta", true);
+            Map<String, Object> pds = findPds(listePdsAPA, idPds);
+            String IsTransfoAvantBranchement = String.valueOf(pds.get("is_transfo_avant_branchement"));
+            Number maxQuantity = maxQuantity(pdsConsoList, idPds);
+            if (maxQuantity == null) {
+                jobContext.addKO();
+                ko++;
+                continue;
+            }
+            values.put("quantite", maxQuantity);
+            conso.put("quantite", maxQuantity);
+            values.put("unite", "kW");
+            if (!("AVANT").equals(IsTransfoAvantBranchement) && !("APRES").equals(IsTransfoAvantBranchement)) {
+                jobContext.addKO();
+                ko++;
+                continue;
+            }
+            if (("AVANT").equals(IsTransfoAvantBranchement)) {
+                customTableService.update("ct_conso", values);
+                jobContext.addOK();
+                ok++;
+                continue;
+            }
+            if (("APRES").equals(IsTransfoAvantBranchement)) {
+                Subscription subscription = findSub(listeSubAPA, idPds);
+                if (subscription == null) {
+                    jobContext.addKO();
+                    ko++;
+                    continue;
+                }
+                Object puissance_transformateur = pds.get("puissance_transformateur");
+                Object cf_puissance_reservee = subscription.getCfValue("cf_puissance_reservee");
+                Object longueurConducteur = pds.get("longueur_conducteur");
+                if (puissance_transformateur == null || cf_puissance_reservee == null || longueurConducteur == null) {
+                    jobContext.addKO();
+                    ko++;
+                    continue;
+                }
+                double pt = ((Number) puissance_transformateur).doubleValue();
+                double cfPuissanceReservee = ((Number) cf_puissance_reservee).doubleValue();
+                double longueur_conducteur = ((Number) longueurConducteur).doubleValue();
+                double Pf = correspondingValue(pt, 1);
+                double pj = correspondingValue(pt, 2);
+                double valeurPj = pj + (P0_000003 * longueur_conducteur * maxQuantity.doubleValue());
+                double pPrimej = new BigDecimal(valeurPj).setScale(2, RoundingMode.HALF_UP).doubleValue();
+                int result = roundSupInf(
+                        maxQuantity.doubleValue()
+                                * (1 + ((pPrimej / pt) * (maxQuantity.doubleValue() / pt)))
+                                + (Pf * (cfPuissanceReservee / pt)));
+                values.put("quantite", String.valueOf(result));
+                conso.put("quantite", String.valueOf(result));
+                customTableService.update("ct_conso", values);
+                jobContext.addOK();
+                ok++;
+            }
+        }
+        jobReport(jobContext, "SUCCES Ajustement de la puissance atteinte reçue ",
+                "ECHEC Ajustement de la puissance atteinte reçue ");
+    }
+
+    private void cpar(JobContext jobContext) {
+        for (Map<String, Object> conso : listeConsoAPA) {
+            if (!("CALCULE".equals(String.valueOf(conso.get("statut"))) && "OPENCELL".equals(String.valueOf(conso.get("origine")))))
+                continue;
+            String idPds = String.valueOf(conso.get("id_pds"));
+            double quantitePa = Double.parseDouble(String.valueOf(conso.get("quantite")));
+            Map<String, Object> consoCosphi = getConsoCosphi(idPds, consoList);
+            if (consoCosphi == null || consoCosphi.get("quantite") == null || Double.parseDouble(String.valueOf(consoCosphi.get("quantite"))) == 0.0) {
+                jobContext.addKO();
+                ko++;
+                continue;
+            }
+            conso.put("calcul_hta", true);
+            double quantiteCosphi = Double.parseDouble(String.valueOf(consoCosphi.get("quantite")));
+            int result = roundSupInf(quantitePa / quantiteCosphi);
+            Map<String, Object> PrepareDataTocreateConso = PrepareDataTocreateConso(Map.of("exploitation", String.valueOf(conso.get("exploitation")), "num_contrat", String.valueOf(conso.get("num_contrat")), "nom_client", String.valueOf(conso.get("nom_client"))), String.valueOf(conso.get("id_pds")), String.valueOf(result), "kVA", (Date) period.get(0), (Date) period.get(1), "OPENCELL", null, "PA", "CALCULE", true);
+            customTableService.create("ct_conso", PrepareDataTocreateConso);
+            customTableService.update("ct_conso", conso);
+            jobContext.addOK();
+            ok++;
+        }
+        jobReport(jobContext, "SUCCES Calcul de la puissance atteinte réelle.",
+                "ECHEC Calcul de la puissance atteinte réelle.");
+    }
+
+    private Map<String, Object> getConsoCosphi(String idPds, List<Map<String, Object>> localConsoList) {
+        Optional<Map<String, Object>> cosphiConso = localConsoList.stream().filter(c -> "COSPHI".equals(c.get("nature_mesure")) && idPds.equals(c.get("id_pds"))).findFirst();
+        return cosphiConso.orElse(null);
+    }
+
+    private void cap(JobContext jobContext) {
+        for (Subscription subscription : listeSubEA) {
+            List<Map<String, Object>> pdsConsoList = getConsoWithIDPDS(subscription.getAccessPoints().get(0).getAccessUserId(), listeConsoEA);
+            Map<String, Object> pds = findPds(listePdsEA, subscription.getAccessPoints().get(0).getAccessUserId());
+            if (pdsConsoList.isEmpty() || pds == null) {
+                jobContext.addKO();
+                ko++;
+                continue;
+            }
+            Map<String, String> infoJour = getInfo(pdsConsoList, "poste_horosaisonnier", "JOUR");
+            Map<String, String> infoNuit = getInfo(pdsConsoList, "poste_horosaisonnier", "NUIT");
+            String IsTransfoAvantBranchement = String.valueOf(pds.get("is_transfo_avant_branchement"));
+            String quantityJour = String.valueOf(getSumQuantity(pdsConsoList, "poste_horosaisonnier", "JOUR"));
+            String quantityNuit = String.valueOf(getSumQuantity(pdsConsoList, "poste_horosaisonnier", "NUIT"));
+            if (!("AVANT").equals(IsTransfoAvantBranchement) && !("APRES").equals(IsTransfoAvantBranchement)) {
+                jobContext.addKO();
+                ko++;
+                continue;
+            }
+            if (("AVANT").equals(IsTransfoAvantBranchement)) {
+                Map<String, Object> PrepareDataTocreateConsoJour = PrepareDataTocreateConso(infoJour, subscription.getAccessPoints().get(0).getAccessUserId(), quantityJour, "kWh", (Date) period.get(0), (Date) period.get(1), "OPENCELL", "JOUR", "EA", "CALCULE", false);
+                customTableService.create("ct_conso", PrepareDataTocreateConsoJour);
+                Map<String, Object> PrepareDataTocreateConsoNuit = PrepareDataTocreateConso(infoNuit, subscription.getAccessPoints().get(0).getAccessUserId(), quantityNuit, "kWh", (Date) period.get(0), (Date) period.get(1), "OPENCELL", "NUIT", "EA", "CALCULE", false);
+                customTableService.create("ct_conso", PrepareDataTocreateConsoNuit);
+                jobContext.addOK();
+                ok++;
+            }
+            if (("APRES").equals(IsTransfoAvantBranchement)) {
+                Number maxQuantityPA = maxQuantity(listeConsoAPA, subscription.getAccessPoints().get(0).getAccessUserId());
+                Object puissance_transformateur = pds.get("puissance_transformateur");
+                Object cf_puissance_reservee = subscription.getCfValue("cf_puissance_reservee");
+                Object longueurConducteur = pds.get("longueur_conducteur");
+                if (maxQuantityPA == null || puissance_transformateur == null || cf_puissance_reservee == null || longueurConducteur == null) {
+                    jobContext.addKO();
+                    ko++;
+                    continue;
+                }
+                double pt = ((Number) puissance_transformateur).doubleValue();
+                double cfPuissanceReservee = ((Number) cf_puissance_reservee).doubleValue();
+                double Pf = correspondingValue(pt, 1);
+                double pj = correspondingValue(pt, 2);
+                double longueur_conducteur = ((Number) longueurConducteur).doubleValue();
+                double valeurPjE = pj + (P0_000003 * longueur_conducteur * maxQuantityPA.doubleValue());
+                double pPrimejEJ = new BigDecimal(valeurPjE).setScale(2, RoundingMode.HALF_UP).doubleValue();
+                int resultJ = roundSupInf(Double.parseDouble(quantityJour)
+                        * (1 + ((pPrimejEJ / pt) * (maxQuantityPA.doubleValue() / pt)))
+                        + (Pf * nbh * (cfPuissanceReservee / pt)));
+                int resultN = roundSupInf(Double.parseDouble(quantityNuit)
+                        * (1 + ((pPrimejEJ / pt) * (maxQuantityPA.doubleValue() / pt)))
+                        + (Pf * nbh * (cfPuissanceReservee / pt)));
+                Map<String, Object> PrepareDataTocreateConsoJour = PrepareDataTocreateConso(infoJour, subscription.getAccessPoints().get(0).getAccessUserId(), String.valueOf(resultJ), "kWh", (Date) period.get(0), (Date) period.get(1), "OPENCELL", "JOUR", "EA", "CALCULE", false);
+                customTableService.create("ct_conso", PrepareDataTocreateConsoJour);
+                Map<String, Object> PrepareDataTocreateConsoNuit = PrepareDataTocreateConso(infoNuit, subscription.getAccessPoints().get(0).getAccessUserId(), String.valueOf(resultN), "kWh", (Date) period.get(0), (Date) period.get(1), "OPENCELL", "NUIT", "EA", "CALCULE", false);
+                customTableService.create("ct_conso", PrepareDataTocreateConsoNuit);
+                jobContext.addOK();
+                ok++;
+            }
+        }
+        for (Map<String, Object> consoEA : listeConsoEA) {
+            consoEA.put("calcul_hta", true);
+            customTableService.update("ct_conso", consoEA);
+        }
+        jobReport(jobContext, "SUCCES Calcul de la consommation active avec pertes",
+                "ECHEC Calcul de la consommation active avec pertes");
+    }
+
+    private void cdp(JobContext jobContext) {
+        for (Map<String, Object> conso : listeConsoDP) {
+            Subscription subscription = findSub(listeSubDP, (String) conso.get("id_pds"));
+            Object cfPuissanceSouscrite = subscription.getCfValue("cf_puissance_souscrite");
+            if (cfPuissanceSouscrite == null) {
+                jobContext.addKO();
+                ko++;
+                continue;
+            }
+            Number cf_puissance_souscrite = (Number) cfPuissanceSouscrite;
+            if (parseToDouble(conso.get("quantite")) <= cf_puissance_souscrite.doubleValue()) {
+                continue;
+            }
+            int quantite = roundSupInf(parseToDouble(conso.get("quantite")) - cf_puissance_souscrite.doubleValue());
+            Map<String, Object> PrepareDataTocreateConso = PrepareDataTocreateConso(Map.of("exploitation", String.valueOf(conso.get("exploitation")), "num_contrat", String.valueOf(conso.get("num_contrat")), "nom_client", String.valueOf(conso.get("nom_client"))), String.valueOf(conso.get("id_pds")), String.valueOf(quantite), "kVA", (Date) period.get(0), (Date) period.get(1), "OPENCELL", null, "DP", "CALCULE", false);
+            conso.put("calcul_hta", true);
+            customTableService.create("ct_conso", PrepareDataTocreateConso);
+            customTableService.update("ct_conso", conso);
+            jobContext.addOK();
+            ok++;
+        }
+        jobReport(jobContext, "SUCCES Dépassement de puissance",
+                "ECHEC Dépassement de puissance");
+    }
+
+    private Double parseToDouble(Object value) {
+        if (value == null) {
+            return 0.0;
+        }
+        try {
+            if (value instanceof String) {
+                return Double.parseDouble((String) value);
+            } else if (value instanceof Double) {
+                return (Double) value;
+            } else {
+                // Gérer les autres types si nécessaire
+                return 0.0;
+            }
+        } catch (NumberFormatException e) {
+            // Gérer le cas où la conversion échoue (la chaîne n'est pas un nombre)
+            return 0.0;
+        }
+    }
+}

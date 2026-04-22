@@ -1,0 +1,16 @@
+{
+  "info" : {
+    "name" : "empty",
+    "schema" : "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item" : [ {
+    "item" : [ {
+      "item" : [ ],
+      "name" : "version=0.2.0"
+    }, {
+      "item" : [ ],
+      "name" : "release=R025"
+    } ],
+    "name" : ".META"
+  } ]
+}

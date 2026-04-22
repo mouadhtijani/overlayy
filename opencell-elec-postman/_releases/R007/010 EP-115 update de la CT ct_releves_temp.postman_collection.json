@@ -1,0 +1,98 @@
+{
+	"info": {
+		"_postman_id": "50e3c4a9-4995-468e-bb13-47451428276d",
+		"name": "010 EP-115 update de la CT ct_releves_temp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30217061"
+	},
+	"item": [
+		{
+			"name": "delete ct_releves_temp",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{opencell.url}}/entityCustomization/entity/ct_releves_temp",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"entityCustomization",
+						"entity",
+						"ct_releves_temp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ct_releves_temp",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"ct_releves_temp\",\r\n    \"description\" : \"Table des fichiers json découpés des relèves\",\r\n    \"disabled\": false,\r\n    \"name\": \"ct_releves_temp\",\r\n    \"storeInES\": false,\r\n    \"storeAsTable\": true,\r\n    \"field\": [\r\n        {\r\n            \"code\": \"id_releves_interface\",\r\n            \"description\": \"ID du relevé de la table ct_releves_interface\",\r\n            \"fieldType\": \"LONG\"\r\n        },\r\n        {\r\n            \"code\": \"id_releve\",\r\n            \"description\": \"Identifiant du relevé\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"date_generation_fichier\",\r\n            \"description\": \"Date à laquelle la relève a été effectuée\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"nom_fichier\",\r\n            \"description\": \"Nom du fichier json\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"date_last_update\",\r\n            \"description\": \"Date de dernière modification dans Next Energie\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"contenu\",\r\n            \"description\": \"Contenu json du relevé\",\r\n            \"fieldType\": \"TEXT_AREA\"\r\n        },\r\n        {\r\n            \"code\": \"statut\",\r\n            \"description\": \"Statut\",\r\n            \"fieldType\": \"LIST\",\r\n            \"listValues\": {\r\n                \"TRAITE\": \"TRAITE\",\r\n                \"A_TRAITER\": \"A_TRAITER\",\r\n                \"ERREUR\": \"ERREUR\"\r\n            }\r\n        },\r\n        {\r\n            \"code\": \"date_traitement\",\r\n            \"description\": \"Date identique l'entrée de ct_releves_interface\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"code_erreur\",\r\n            \"description\": \"Code erreur\",\r\n            \"fieldType\": \"STRING\"\r\n        },\r\n        {\r\n            \"code\": \"message_erreur\",\r\n            \"description\": \"Message erreur\",\r\n            \"fieldType\": \"STRING\",\r\n            \"maxValue\":4000\r\n        }\r\n    ],\r\n    \"action\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/entityCustomization/entity/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"entityCustomization",
+						"entity",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

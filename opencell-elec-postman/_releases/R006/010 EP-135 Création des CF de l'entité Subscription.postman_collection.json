@@ -1,0 +1,261 @@
+{
+	"info": {
+		"_postman_id": "0e4dd8b1-75d9-4558-9257-305833ad65da",
+		"name": "010 EP-135 Création des CF de l'entité Subscription",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30217061"
+	},
+	"item": [
+		{
+			"name": "cf_nature",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"appliesTo\" : \"Subscription\",\r\n    \"code\" : \"cf_nature\",\r\n    \"description\" : \"Nature\",\r\n    \"fieldType\": \"LIST\",\r\n    \"listValues\": {\r\n                \"BT\": \"BT\",\r\n                \"HTA\": \"HTA\"\r\n            },\r\n    \"storageType\":\"SINGLE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/customFieldTemplate/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"customFieldTemplate",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cf_code_exploitation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"appliesTo\" : \"Subscription\",\r\n    \"code\" : \"cf_code_exploitation\",\r\n    \"description\" : \"Code exploitation\",\r\n    \"fieldType\":\"STRING\",\r\n    \"storageType\":\"SINGLE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/customFieldTemplate/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"customFieldTemplate",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cf_libelle_exploitation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"appliesTo\" : \"Subscription\",\r\n    \"code\" : \"cf_libelle_exploitation\",\r\n    \"description\" : \"Libellé exploitation\",\r\n    \"fieldType\":\"STRING\",\r\n    \"storageType\":\"SINGLE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/customFieldTemplate/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"customFieldTemplate",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cf_code_rfe",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"appliesTo\" : \"Subscription\",\r\n    \"code\" : \"cf_code_rfe\",\r\n    \"description\" : \"Code RFE\",\r\n    \"fieldType\":\"STRING\",\r\n    \"storageType\":\"SINGLE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/customFieldTemplate/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"customFieldTemplate",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cf_puissance_souscrite",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"appliesTo\" : \"Subscription\",\r\n    \"code\" : \"cf_puissance_souscrite\",\r\n    \"description\" : \"Puissance souscrite\",\r\n    \"fieldType\":\"LONG\",\r\n    \"storageType\":\"SINGLE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/customFieldTemplate/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"customFieldTemplate",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cf_puissance_reservee",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"appliesTo\" : \"Subscription\",\r\n    \"code\" : \"cf_puissance_reservee\",\r\n    \"description\" : \"Puissance réservée\",\r\n    \"fieldType\":\"LONG\",\r\n    \"storageType\":\"SINGLE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/customFieldTemplate/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"customFieldTemplate",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cf_intensite_limiteur",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"appliesTo\" : \"Subscription\",\r\n    \"code\" : \"cf_intensite_limiteur\",\r\n    \"description\" : \"Intensité limiteur\",\r\n    \"fieldType\":\"LONG\",\r\n    \"storageType\":\"SINGLE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/customFieldTemplate/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"customFieldTemplate",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cf_modification_puissance",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"appliesTo\" : \"Subscription\",\r\n    \"code\" : \"cf_modification_puissance\",\r\n    \"description\" : \"Dernière modification de puissance\",\r\n    \"fieldType\":\"DATE\",\r\n    \"storageType\":\"SINGLE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{opencell.url}}/customFieldTemplate/createOrUpdate",
+					"host": [
+						"{{opencell.url}}"
+					],
+					"path": [
+						"customFieldTemplate",
+						"createOrUpdate"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{opencell.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{opencell.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
